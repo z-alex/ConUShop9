@@ -24,12 +24,8 @@
 - Jean-Michel Laliberté
 - Alex Zhang
 - Helen Zhang
-- Batoul Yehia
 - Yufeng Ding
-- Sophia Quach
-- Melissa Duong
 - Karine Zhang
-- Wei He
 
 ## Installation (do once)
 1) We recommend that you use Xampp to run the Laravel framework app by following [this tutorial](https://www.codementor.io/magarrent/how-to-install-laravel-5-xampp-windows-du107u9ji).

@@ -16,15 +16,6 @@ class ElectronicCatalogMapper {
     private $lockFilePointer;
 
     function __construct() {
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 0:
-                self::__construct0();
-                break;
-        }
-    }
-
-    function __construct0() {
         $this->electronicCatalogTDG = new ElectronicCatalogTDG();
         $this->electronicCatalog = new ElectronicCatalog($this->electronicCatalogTDG->findAll());
         $this->unitOfWork = new UnitOfWork(['electronicCatalogMapper' => $this]);
@@ -43,18 +34,18 @@ class ElectronicCatalogMapper {
         return $this->electronicCatalogTDG->deleteElectronicItem($electronicItem);
     }
 
-    function makeNewElectronicSpecification($quantity, $electronicSpecificationData) {
+    function makeNewElectronicSpecification($quantity, $eSData) {
         $this->lockDataAccess();
         //add image path to ESData
 
-        $modelNumberExists = $this->electronicCatalog->findElectronicSpecification($electronicSpecificationData->modelNumber);
+        $modelNumberExists = $this->electronicCatalog->findElectronicSpecification($eSData->modelNumber);
         $this->unlockDataAccess();
 
         if (!$modelNumberExists) {
             $this->lockDataAccess();
 
             //Add to eSList of the catalog
-            $electronicSpecification = $this->electronicCatalog->makeElectronicSpecification($electronicSpecificationData);
+            $electronicSpecification = $this->electronicCatalog->makeElectronicSpecification($eSData);
 
             //Add to database
             $this->unitOfWork->registerNew($electronicSpecification);
@@ -65,9 +56,9 @@ class ElectronicCatalogMapper {
                 $electronicItemData = new \stdClass();
                 $electronicItemData->serialNumber = $serialNumber . $i;
 
-                $this->electronicCatalog->makeElectronicItem($electronicSpecificationData->modelNumber, $electronicItemData);
+                $this->electronicCatalog->makeElectronicItem($eSData->modelNumber, $electronicItemData);
 
-                $this->electronicCatalogTDG->insertElectronicItem($electronicSpecificationData->modelNumber, $electronicItemData);
+                $this->electronicCatalogTDG->insertElectronicItem($eSData->modelNumber, $electronicItemData);
             }
 
             //Add to identity map
@@ -275,7 +266,7 @@ class ElectronicCatalogMapper {
             foreach ($criteriaArray as $key => $value) { // filter out
                 if (strpos($key, 'displaySize') !== false) { //if the criteria contains a "-" then it's a criteria
                     foreach ($filteredByBrandName as $eS) {
-                        if ($eS->displaySize === $value) {
+                        if (isset($eS->displaySize) && $eS->displaySize === $value) {
                             array_push($filteredByDisplaySize, $eS);
                         }
                     }
@@ -299,7 +290,7 @@ class ElectronicCatalogMapper {
             foreach ($criteriaArray as $key => $value) { // filter out
                 if (strpos($key, 'touchScreen') !== false) { //if the criteria contains a "-" then it's a criteria
                     foreach ($filteredByDisplaySize as $eS) {
-                        if ($eS->touchScreen === $value) {
+                        if (isset($eS->touchScreen) && $eS->touchScreen === $value) {
                             array_push($filteredByTouchScreen, $eS);
                         }
                     }

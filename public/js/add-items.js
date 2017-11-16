@@ -25,6 +25,7 @@ function loadForm() {
     </div>
 
             <input type="hidden" name="ElectronicType_id" value=1>
+            <input type="hidden" name="ElectronicType_name" value="Desktop">
 
             <div class="form-group">
                 <label class="control-label col-sm-2" for="brandName">Brand</label>
@@ -75,6 +76,13 @@ function loadForm() {
                     <input type="text" class="form-control" id="modelNumber" placeholder="Enter model" name="modelNumber">
                 </div>
             </div>
+                
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="os">Operating System</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="os" placeholder="Enter built-in operating system " name="os">
+                </div>
+            </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2" for="price">Price</label>
@@ -100,7 +108,8 @@ function loadForm() {
         <div class="items text-center"><span class="blueTitle">LAPTOP</span></div>
     </div>
 
-<input type="hidden" name="ElectronicType_id" value=2>
+        <input type="hidden" name="ElectronicType_id" value=2>
+        <input type="hidden" name="ElectronicType_name" value="Laptop">
                     
         <div class="form-group">
             <label class="control-label col-sm-2" for="dimension">Dimension <br/> </label>
@@ -222,12 +231,13 @@ function loadForm() {
         <div class="items text-center"><span class="blueTitle">MONITOR</span></div>
     </div>
 
-<input type="hidden" name="ElectronicType_id" value=3>
+            <input type="hidden" name="ElectronicType_id" value=3>
+            <input type="hidden" name="ElectronicType_name" value="Monitor">
 
             <div class="form-group">
-                <label class="control-label col-sm-2" for="dimension">Dimension <br/> </label>
+                <label class="control-label col-sm-2" for="displaySize">Display Size</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="dimension" placeholder="Enter dimensions size (width x height x depth) ex: (32x12x5) " name="dimension">
+                    <input type="number" min="0" step="0.1" class="form-control" id="displaySize" placeholder="Enter display size" name="displaySize">
                 </div>
             </div>
 
@@ -280,7 +290,8 @@ function loadForm() {
         <div class="items text-center"><span class="blueTitle">TABLET</span></div>
     </div>
 
-<input type="hidden" name="ElectronicType_id" value=4>
+            <input type="hidden" name="ElectronicType_id" value=4>
+            <input type="hidden" name="ElectronicType_name" value="Tablet">
 
             <div class="form-group">
                 <label class="control-label col-sm-2" for="brandName">Brand</label>

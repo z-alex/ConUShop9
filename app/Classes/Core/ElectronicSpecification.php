@@ -5,44 +5,18 @@ namespace App\Classes\Core;
 class ElectronicSpecification {
 
     private $id;
-    private $dimension;
     private $weight;
     private $modelNumber;
     private $brandName;
-    private $hdSize;
+    private $image;
+    private $electronicItems;
     private $price;
-    private $processorType;
-    private $ramSize;
-    private $cpuCores;
-    private $batteryInfo;
-    private $os;
-    private $camera;
-    private $touchScreen;
-    private $displaySize;
     private $ElectronicType_id;
     private $ElectronicType_name;
     private $ElectronicType_dimensionUnit;
     private $ElectronicType_displaySizeUnit;
-    private $image;
-    private $electronicItems;
 
-    function __construct() {
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 0:
-                self::__construct0();
-                break;
-            case 1:
-                self::__construct1($argv[0]);
-                break;
-        }
-    }
-
-    function __construct0() {
-        $this->electronicItems = array();
-    }
-
-    function __construct1($data) {
+    function __construct($data) {
         $this->electronicItems = array();
         $this->set($data);
     }
@@ -64,12 +38,8 @@ class ElectronicSpecification {
     }
 
     public function set($data) {
-        //mettre isset pour
         if (isset($data->id)) {
             $this->id = $data->id;
-        }
-        if (isset($data->dimension)) {
-            $this->dimension = $data->dimension;
         }
         if (isset($data->weight)) {
             $this->weight = $data->weight;
@@ -80,35 +50,8 @@ class ElectronicSpecification {
         if (isset($data->brandName)) {
             $this->brandName = $data->brandName;
         }
-        if (isset($data->hdSize)) {
-            $this->hdSize = $data->hdSize;
-        }
         if (isset($data->price)) {
             $this->price = $data->price;
-        }
-        if (isset($data->processorType)) {
-            $this->processorType = $data->processorType;
-        }
-        if (isset($data->ramSize)) {
-            $this->ramSize = $data->ramSize;
-        }
-        if (isset($data->cpuCores)) {
-            $this->cpuCores = $data->cpuCores;
-        }
-        if (isset($data->batteryInfo)) {
-            $this->batteryInfo = $data->batteryInfo;
-        }
-        if (isset($data->os)) {
-            $this->os = $data->os;
-        }
-        if (isset($data->camera)) {
-            $this->camera = $data->camera;
-        }
-        if (isset($data->touchScreen)) {
-            $this->touchScreen = $data->touchScreen;
-        }
-        if (isset($data->displaySize)) {
-            $this->displaySize = $data->displaySize;
         }
         if (isset($data->image)) {
             $this->image = $data->image;
@@ -153,20 +96,10 @@ class ElectronicSpecification {
         $returnData = new \stdClass();
 
         $returnData->id = $this->id;
-        $returnData->dimension = $this->dimension;
         $returnData->weight = $this->weight;
         $returnData->modelNumber = $this->modelNumber;
         $returnData->brandName = $this->brandName;
-        $returnData->hdSize = $this->hdSize;
         $returnData->price = $this->price;
-        $returnData->processorType = $this->processorType;
-        $returnData->ramSize = $this->ramSize;
-        $returnData->cpuCores = $this->cpuCores;
-        $returnData->batteryInfo = $this->batteryInfo;
-        $returnData->os = $this->os;
-        $returnData->camera = $this->camera;
-        $returnData->touchScreen = $this->touchScreen;
-        $returnData->displaySize = $this->displaySize;
         $returnData->ElectronicType_id = $this->ElectronicType_id;
         $returnData->ElectronicType_name = $this->ElectronicType_name;
         $returnData->ElectronicType_dimensionUnit = $this->ElectronicType_dimensionUnit;
@@ -203,16 +136,15 @@ class ElectronicSpecification {
         return $this->image;
     }
 
-
     public function reserveFirstAvailableEI($userId, $expiry) {
         $eI = $this->findNextAvailableEI();
-        
-        if($eI!=null){
-        $eI->setUserId($userId);
-        $eI->setExpiryForUser($expiry);
+
+        if ($eI != null) {
+            $eI->setUserId($userId);
+            $eI->setExpiryForUser($expiry);
         }
 
-        
+
         return $eI;
     }
 
@@ -227,17 +159,17 @@ class ElectronicSpecification {
                 return $eI;
             }
         }
-        
+
         $result = null;
-        
+
         return $result;
     }
 
-    function unsetUserAndExpiry($userId){
+    function unsetUserAndExpiry($userId) {
         $eIToRemove = null;
 
-        foreach ($this->electronicItems as $eI){
-            if($eI->getUserId() == $userId){
+        foreach ($this->electronicItems as $eI) {
+            if ($eI->getUserId() == $userId) {
                 $eIToRemove = $eI;
                 break;
             }
@@ -247,4 +179,5 @@ class ElectronicSpecification {
         $eIToRemove->setExpiryForUser(null);
         return $eIToRemove;
     }
+
 }

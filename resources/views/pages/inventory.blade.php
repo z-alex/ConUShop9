@@ -40,7 +40,7 @@
 
             </td>
             <td>
-                @if ($eS->dimension )
+                @if ( isset($eS->dimension) )
                 {{$eS->dimension}}
                 @else
                 N/A
@@ -68,7 +68,7 @@
                 @endif
             </td>
             <td>
-                @if ( $eS->hdSize )
+                @if ( isset($eS->hdSize) )
                 {{$eS->hdSize}}
                 @else
                 N/A
@@ -82,42 +82,42 @@
                 @endif
             </td>
             <td>
-                @if ( $eS->processorType )
+                @if ( isset($eS->processorType) )
                 {{$eS->processorType}}
                 @else
                 N/A
                 @endif
             </td>
             <td>
-                @if ( $eS->ramSize )
+                @if ( isset($eS->ramSize) )
                 {{$eS->ramSize}}
                 @else
                 N/A
                 @endif
             </td>
             <td>
-                @if ( $eS->cpuCores )
+                @if ( isset($eS->cpuCores) )
                 {{$eS->cpuCores}}
                 @else
                 N/A
                 @endif
             </td>
             <td>
-                @if ( $eS->batteryInfo )
+                @if ( isset($eS->batteryInfo) )
                 {{$eS->batteryInfo}}
                 @else
                 N/A
                 @endif
             </td>
             <td>
-                @if ( $eS->os )
+                @if ( isset($eS->os) )
                 {{$eS->os}}
                 @else
                 N/A
                 @endif
             </td>
             <td>
-                @if ( !is_null($eS->camera) )
+                @if ( isset($eS->camera) && !is_null($eS->camera) )
                 @if ($eS->camera === "1")
                 Yes
                 @else
@@ -128,7 +128,7 @@
                 @endif
             </td>
             <td>
-                @if ( !is_null($eS->touchScreen) )
+                @if ( isset($eS->touchScreen) && !is_null($eS->touchScreen) )
                 @if ($eS->camera === "1")
                 Yes
                 @else
@@ -139,7 +139,7 @@
                 @endif
             </td>
             <td>
-                @if ( $eS->displaySize )
+                @if ( isset($eS->displaySize) && $eS->displaySize )
                 {{$eS->displaySize}} {{$eS->ElectronicType_displaySizeUnit}}
                 @else
                 N/A

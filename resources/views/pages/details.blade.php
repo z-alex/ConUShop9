@@ -44,9 +44,8 @@
             @endif
         </div>
         <div class="col-md-4"> <br><br>
-            <b>Dimension</b>: {{$eS->dimension}} in<br>
+            <b>Display Size</b>: {{$eS->displaySize}} in<br>
             <b>Weight</b>: {{$eS->weight}} kg<br>
-            <b>RAM size</b>: {{$eS->ramSize}} GB<br>
             <b>Price</b>: ${{$eS->price}}<br>
         </div>
     </div>
@@ -139,9 +138,11 @@
 
 <div class="row">
     <div class="text-center">
+        @if( Auth::check() && Auth::user()->admin === 0 )
         <a href="/add-to-cart?eSId={{$eS->id}}" class="btn btn-success btn-lg" role="button"> Add To Cart </a>
         <br/>
         <br/>
+        @endif
         
         @if(isset($previousESId) && $previousESId > 0)
         <a href="/details?id={{$previousESId}}" class="btn btn-info" role="button"> &laquo; Previous Result </a>

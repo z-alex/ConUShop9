@@ -6,26 +6,32 @@ class ElectronicCatalog {
 
     private $eSList;
 
-    function __construct() {
-          $this->eSList = array();
-          $argv = func_get_args();
-          switch (func_num_args()) {
-              case 1:
-                  self::__construct1($argv[0]);
-                  break;
-          }
-      }
-    function __construct1($eSListData) {
+    function __construct($eSListData) {
         $this->eSList = array();
         $this->setESList($eSListData);
     }
 
     function setESList($eSListData) {
-        //dd($eSListData);
+
         foreach ($eSListData as $eSData) {
-            $eS = new ElectronicSpecification($eSData);
+            switch ($eSData->ElectronicType_id) {
+                case "1":
+                    $eS = new DesktopSpecification($eSData);
+                    break;
+                case "2":
+                    $eS = new LaptopSpecification($eSData);
+                    break;
+                case "3":
+                    $eS = new MonitorSpecification($eSData);
+                    break;
+                case "4":
+                    $eS = new TabletSpecification($eSData);
+                    break;
+            }
+
             array_push($this->eSList, $eS);
         }
+        
     }
 
     function getESList() {
@@ -74,10 +80,26 @@ class ElectronicCatalog {
         return null;
     }
 
-    function makeElectronicSpecification($electronicSpecificationData) {
-        $eS = new ElectronicSpecification($electronicSpecificationData);
+    function makeElectronicSpecification($eSData) {
+        //dd($eSData);
 
+        switch ($eSData->ElectronicType_name) {
+            case "Desktop":
+                $eS = new DesktopSpecification($eSData);
+                break;
+            case "Laptop":
+                $eS = new LaptopSpecification($eSData);
+                break;
+            case "Monitor":
+                $eS = new MonitorSpecification($eSData);
+                break;
+            case "Tablet":
+                $eS = new TabletSpecification($eSData);
+                break;
+        }
+        //dd($eSData);
         array_push($this->eSList, $eS);
+        
         return $eS;
     }
 
@@ -91,10 +113,10 @@ class ElectronicCatalog {
         }
     }
 
-    function modifyElectronicSpecification($eSId, $newESData){
-        foreach($this->eSList as &$eS){
-            if($eS->get()->id === $eSId){
-                $eS->set((object)$newESData);
+    function modifyElectronicSpecification($eSId, $newESData) {
+        foreach ($this->eSList as &$eS) {
+            if ($eS->get()->id === $eSId) {
+                $eS->set((object) $newESData);
                 return $eS;
             }
         }
@@ -104,9 +126,9 @@ class ElectronicCatalog {
 
     function reserveFirstEIFromES($eSId, $userId, $expiry) {
         $firstAvailableEI = null;
-        
+
         //dd($this->eSList);
-        
+
         foreach ($this->eSList as &$eS) {
             if ($eS->get()->id === $eSId) {
                 $firstAvailableEI = $eS->reserveFirstAvailableEI($userId, $expiry);
@@ -116,10 +138,10 @@ class ElectronicCatalog {
         return $firstAvailableEI;
     }
 
-    function getESListFromEIList($eIList){
+    function getESListFromEIList($eIList) {
 
         $ESList = array();
-        foreach ($eIList as $eI){
+        foreach ($eIList as $eI) {
             $eS = new ElectronicSpecification();
             $eSData = $this->getElectronicSpecificationById($eI->get()->ElectronicSpecification_id);
             $eS->set($eSData);
@@ -128,10 +150,10 @@ class ElectronicCatalog {
         return $ESList;
     }
 
-    function unsetUserAndExpiryFromEI($eSId, $userId){
+    function unsetUserAndExpiryFromEI($eSId, $userId) {
         $removedEI = null;
-        foreach ($this->eSList as $eS){
-            if($eS->get()->id == $eSId){
+        foreach ($this->eSList as $eS) {
+            if ($eS->get()->id == $eSId) {
                 $removedEI = $eS->unsetUserAndExpiry($userId);
                 break;
             }

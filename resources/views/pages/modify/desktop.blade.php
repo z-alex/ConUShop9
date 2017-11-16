@@ -57,6 +57,13 @@
 </div>
 
 <div class="form-group">
+    <label class="control-label col-sm-2" for="os">Operating System</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" id="os" placeholder="Enter built-in operating system " name="os">
+    </div>
+</div>
+
+<div class="form-group">
     <label class="control-label col-sm-2" for="price">Price</label>
     <div class="col-sm-10">
         <input type="number" min=0 class="form-control" id="price" placeholder="Enter price" name="price" value="{{$eSToModify->price}}">

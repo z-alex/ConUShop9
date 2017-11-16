@@ -75,7 +75,7 @@ class MainController extends BaseController {
 
         $displaySizes = array();
         foreach ($eSFromType as $eS) {
-            if (!in_array($eS->displaySize, $displaySizes) && !is_null($eS->displaySize)) {
+            if (isset($eS->displaySize) && !in_array($eS->displaySize, $displaySizes) && !is_null($eS->displaySize)) {
                 array_push($displaySizes, $eS->displaySize);
             }
         }

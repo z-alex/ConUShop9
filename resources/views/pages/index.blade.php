@@ -116,7 +116,7 @@
                 {{$eS->ElectronicType_name}}
                 <br/>
                 @endif
-                @if ( $eS->displaySize )
+                @if ( isset($eS->displaySize) )
                 {{$eS->displaySize}} inch display 
                 <br/>
                 @endif
@@ -129,7 +129,9 @@
                 <br/>
                 @endif
             </a>
+            @if( Auth::check() && Auth::user()->admin === 0 )
             <a href="/add-to-cart?eSId={{$eS->id}}" class="btn btn-info" role="button"> Add To Cart </a>
+            @endif
         </div>
          <?php $k++ ?>
         @if($k % 5 == 0)

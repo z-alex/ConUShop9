@@ -37,7 +37,7 @@ class ElectronicCatalogTDGTest extends TestCase {
         
         $eSData = (array) $eSData;
         
-        $electronicCatalogTDG->insertElectronicSpecification($eS);
+        $electronicCatalogTDG->insert($eS);
         
         $foundES = (array) $electronicCatalogTDG->find(['id' => 1])[0];
         
@@ -77,7 +77,7 @@ class ElectronicCatalogTDGTest extends TestCase {
         
         $newES->set($newESData);
         
-        $electronicCatalogTDG->updateElectronicSpecification($newES);
+        $electronicCatalogTDG->update($newES);
         
         $this->assertDatabaseHas('ElectronicSpecification', [
             'id' => 1,
@@ -126,14 +126,14 @@ class ElectronicCatalogTDGTest extends TestCase {
         $eS->set($eSData);
         
         
-        $electronicCatalogTDG->insertElectronicSpecification($eS);
+        $electronicCatalogTDG->insert($eS);
         
         $eIData = new \stdClass();        
         $eIData->id = 1;
         $eIData->serialNumber = "ABC123";
         $eIData->ElectronicSpecification_id = 2;
         
-        $electronicCatalogTDG->insertElectronicItem($eSData->modelNumber, $eIData);
+        $electronicCatalogTDG->insert($eSData->modelNumber, $eIData);
         
         $this->assertDatabaseHas('ElectronicItem', [
             'id' => 1,
@@ -150,7 +150,7 @@ class ElectronicCatalogTDGTest extends TestCase {
         $eIData->ElectronicSpecification_id = 2;
         $eI= new ElectronicItem($eIData);
         
-        $electronicCatalogTDG->deleteElectronicItem($eI);
+        $electronicCatalogTDG->delete($eI);
          
         $this->assertDatabaseMissing('ElectronicItem', [
             'id' => 1,

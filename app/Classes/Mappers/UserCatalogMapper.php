@@ -2,7 +2,7 @@
 
 namespace App\Classes\Mappers;
 
-use App\Classes\TDG\UserCatalogTDG;
+use App\Classes\TDG\UserTDG;
 use App\Classes\Core\UserCatalog;
 use App\Classes\UnitOfWork;
 use App\Classes\IdentityMap;
@@ -11,35 +11,26 @@ use Hash;
 class UserCatalogMapper {
 
     private $userCatalog;
-    private $userCatalogTDG;
+    private $userTDG;
     private $unitOfWork;
     private $identityMap;
 
     function __construct() {
-        $argv = func_get_args();
-        switch (func_num_args()) {
-            case 0:
-                self::__construct0();
-                break;
-        }
-    }
-
-    function __construct0() {
-        $this->userCatalogTDG = new userCatalogTDG();
-        $this->userCatalog = new userCatalog($this->userCatalogTDG->findAll());
+        $this->userTDG = new UserTDG();
+        $this->userCatalog = new UserCatalog($this->userTDG->findAll());
         $this->unitOfWork = new UnitOfWork(['userCatalogMapper' => $this]);
         $this->identityMap = new IdentityMap();
     }
 
     function saveUser($user) {
-        return $this->userCatalogTDG->add($user);
+        return $this->userTDG->add($user);
     }
 
     function makeLoginLog($id) {
         date_default_timezone_set('EST');
         $timestamp = date("Y-m-d H:i:s");
 
-        $this->userCatalogTDG->insertLoginLog($id, $timestamp);
+        $this->userTDG->insertLoginLog($id, $timestamp);
     }
 
     function makeNewCustomer($userData) {
@@ -51,10 +42,8 @@ class UserCatalogMapper {
 
             $user = $this->userCatalog->makeCustomer($userData);
 
-
             $this->unitOfWork->registerNew($user);
             $this->unitOfWork->commit();
-
 
             //Add to identity map
             $this->identityMap->add('User', $user);
@@ -69,7 +58,7 @@ class UserCatalogMapper {
         if($this->userCatalog->checkUser($email, $password)){
             return true;
         }else{
-            return $this->userCatalogTDG->login($email, $password);
+            return $this->userTDG->findUserTestPsw($email, $password);
         }
     }
 

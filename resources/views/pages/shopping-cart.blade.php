@@ -17,7 +17,7 @@
                     {{$eS->get()->ElectronicType_name}}
                     <br/>
                 @endif
-                @if ( $eS->get()->displaySize )
+                @if ( isset($eS->get()->displaySize) )
                     {{$eS->get()->displaySize}} inch display
                     <br/>
                 @endif

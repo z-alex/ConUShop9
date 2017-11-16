@@ -11,14 +11,14 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Classes\Core\User;
 use App\Classes\Core\UserCatalog;
-use App\Classes\TDG\UserCatalogTDG;
+use App\Classes\TDG\UserTDG;
 use App\Classes\Mappers\UserCatalogMapper;
 
-class UserCatalogTDGTest extends TestCase {
+class userTDGTest extends TestCase {
 
-//Test the add method in UserCatalogTDG to see if user got added into the database
+//Test the add method in userTDG to see if user got added into the database
 	public function testAdd(){
-		$userCatalogTDG = new UserCatalogTDG();
+		$userTDG = new UserTDG();
 		
 		$userData = new \stdClass();
 
@@ -32,14 +32,14 @@ class UserCatalogTDGTest extends TestCase {
 		$userData->password = '123';
 		$user= new User($userData);
 
-		$userCatalogTDG->add($user);
+		$userTDG->add($user);
 		
 		$this->assertDatabaseHas('User', [
             'email' => 'jlin@hotmail.com'
         ]);
 	}
 
-	//Test the login method in UserCatalogTDG to see if user has been logged in succesfully
+	//Test the login method in userTDG to see if user has been logged in succesfully
 	public function testLogin(){
 		
 		$userCatalogMapper = new UserCatalogMapper();
@@ -47,9 +47,9 @@ class UserCatalogTDGTest extends TestCase {
 		$this->assertTrue($userCatalogMapper->login('admin1@conushop.com','admin'));
 	}
 
-	//Test the find method in UserCatalogTDG, to make sure that a particular user is saved in the database
+	//Test the find method in userTDG, to make sure that a particular user is saved in the database
 	public function testFind(){
-		$userCatalogTDG = new UserCatalogTDG();
+		$userTDG = new UserTDG();
 		$userData = new \stdClass();
         
 		//create user with all its parameters
@@ -61,21 +61,21 @@ class UserCatalogTDGTest extends TestCase {
 		$userData->password = '1e2r3ic';
 
 		$user= new User($userData);
-		$userCatalogTDG->add($user);
+		$userTDG->add($user);
 
 		// Make sure we don't search with information we shouldn't have.
 		unset($userData->password);
 
 		// Make sure we only have one result.
-		$this->assertTrue(count($userCatalogTDG->find($userData)) == 1);
+		$this->assertTrue(count($userTDG->find($userData)) == 1);
 	}
 
 	
 
 	
-	//Test the findAll method in UserCatalogTDG, to make sure that the all users were saved in the database
+	//Test the findAll method in userTDG, to make sure that the all users were saved in the database
 	public function testFindAll(){
-		$userCatalogTDG = new UserCatalogTDG();
+		$userTDG = new UserTDG();
 
 		$userData1 = new \stdClass();
 		$userData1->firstName = 'Evan';
@@ -97,11 +97,11 @@ class UserCatalogTDGTest extends TestCase {
 		$user1 = new User($userData1);
 		$user2 = new User($userData2);
 
-		$userCatalogTDG->add($user1);
-		$userCatalogTDG->add($user2);
+		$userTDG->add($user1);
+		$userTDG->add($user2);
 
 		// Retrieve the full user list.
-		$users = $userCatalogTDG->findAll();
+		$users = $userTDG->findAll();
 
 		$seenUser1 = false;
 		$seenUser2 = false;

@@ -4,7 +4,7 @@ namespace App\Classes\TDG;
 
 use Hash;
 
-class UserCatalogTDG {
+class UserTDG {
 
     private $conn;
 
@@ -65,7 +65,7 @@ class UserCatalogTDG {
         return $this->conn->query($queryString, $parameters);
     }
 
-    public function login($email, $password) {
+    public function findUserTestPsw($email, $password) {
         $parameters = new \stdClass();
         $parameters->email = $email;
 

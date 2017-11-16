@@ -2,7 +2,8 @@
 
 namespace App\Classes\Mappers;
 
-use App\Classes\TDG\ElectronicCatalogTDG;
+use App\Classes\TDG\ElectronicSpecificationTDG;
+use App\Classes\TDG\ElectronicItemTDG;
 use App\Classes\Core\ElectronicCatalog;
 use App\Classes\UnitOfWork;
 use App\Classes\IdentityMap;
@@ -10,28 +11,29 @@ use App\Classes\IdentityMap;
 class ElectronicCatalogMapper {
 
     private $electronicCatalog;
-    private $electronicCatalogTDG;
+    private $electronicSpecificationTDG;
     private $unitOfWork;
     private $identityMap;
     private $lockFilePointer;
 
     function __construct() {
-        $this->electronicCatalogTDG = new ElectronicCatalogTDG();
-        $this->electronicCatalog = new ElectronicCatalog($this->electronicCatalogTDG->findAll());
+        $this->electronicSpecificationTDG = new ElectronicSpecificationTDG();
+        $this->electronicItemTDG = new ElectronicItemTDG();
+        $this->electronicCatalog = new ElectronicCatalog($this->electronicSpecificationTDG->findAll());
         $this->unitOfWork = new UnitOfWork(['electronicCatalogMapper' => $this]);
         $this->identityMap = new IdentityMap();
     }
 
     function saveES($electronicSpecification) {
-        return $this->electronicCatalogTDG->insertElectronicSpecification($electronicSpecification);
+        return $this->electronicSpecificationTDG->insert($electronicSpecification);
     }
 
     function updateES($electronicSpecification) {
-        return $this->electronicCatalogTDG->updateElectronicSpecification($electronicSpecification);
+        return $this->electronicSpecificationTDG->update($electronicSpecification);
     }
 
     function deleteEI($electronicItem) {
-        return $this->electronicCatalogTDG->deleteElectronicItem($electronicItem);
+        return $this->electronicItemTDG->delete($electronicItem);
     }
 
     function makeNewElectronicSpecification($quantity, $eSData) {
@@ -58,7 +60,7 @@ class ElectronicCatalogMapper {
 
                 $this->electronicCatalog->makeElectronicItem($eSData->modelNumber, $electronicItemData);
 
-                $this->electronicCatalogTDG->insertElectronicItem($eSData->modelNumber, $electronicItemData);
+                $this->electronicItemTDG->insert($eSData->modelNumber, $electronicItemData);
             }
 
             //Add to identity map
@@ -103,7 +105,7 @@ class ElectronicCatalogMapper {
 
                     $this->electronicCatalog->makeElectronicItem($eSData->modelNumber, $electronicItemData);
 
-                    $this->electronicCatalogTDG->insertElectronicItem($eSData->modelNumber, $electronicItemData);
+                    $this->electronicItemTDG->insert($eSData->modelNumber, $electronicItemData);
                 }
             } else {
                 for ($i = 1; $i <= $quantity; $i++) {
@@ -115,7 +117,7 @@ class ElectronicCatalogMapper {
 
                     $this->electronicCatalog->makeElectronicItem($eSData->modelNumber, $electronicItemData);
 
-                    $this->electronicCatalogTDG->insertElectronicItem($eSData->modelNumber, $electronicItemData);
+                    $this->electronicItemTDG->insert($eSData->modelNumber, $electronicItemData);
                 }
             }
 

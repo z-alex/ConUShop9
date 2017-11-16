@@ -31,7 +31,6 @@ class ElectronicCatalog {
 
             array_push($this->eSList, $eS);
         }
-        
     }
 
     function getESList() {
@@ -99,7 +98,7 @@ class ElectronicCatalog {
         }
         //dd($eSData);
         array_push($this->eSList, $eS);
-        
+
         return $eS;
     }
 
@@ -142,9 +141,21 @@ class ElectronicCatalog {
 
         $ESList = array();
         foreach ($eIList as $eI) {
-            $eS = new ElectronicSpecification();
             $eSData = $this->getElectronicSpecificationById($eI->get()->ElectronicSpecification_id);
-            $eS->set($eSData);
+            switch ($eSData->ElectronicType_name) {
+                case "Desktop":
+                    $eS = new DesktopSpecification($eSData);
+                    break;
+                case "Laptop":
+                    $eS = new LaptopSpecification($eSData);
+                    break;
+                case "Monitor":
+                    $eS = new MonitorSpecification($eSData);
+                    break;
+                case "Tablet":
+                    $eS = new TabletSpecification($eSData);
+                    break;
+            }
             array_push($ESList, $eS);
         }
         return $ESList;

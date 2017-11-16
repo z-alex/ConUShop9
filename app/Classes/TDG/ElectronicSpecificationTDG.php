@@ -1,14 +1,51 @@
 <?php
+
 namespace App\Classes\TDG;
-class ElectronicCatalogTDG {
+
+class ElectronicSpecificationTDG {
     private $conn;
+    
     public function __construct() {
         $this->conn = new MySQLConnection();
     }
-    /**
-     *
-     * @param type $parameters "Associative array with the SQL field and the wanted value. Ex: $parameter['id'] = 4; $parameter['modelNumber'] = 'NFDSGF767';
-     */
+    
+    public function insert($electronicSpecification) {
+        $parameters = $this->unsetUselessESProperties($electronicSpecification);
+        unset($parameters->id);
+
+        $queryString = 'INSERT INTO ElectronicSpecification SET ';
+
+        foreach ($parameters as $key => $value) {
+            if ($value !== null) {
+                $queryString .= $key . ' = :' . $key;
+                $queryString .= ' , ';
+            }
+        }
+
+        //We delete the last useless ' , '
+        $queryString = substr($queryString, 0, -2);
+        return $this->conn->query($queryString, $parameters);
+    }
+    
+    public function update($electronicSpecification) {
+        $parameters = $this->unsetUselessESProperties($electronicSpecification);
+
+        $queryString = 'UPDATE ElectronicSpecification SET ';
+
+        foreach ($parameters as $key => $value) {
+            if ($value !== null && $key != 'id' ) {
+                $queryString .= $key . ' = :' . $key;
+                $queryString .= ' , ';
+            }
+        }
+
+        //We delete the last useless ' , '
+        $queryString = substr($queryString, 0, -2);
+
+        $queryString .= ' WHERE id = :id';
+        return $this->conn->query($queryString, $parameters);
+    }
+    
     public function find($parameters) {
         $queryString = 'SELECT *
             FROM ElectronicSpecification
@@ -25,6 +62,7 @@ class ElectronicCatalogTDG {
         //Please mind that stdClass and associative arrays are not the same data structure, althought being both based on the big family of hashtables
         return $this->conn->query($queryString, $parameters);
     }
+    
     public function findAll() {
         //$queryString = 'SELECT * FROM ElectronicSpecification JOIN ElectronicType ON ElectronicType.id = ElectronicSpecification.ElectronicType_id JOIN ElectronicItem ON ElectronicSpecification.id = ElectronicItem.ElectronicSpecification_id';
         $queryString = 'SELECT * FROM ElectronicSpecification';
@@ -52,74 +90,8 @@ class ElectronicCatalogTDG {
         return $eSDataList;
         //dd($eSDataList);
     }
-    public function insertElectronicSpecification($electronicSpecification) {
-        $parameters = $this->unsetUselessESProperties($electronicSpecification);
-        unset($parameters->id);
 
-        $queryString = 'INSERT INTO ElectronicSpecification SET ';
-
-        foreach ($parameters as $key => $value) {
-            if ($value !== null) {
-                $queryString .= $key . ' = :' . $key;
-                $queryString .= ' , ';
-            }
-        }
-
-        //We delete the last useless ' , '
-        $queryString = substr($queryString, 0, -2);
-        return $this->conn->query($queryString, $parameters);
-    }
-
-    public function insertElectronicItem($modelNumber, $parameters) {
-        $queryString = 'SELECT * FROM ElectronicSpecification';
-        $electronicSpecifications = $this->conn->directQuery($queryString);
-        $electronicSpecificationId = -1;
-        foreach ($electronicSpecifications as $electronicSpecification) {
-            if ($electronicSpecification->modelNumber === $modelNumber) {
-                $electronicSpecificationId = $electronicSpecification->id;
-            }
-        }
-        $parameters->ElectronicSpecification_id = $electronicSpecificationId;
-        $queryString = 'INSERT INTO ElectronicItem SET ';
-        foreach ($parameters as $key => $value) {
-            if ($value !== null) {
-                $queryString .= $key . ' = :' . $key;
-                $queryString .= ' , ';
-            }
-        }
-        //We delete the last useless ' , '
-        $queryString = substr($queryString, 0, -2);
-        return $this->conn->query($queryString, $parameters);
-    }
-    public function deleteElectronicItem($electronicItem) {
-        $queryString = 'DELETE FROM ElectronicItem WHERE ';
-        $queryString .= 'id' . ' = :' . 'id';
-
-        $parameters = new \stdClass();
-        $parameters->id = $electronicItem->get()->id;
-        return $this->conn->query($queryString, $parameters);
-    }
-
-    public function updateElectronicSpecification($electronicSpecification) {
-        $parameters = $this->unsetUselessESProperties($electronicSpecification);
-
-        $queryString = 'UPDATE ElectronicSpecification SET ';
-
-        foreach ($parameters as $key => $value) {
-            if ($value !== null && $key != 'id' ) {
-                $queryString .= $key . ' = :' . $key;
-                $queryString .= ' , ';
-            }
-        }
-
-        //We delete the last useless ' , '
-        $queryString = substr($queryString, 0, -2);
-
-        $queryString .= ' WHERE id = :id';
-        return $this->conn->query($queryString, $parameters);
-    }
-
-    public function unsetUselessESProperties($object){
+    private function unsetUselessESProperties($object){
         $objectData = (array) $object->get();
         foreach ($objectData as $key => $value) {
             if (is_array($objectData[$key]) || is_null($objectData[$key])) {
@@ -134,4 +106,5 @@ class ElectronicCatalogTDG {
 
         return $parameters;
     }
+    
 }

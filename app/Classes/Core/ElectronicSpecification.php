@@ -15,8 +15,24 @@ class ElectronicSpecification {
     private $ElectronicType_name;
     private $ElectronicType_dimensionUnit;
     private $ElectronicType_displaySizeUnit;
+    
+    function __construct() {
+         $argv = func_get_args();
+         switch (func_num_args()) {
+             case 0:
+                 self::__construct0();
+                 break;
+             case 1:
+                 self::__construct1($argv[0]);
+                 break;
+         }
+     }
+     
+     function __construct0() {
+        $this->electronicItems = array();
+    }
 
-    function __construct($data) {
+    function __construct1($data) {
         $this->electronicItems = array();
         $this->set($data);
     }

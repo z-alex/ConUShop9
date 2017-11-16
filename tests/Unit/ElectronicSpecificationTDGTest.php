@@ -4,15 +4,13 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Classes\TDG\ElectronicCatalogTDG;
+use App\Classes\TDG\ElectronicSpecificationTDG;
 use App\Classes\Core\ElectronicSpecification;
-use App\Classes\Core\ElectronicItem;
 
-class ElectronicCatalogTDGTest extends TestCase {
+class ElectronicSpecificationTDGTest extends TestCase {
 
     public function testInsertAndFindES() {
-        $electronicCatalogTDG = new ElectronicCatalogTDG();
-        $eS = new ElectronicSpecification();
+        $electronicSpecificationTDG = new ElectronicSpecificationTDG();
 
         $eSData = new \stdClass();
         
@@ -33,13 +31,13 @@ class ElectronicCatalogTDGTest extends TestCase {
         $eSData->displaySize = 10;
         $eSData->ElectronicType_id = 3;
 
-        $eS->set($eSData);
+        $eS = new ElectronicSpecification($eSData);
         
         $eSData = (array) $eSData;
         
-        $electronicCatalogTDG->insert($eS);
+        $electronicSpecificationTDG->insert($eS);
         
-        $foundES = (array) $electronicCatalogTDG->find(['id' => 1])[0];
+        $foundES = (array) $electronicSpecificationTDG->find(['id' => 1])[0];
         
         $sameValues = true;
         
@@ -54,7 +52,7 @@ class ElectronicCatalogTDGTest extends TestCase {
     }
 
      public function testUpdateES(){
-        $electronicCatalogTDG = new ElectronicCatalogTDG();
+        $electronicSpecificationTDG = new ElectronicSpecificationTDG();
         $newES= new ElectronicSpecification();
          
         $newESData= new \stdClass();
@@ -77,7 +75,7 @@ class ElectronicCatalogTDGTest extends TestCase {
         
         $newES->set($newESData);
         
-        $electronicCatalogTDG->update($newES);
+        $electronicSpecificationTDG->update($newES);
         
         $this->assertDatabaseHas('ElectronicSpecification', [
             'id' => 1,
@@ -99,64 +97,5 @@ class ElectronicCatalogTDGTest extends TestCase {
         ]);
         
      } 
-     
-     
-    public function testInsertEI() {
-        $electronicCatalogTDG = new ElectronicCatalogTDG();
-        $eS = new ElectronicSpecification(); 
-
-        $eSData = new \stdClass();
-        $eSData->id = 2;
-        $eSData->dimension = '100 x 200 x 300';
-        $eSData->weight = 400;
-        $eSData->modelNumber = 'ABC123DEF5D';
-        $eSData->brandName = 'LG';
-        $eSData->hdSize = '500';
-        $eSData->price = '1000';
-        $eSData->processorType = 'AMD';
-        $eSData->ramSize = '16';
-        $eSData->cpuCores = '4';
-        $eSData->batteryInfo = '12 hours';
-        $eSData->os = 'Windows';
-        $eSData->camera = 1;
-        $eSData->touchScreen = 1;
-        $eSData->displaySize = 10;
-        $eSData->ElectronicType_id = 3;
-
-        $eS->set($eSData);
-        
-        
-        $electronicCatalogTDG->insert($eS);
-        
-        $eIData = new \stdClass();        
-        $eIData->id = 1;
-        $eIData->serialNumber = "ABC123";
-        $eIData->ElectronicSpecification_id = 2;
-        
-        $electronicCatalogTDG->insert($eSData->modelNumber, $eIData);
-        
-        $this->assertDatabaseHas('ElectronicItem', [
-            'id' => 1,
-            'serialNumber' => 'ABC123',
-        ]);
-    }     
-    
-     public function testDeleteEI() {
-        $electronicCatalogTDG = new ElectronicCatalogTDG();
-         
-        $eIData = new \stdClass();        
-        $eIData->id = 1;
-        $eIData->serialNumber = "ABC123";
-        $eIData->ElectronicSpecification_id = 2;
-        $eI= new ElectronicItem($eIData);
-        
-        $electronicCatalogTDG->delete($eI);
-         
-        $this->assertDatabaseMissing('ElectronicItem', [
-            'id' => 1,
-            'serialNumber' => 'ABC123',
-        ]);
-         
-     }
     
 }

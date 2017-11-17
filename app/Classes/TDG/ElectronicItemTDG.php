@@ -47,12 +47,6 @@ class ElectronicItemTDG {
     }
     
     function findAllEIFromUser($userId){
-        /*
-         * SELECT left_tbl.*
-  FROM left_tbl LEFT JOIN right_tbl ON left_tbl.id = right_tbl.id
-  WHERE right_tbl.id IS NULL;
-         */
-        //dd(Auth::check());
         $queryString = "SELECT ElectronicItem.id, serialNumber, ElectronicSpecification_id, User_id, expiryForUser FROM ElectronicItem  JOIN User ON ElectronicItem.User_id = User.id WHERE User.id = " . $userId;
         $eIsData = $this->conn->directQuery($queryString);
         
@@ -61,6 +55,26 @@ class ElectronicItemTDG {
                 unset($eIsData[$key]);
             }
         }
+        
+        //dd($eIsData);
+        
+        return $eIsData;
+    }
+    
+    function findAllSLIFromUser($userId){
+        $queryString = "SELECT ElectronicItem.id, ElectronicSpecification_id, serialNumber, User_id, expiryForUser, dimension, weight, "
+                . "modelNumber, brandName, hdSize, price, processorType, ramSize, cpuCores, batteryInfo, os, camera, touchScreen, ElectronicType_id, "
+                . "displaySize, image "
+                . "FROM ElectronicItem  JOIN ElectronicSpecification ON ElectronicItem.ElectronicSpecification_id = ElectronicSpecification.id WHERE User_id = " . $userId;
+        $eIsData = $this->conn->directQuery($queryString);
+        
+        foreach($eIsData as $key => $value){
+            if(strtotime($eIsData[$key]->expiryForUser) < strtotime(date("Y-m-d H:i:s"))){
+                unset($eIsData[$key]);
+            }
+        }
+        
+        //dd($eIsData);
         
         return $eIsData;
     }

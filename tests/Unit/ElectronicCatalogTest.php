@@ -290,7 +290,7 @@ class ElectronicCatalogTest extends TestCase {
 
       $electronicCatalog = new ElectronicCatalog();
       $electronicCatalog->setESList(array($electronicData));
-      $electronicCatalogbyId=$electronicCatalog->getElectronicSpecificationById(123);
+      $electronicCatalogbyId=$electronicCatalog->getElectronicSpecificationById(123)->get();
       $catalogListJson = json_decode(json_encode($electronicCatalogbyId), true);
 
       $electronicDataJson = json_decode(json_encode($electronicData), true);

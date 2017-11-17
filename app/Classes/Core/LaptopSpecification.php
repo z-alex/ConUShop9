@@ -4,7 +4,6 @@ namespace App\Classes\Core;
 
 class LaptopSpecification extends ComputerSpecification {
     private $displaySize;
-    private $dimension;
     private $batteryInfo;
 
     function __construct($data) {
@@ -15,10 +14,6 @@ class LaptopSpecification extends ComputerSpecification {
     public function set($data) {
         if (isset($data->displaySize)) {
             $this->displaySize = $data->displaySize;
-        }
-        
-        if (isset($data->dimension)) {
-            $this->dimension = $data->dimension;
         }
         
         if (isset($data->batteryInfo)) {
@@ -32,7 +27,6 @@ class LaptopSpecification extends ComputerSpecification {
         $returnData = parent::get();
         
         $returnData->displaySize = $this->displaySize;
-        $returnData->dimension = $this->dimension;
         $returnData->batteryInfo = $this->batteryInfo;
         
         return $returnData;

@@ -45,8 +45,9 @@ class UserCatalogMapper {
             $this->unitOfWork->registerNew($user);
             $this->unitOfWork->commit();
 
-            //Add to identity map
-            $this->identityMap->add('User', $user);
+            
+            //Add for identity map
+            $this->identityUser = $user;
 
             return true;
         } else {

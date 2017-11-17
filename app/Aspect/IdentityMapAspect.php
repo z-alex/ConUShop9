@@ -39,7 +39,7 @@ class IdentityMapAspect implements Aspect
     }
     
     /**
-     * Try to intercept makeNewElectronicSpecification
+     * Intercept makeNewElectronicSpecification
      * http://go.aopphp.com/docs/pointcut-reference/
      *
      * @param MethodInvocation $invocation
@@ -47,16 +47,49 @@ class IdentityMapAspect implements Aspect
      */
     public function makeNewElectronicSpecification(MethodInvocation $invocation)
     {
-        
         //http://go.aopphp.com/docs/privileged-advices/
         
         /** @var ElectronicCatalogMapper $callee|$this */
         $callee = $invocation->getThis();
         
         $this->add('ElectronicSpecification', $callee->electronicSpecification);
-        
-        
     }
+    
+    /**
+     * Intercept deleteElectronicItem
+     * http://go.aopphp.com/docs/pointcut-reference/
+     *
+     * @param MethodInvocation $invocation
+     * @After("execution(public ElectronicCatalogMapper->deleteElectronicItem(*))", scope="target")
+     */
+    public function deleteElectronicItem(MethodInvocation $invocation)
+    {        
+        /** @var ElectronicCatalogMapper $callee|$this */
+        $callee = $invocation->getThis();
+        
+        $this->delete('ElectronicItem', 'id', $callee->deletedEIId);
+    }
+    
+    /**
+     * Intercept makeNewCustomer
+     * http://go.aopphp.com/docs/pointcut-reference/
+     *
+     * @param MethodInvocation $invocation
+     * @After("execution(public UserCatalogMapper->makeNewCustomer(*))", scope="target")
+     */
+    public function makeNewCustomer(MethodInvocation $invocation){
+        
+        /** @var ElectronicCatalogMapper $callee|$this */
+        $callee = $invocation->getThis();
+        
+        if(!empty($callee->identityUser)){
+            $this->add('User', $callee->identityUser);
+        }
+    }
+    
+    
+    
+    
     
     private function add($objectClass, $object) {
         if (isset($this->map[$objectClass])) {

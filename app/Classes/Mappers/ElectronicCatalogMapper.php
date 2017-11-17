@@ -63,9 +63,6 @@ class ElectronicCatalogMapper {
                 $this->electronicItemTDG->insert($eSData->modelNumber, $electronicItemData);
             }
 
-            //Add to identity map
-            $this->identityMap->add('ElectronicSpecification', $electronicSpecification);
-
             $this->unlockDataAccess();
 
             return true;
@@ -133,15 +130,19 @@ class ElectronicCatalogMapper {
         $this->lockDataAccess();
 
         foreach ($eIIds as $eIId) {
-            $this->identityMap->delete('ElectronicItem', 'id', $eIId);
-
-            $electronicItem = $this->electronicCatalog->deleteElectronicItem($eIId);
-
-            $this->unitOfWork->registerDeleted($electronicItem);
+            $this->deleteElectronicItem($eIId);
         }
         $this->unitOfWork->commit();
 
         $this->unlockDataAccess();
+    }
+
+    function deleteElectronicItem($eIId) {
+        $electronicItem = $this->electronicCatalog->deleteElectronicItem($eIId);
+        
+        $this->deletedEIId = $eIId;
+
+        $this->unitOfWork->registerDeleted($electronicItem);
     }
 
     function getAllElectronicSpecifications() {

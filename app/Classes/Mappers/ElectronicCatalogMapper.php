@@ -79,7 +79,7 @@ class ElectronicCatalogMapper {
         $newModelNumberExists = $this->electronicCatalog->findElectronicSpecification($eSData->modelNumber);
         $this->unlockDataAccess();
 
-        if (!$newModelNumberExists || $this->electronicCatalog->getElectronicSpecificationById($eSId)->modelNumber === $eSData->modelNumber) {
+        if (!$newModelNumberExists || $this->electronicCatalog->getElectronicSpecificationById($eSId)->get()->modelNumber === $eSData->modelNumber) {
             $this->lockDataAccess();
 
             //Delete old file
@@ -158,7 +158,7 @@ class ElectronicCatalogMapper {
     function getElectronicSpecification($id) {
         $this->lockDataAccess();
 
-        $electronicSpecification = $this->electronicCatalog->getElectronicSpecificationById($id);
+        $electronicSpecification = $this->electronicCatalog->getElectronicSpecificationById($id)->get();
 
         $this->unlockDataAccess();
 

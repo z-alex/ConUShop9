@@ -70,7 +70,6 @@
             @endif
         </div>
         <div class="col-md-4"> <br><br>
-            <b>Dimension</b>: {{$eS->dimension}} cm <br>
             <b>Display Size</b>: {{$eS->displaySize}} in<br>
             <b>Weight</b>: {{$eS->weight}} kg<br>
             <b>RAM size</b>: {{$eS->ramSize}} GB<br>

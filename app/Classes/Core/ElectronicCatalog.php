@@ -88,7 +88,7 @@ class ElectronicCatalog {
     function getElectronicSpecificationById($id) {
         foreach ($this->eSList as $eS) {
             if ($eS->getId() === $id) {
-                return $eS->get();
+                return $eS;
             }
         }
 
@@ -157,7 +157,7 @@ class ElectronicCatalog {
 
         $ESList = array();
         foreach ($eIList as $eI) {
-            $eSData = $this->getElectronicSpecificationById($eI->get()->ElectronicSpecification_id);
+            $eSData = $this->getElectronicSpecificationById($eI->get()->ElectronicSpecification_id)->get();
             switch ($eSData->ElectronicType_name) {
                 case "Desktop":
                     $eS = new DesktopSpecification($eSData);

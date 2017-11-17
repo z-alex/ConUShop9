@@ -28,18 +28,21 @@ class ShoppingCartMapper {
         $this->unitOfWork = new UnitOfWork(['shoppingCartMapper' => $this]);
         $this->identityMap = new IdentityMap();
 
-        $this->shoppingCart->setEIList($this->electronicItemTDG->findAllEIFromUser($userId));
+        //$this->shoppingCart->setEIList($this->electronicItemTDG->findAllEIFromUser($userId));
+        $this->shoppingCart->setSLIs($this->electronicItemTDG->findAllSLIFromUser($userId));
     }
 
     /**
      * //@Contract\Verify("Auth::check() && Auth::user()->admin === 0 && count($this->shoppingCart->getEIList()) < 7")
      */
     function addToCart($eSId, $userId, $expiry) {
-        if (count($this->shoppingCart->getEIList()) < 7) {
+        if ($this->shoppingCart->getSize() < 7) {
             $eI = $this->electronicCatalog->reserveFirstEIFromES($eSId, $userId, $expiry);
 
             if ($eI != null) {
-                $this->shoppingCart->addEIToCart($eI);
+                $eS = $this->electronicCatalog->getElectronicSpecificationById($eSId);
+                
+                $this->shoppingCart->addEIToCart($eI, $eS);
                 $this->unitOfWork->registerDirty($eI);
                 $this->unitOfWork->commit();
                 
@@ -57,14 +60,15 @@ class ShoppingCartMapper {
     }
 
     function viewCart(){
-        return $this->electronicCatalog->getESListFromEIList($this->shoppingCart->getEIList());
+        return $this->shoppingCart->getSLIs();
     }
 
     function removeFromCart($eSId, $userId){
         $removedEI = $this->electronicCatalog->unsetUserAndExpiryFromEI($eSId, $userId);
+        $this->shoppingCart->removeFromCart($removedEI);
         $this->unitOfWork->registerDirty($removedEI);
         $this->unitOfWork->commit();
-        $this->shoppingCart->updateEIList();
+        $this->shoppingCart->updateSLIs();
         return 'Item Removed';
     }
 

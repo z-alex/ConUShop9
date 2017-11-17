@@ -1,35 +1,37 @@
 @extends('layouts.default')
 @section('content')
     <div class="container">
-        @if (!empty($eSList))
+        @if (!empty($slis))
             <h3>Here are the items in your Cart</h3>
             <br>
             <hr>
-            @foreach ($eSList as $eS)
-                @if ( $eS ->get()->image && $eS->get()->image !== null )
-                    <img src="{{$eS->get()->image}}" class="img-responsive" width="10%" height="auto">
+            @foreach ($slis as $sli)
+                @if ( $sli->getElectronicSpecification()->get()->image && $sli->getElectronicSpecification()->get()->image !== null )
+                    <img src="{{$sli->getElectronicSpecification()->get()->image}}" class="img-responsive" width="10%" height="auto">
                     <br/>
                 @endif
-                @if ( $eS->get()->brandName )
-                    {{$eS->get()->brandName}}
+                @if ( $sli->getElectronicSpecification()->get()->brandName )
+                    {{$sli->getElectronicSpecification()->get()->brandName}}
                 @endif
-                @if ( $eS->get()->ElectronicType_name )
-                    {{$eS->get()->ElectronicType_name}}
+                @if ( $sli->getElectronicSpecification()->get()->ElectronicType_name )
+                    {{$sli->getElectronicSpecification()->get()->ElectronicType_name}}
                     <br/>
                 @endif
-                @if ( isset($eS->get()->displaySize) )
-                    {{$eS->get()->displaySize}} inch display
+                @if ( isset($sli->getElectronicSpecification()->get()->displaySize) )
+                    {{$sli->getElectronicSpecification()->get()->displaySize}} inch display
                     <br/>
                 @endif
-                @if ( $eS->get()->modelNumber )
-                    Model {{$eS->get()->modelNumber}}
+                @if ( $sli->getElectronicSpecification()->get()->modelNumber )
+                    Model {{$sli->getElectronicSpecification()->get()->modelNumber}}
                     <br/>
                 @endif
-                @if ( $eS->get()->price )
-                    Price: ${{$eS->get()->price}}
+                @if ( $sli->getElectronicSpecification()->get()->price )
+                    Price: ${{$sli->getElectronicSpecification()->get()->price}}
                     <br/>
                 @endif
-                <a href="/remove-from-cart?eSId={{$eS->get()->id}}" class="btn btn-info" role="button"> Remove </a>
+                
+                Quantity: {{ count($sli->getElectronicItems()) }}
+                <a href="/remove-from-cart?eSId={{$sli->getElectronicSpecification()->get()->id}}" class="btn btn-info" role="button"> Remove </a>
                 <hr>
             @endforeach
         @else

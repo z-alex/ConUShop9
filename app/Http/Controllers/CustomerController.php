@@ -41,9 +41,10 @@ class CustomerController extends Controller {
 
     public function doViewCart() {
 
-        $eSList = $this->shoppingCartMapper->viewCart();
+        $slis = $this->shoppingCartMapper->viewCart();
+        //dd($slis);
 
-        return view('pages.shopping-cart', ['eSList' => $eSList]);
+        return view('pages.shopping-cart', ['slis' => $slis]);
 
     }
 

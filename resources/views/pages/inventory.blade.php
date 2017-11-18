@@ -3,8 +3,11 @@
 <script type="text/javascript" src="{{ URL::asset('js/inventory.js') }}"></script>
 
 <form method="post" action="inventory">
-    <div class="col-lg-9 text-center">
-        <h2 class="blueTitle">Inventory</h2>
+    <div class="col-lg-9">
+        <h2 class="blueTitle text-center">Inventory</h2>
+        
+        <button type="submit" id="addESButton" name="addESButton" class="btn btn-primary" value="true">Add Specification</button>
+        <br /><br />
         <table>
             <tr bgcolor="#bcbcbc">
                 <th>Select</th>
@@ -211,7 +214,11 @@
             @foreach(Session::get('newList') as $new)
 
             @if($new instanceof ElectronicSpecification)
-            <b>Specification ID</b> #{{$new->get()->id}} <b>MN: </b> {{$new->get()->modelNumber}}
+            <b>Specification </b> 
+            @if($new->get()->id)
+            <b>ID</b> #{{$new->get()->id}} 
+            @endif
+            <b>Model: </b> {{$new->get()->modelNumber}}
             @elseif($new instanceof ElectronicItem)
             <b>Item SN:</b> {{$new->get()->serialNumber}} for <b>Specification ID</b> #{{$new->get()->ElectronicSpecification_id}}
             @endif
@@ -222,7 +229,7 @@
             @if( !empty(Session::get('changedList')) )
             <h3>Changed list:</h3>
             @foreach(Session::get('changedList') as $changed)
-            <b>Specification ID</b> #{{$changed->get()->id}} <b>MN: </b> {{$changed->get()->modelNumber}}
+            <b>Specification ID</b> #{{$changed->get()->id}} <b>Model: </b> {{$changed->get()->modelNumber}}
             <br/>
             @endforeach
             @endif
@@ -231,7 +238,7 @@
             <h3>Deleted list:</h3>
             @foreach(Session::get('deletedList') as $deleted)
             @if($deleted instanceof ElectronicSpecification)
-            <b>Specification ID</b> #{{$deleted->get()->id}} <b>MN: </b> {{$deleted->get()->modelNumber}}
+            <b>Specification ID</b> #{{$deleted->get()->id}} <b>Model: </b> {{$deleted->get()->modelNumber}}
             @elseif($deleted instanceof ElectronicItem)
             <b>Item ID</b> #{{$deleted->get()->id}} <b>SN:</b> {{$deleted->get()->serialNumber}}
             @endif

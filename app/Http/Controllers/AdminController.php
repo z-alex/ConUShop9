@@ -41,7 +41,7 @@ class AdminController extends BaseController {
     //create a simlink that  allow public access to the local images directory with command:
     //php artisan storage:link
     //more info: https://laravel.com/docs/5.5/filesystem#the-public-disk
-    public function doAddItems(Request $request) {
+    public function doAddElectronic(Request $request) {
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             //image will be saved with timestamp as its name
@@ -61,7 +61,7 @@ class AdminController extends BaseController {
         $electronicSpecificationData = (object) $request->except(['_token', 'quantity']);
         $electronicSpecificationData->image = $url;
 
-        if ($this->electronicCatalogMapper->makeNewElectronicSpecification($request->input('quantity'), $electronicSpecificationData)) { //
+        if ($this->electronicCatalogMapper->makeNewElectronicSpecificationWithEI($request->input('quantity'), $electronicSpecificationData)) { //
             Session::flash('success_msg', "Successfully added the electronic specification.");
             return Redirect::to('inventory');
         } else {
@@ -101,6 +101,8 @@ class AdminController extends BaseController {
             $this->electronicCatalogMapper->cancelChanges();
             Session::flash('success_msg', "Successfully cancelled changes.");
             return Redirect::back();
+        } else if ($request->input('addESButton') !== null){
+            return Redirect::to('/add-electronic-specification');
         }
     }
 
@@ -147,8 +149,41 @@ class AdminController extends BaseController {
         return view('pages.inventory', ['electronicSpecifications' => $electronicSpecifications]);
     }
 
-    public function showAddItems() {
+    public function showAddElectronic() {
         return view('pages.add-electronic');
+    }
+    
+    public function showAddElectronicSpecification() {
+        return view('pages.add-electronic-specification');
+    }
+    
+    public function doAddElectronicSpecification(Request $request) {
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            //image will be saved with timestamp as its name
+            $name = time() . '.' . $image->getClientOriginalExtension();
+            //file destination  is in 'app/public/image' folder in laravel project
+            $destinationPath = public_path('images/' . $name);
+            Image::make($image)->resize(500, 500, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPath);
+
+            // direct access to the image with url stored in $url
+            $url = asset('/images/' . $name);
+        } else {
+            $url = null;
+        }
+
+        $electronicSpecificationData = (object) $request->except(['_token', 'quantity']);
+        $electronicSpecificationData->image = $url;
+
+        if ($this->electronicCatalogMapper->makeNewElectronicSpecification($electronicSpecificationData)) { //
+            Session::flash('success_msg', "Successfully added the electronic specification.");
+            return Redirect::to('inventory');
+        } else {
+            Session::flash('error_msg', "The Model number already exists.");
+            return Redirect::back()->withInput();
+        }
     }
 
 }

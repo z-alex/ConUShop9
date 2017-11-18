@@ -95,5 +95,19 @@ th, td {
 }
 
 #changesPanel{
-    margin-top: 100px;
+    padding:0px;
+}
+
+.imageInv{
+    height: 75px;
+    width: 75px;
+    overflow: hidden;
+}
+
+.affix {
+    position: fixed;
+    top: 30%;
+    bottom: 0;
+    right: 0;
+    overflow-y: auto;
 }

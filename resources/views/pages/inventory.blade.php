@@ -6,7 +6,7 @@
     <div class="col-lg-9 text-center">
         <h2 class="blueTitle">Inventory</h2>
         <table>
-            <tr>
+            <tr bgcolor="#bcbcbc">
                 <th>Select</th>
                 <th>Select</th>
                 <th>ID</th>
@@ -29,12 +29,12 @@
             </tr>
             @if (! empty($electronicSpecifications))
             @foreach ($electronicSpecifications as $eS)
-            <tr bgcolor="#cce6ff">
+            <tr bgcolor="#ededed">
                 <td>
-                    <button type="submit" id="modifyButton" name="modifyESButton" value="{{$eS->id}}">Modify</button>
+                    <button type="submit" id="modifyButton" name="modifyESButton" class="btn btn-xs btn-primary" value="{{$eS->id}}">Modify</button>
                 </td>
                 <td>
-                    <button type="submit" id="deleteESButton" name="deleteESButton" value="{{$eS->id}}">Delete</button>
+                    <button type="submit" id="deleteESButton" name="deleteESButton" class="btn btn-xs btn-info " value="{{$eS->id}}">Delete</button>
                 </td>
                 <td>
                     @if ( isset($eS->id) )
@@ -158,7 +158,7 @@
                 </td>
                 <td>
                     @if ( $eS->image && $eS->image !== null )
-                    <img src="{{$eS->image}}" width="auto" height="50px">
+                    <img class="imageInv" src="{{$eS->image}}" >
                     @else
                     N/A
                     @endif
@@ -173,7 +173,7 @@
 
                 </td>
                 <td>
-                    <button type="submit" id="deleteEIButton" name="deleteEIButton" value="{{$eI->id}}">Delete</button>
+                    <button type="submit" id="deleteEIButton" name="deleteEIButton" class="btn btn-xs btn-info" value="{{$eI->id}}">Delete</button>
                 </td>
                 <td>
                     @if ( isset($eI->id) )
@@ -203,7 +203,7 @@
     use App\Classes\Core\ElectronicSpecification;
     ?>
     @if(Session::has('newList') || Session::has('changedList') || Session::has('deletedList'))
-    <div class="col-lg-3 panel panel-info" id="changesPanel">
+    <div class="col-lg-3 panel panel-primary affix" id="changesPanel">
         <div class="panel-heading"> Changes </div>
         <div class="panel-body">
             @if( !empty(Session::get('newList')) )
@@ -241,8 +241,8 @@
 
             <br/>
 
-            <button type="submit" id="applyChangesButton" name="applyChangesButton" value=true>Apply Changes</button>
-            <button type="submit" id="cancelChangesButton" name="cancelChangesButton" value=true>Cancel Changes</button>
+            <button type="submit" id="applyChangesButton" name="applyChangesButton" class="btn btn-info" value=true>Apply Changes</button>
+            <button type="submit" id="cancelChangesButton" name="cancelChangesButton" class="btn btn-primary" value=true>Cancel Changes</button>
         </div>
     </div>
     @endif

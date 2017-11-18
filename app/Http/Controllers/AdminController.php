@@ -24,6 +24,15 @@ class AdminController extends BaseController {
 
     public function __construct() {
         $this->electronicCatalogMapper = new ElectronicCatalogMapper();
+
+        $this->middleware(function ($request, $next) {
+
+            if (session()->has('newList') || session()->has('changedList') || session()->has('deletedList')) {
+                $this->electronicCatalogMapper->setUOWLists(session()->get('newList'), session()->get('changedList'), session()->get('deletedList'));
+            }
+
+            return $next($request);
+        });
         $this->middleware('auth');
         $this->middleware('CheckAdmin');
     }
@@ -48,10 +57,10 @@ class AdminController extends BaseController {
         } else {
             $url = null;
         }
-        
+
         $electronicSpecificationData = (object) $request->except(['_token', 'quantity']);
         $electronicSpecificationData->image = $url;
-        
+
         if ($this->electronicCatalogMapper->makeNewElectronicSpecification($request->input('quantity'), $electronicSpecificationData)) { //
             Session::flash('success_msg', "Successfully added the electronic specification.");
             return Redirect::to('inventory');
@@ -62,8 +71,8 @@ class AdminController extends BaseController {
     }
 
     public function doModifyOrDelete(Request $request) {
-        if ($request->input('modifyRadioSelection') && $request->input('submitButton') === 'modify') {
-            $eSToModify = $this->electronicCatalogMapper->getElectronicSpecification($request->input('modifyRadioSelection'));
+        if ($request->input('modifyESButton') !== null) {
+            $eSToModify = $this->electronicCatalogMapper->getElectronicSpecification($request->input('modifyESButton'));
             $request->session()->put('eSToModify', $eSToModify);
             switch ($eSToModify->ElectronicType_id) {
                 case "1":
@@ -76,15 +85,22 @@ class AdminController extends BaseController {
                     return view('pages.modify.tablet', ['eSToModify' => $eSToModify]);
             }
             return view('index', ['eSToModify' => $eSToModify]);
-        } else {
-            if ($request->input('deleteCheckboxSelections') && $request->input('submitButton') === 'delete') {
-                $this->electronicCatalogMapper->deleteElectronicItems($request->input('deleteCheckboxSelections'));
-                Session::flash('success_msg', "Successfully deleted the electronic items.");
-                return Redirect::back();
-            } else {
-                Session::flash('error_msg', "No checkboxes are selected.");
-                return Redirect::back();
-            }
+        } else if ($request->input('deleteEIButton') !== null) {
+            $this->electronicCatalogMapper->prepareDeleteEI($request->input('deleteEIButton'));
+            Session::flash('success_msg', "Successfully added to changed item list.");
+            return Redirect::back();
+        } else if ($request->input('deleteESButton') !== null) {
+            $this->electronicCatalogMapper->prepareDeleteES($request->input('deleteESButton'));
+            Session::flash('success_msg', "Successfully added to changed item list.");
+            return Redirect::back();
+        } else if ($request->input('applyChangesButton') !== null) {
+            $this->electronicCatalogMapper->applyChanges();
+            Session::flash('success_msg', "Successfully applied changes.");
+            return Redirect::back();
+        } else if ($request->input('cancelChangesButton') !== null) {
+            $this->electronicCatalogMapper->cancelChanges();
+            Session::flash('success_msg', "Successfully cancelled changes.");
+            return Redirect::back();
         }
     }
 
@@ -99,17 +115,25 @@ class AdminController extends BaseController {
                 $constraint->aspectRatio();
             })->save($destinationPath);
 
+            //Delete old file
+            $splitLink = explode("/", $request->session()->get('eSToModify')->image);
+            $fileName = end($splitLink);
+            if ($fileName !== "" && file_exists(public_path('images/' . $fileName))) {
+                unlink(public_path('images/' . $fileName));
+            }
+
             // direct access to the image with url stored in $url
             $url = asset('/images/' . $name);
         } else {
-            $url = null;
+            $url = $request->session()->get('eSToModify')->image;
         }
-        
-        $electronicSpecificationData = (object) $request->except(['quantity', 'ElectronicType_id', '_token']);
+
+        $electronicSpecificationData = (object) $request->except(['quantity', '_token']);
         $electronicSpecificationData->image = $url;
-        
-        if ($this->electronicCatalogMapper->modifyElectronicSpecification($request->input('quantity'), $request->session()->get('eSToModify'), $electronicSpecificationData)) {
-            Session::flash('success_msg', "Successfully modified the electronic specification.");
+        $electronicSpecificationData->id = $request->session()->get('eSToModify')->id;
+
+        if ($this->electronicCatalogMapper->prepareModifyES($request->input('quantity'), $electronicSpecificationData)) {
+            Session::flash('success_msg', "Successfully added to changed list.");
             return Redirect::to('inventory');
         } else {
             Session::flash('error_msg', "The model number already exists.");
@@ -124,7 +148,7 @@ class AdminController extends BaseController {
     }
 
     public function showAddItems() {
-        return view('pages.add-items');
+        return view('pages.add-electronic');
     }
 
 }

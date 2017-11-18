@@ -38,8 +38,10 @@ class ElectronicSpecification {
     }
 
     public function addElectronicItem($electronicItemData) {
-        $electronicItem = new ElectronicItem($electronicItemData);
-
+        $electronicItem = new ElectronicItem();
+        
+        $electronicItem->set($electronicItemData);
+        
         array_push($this->electronicItems, $electronicItem);
 
         return $electronicItem;
@@ -74,12 +76,7 @@ class ElectronicSpecification {
         }
 
         if (isset($data->electronicItems)) {
-            //must delete current list of items, otherwise
-            //the modifyElectronicSpecification will add the existing items again
-            //even if you haven't modified their values
-            foreach ($this->electronicItems as $electronicItemIndex => $singleItem) {
-                $this->deleteElectronicItem($this->electronicItems[$electronicItemIndex]->getId());
-            }
+            $this->electronicItems = array();
             foreach ($data->electronicItems as $key => $value) {
                 $this->addElectronicItem($data->electronicItems[$key]);
             }

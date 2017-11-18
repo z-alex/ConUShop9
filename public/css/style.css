@@ -42,8 +42,8 @@ h1 {
 
 /* for inventory.handlebars */
 
-table {
-    width:100%;
+table th {
+    width:auto !important;
 }
 table, th, td {
     border: 1px solid black;
@@ -92,4 +92,8 @@ th, td {
 
 .catalogRow{
     padding-bottom:30px;
+}
+
+#changesPanel{
+    margin-top: 100px;
 }

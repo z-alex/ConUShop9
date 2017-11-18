@@ -9,16 +9,20 @@ class ElectronicItemTDG {
         $this->conn = new MySQLConnection();
     }
     
-    public function insert($modelNumber, $parameters) {
+    public function insert($eI) {
         $queryString = 'SELECT * FROM ElectronicSpecification';
         $electronicSpecifications = $this->conn->directQuery($queryString);
         $electronicSpecificationId = -1;
         foreach ($electronicSpecifications as $electronicSpecification) {
-            if ($electronicSpecification->modelNumber === $modelNumber) {
+            if ($electronicSpecification->id === $eI->get()->ElectronicSpecification_id) {
                 $electronicSpecificationId = $electronicSpecification->id;
             }
         }
+        
+        $parameters = new \stdClass();
+        $parameters->serialNumber = $eI->get()->serialNumber;
         $parameters->ElectronicSpecification_id = $electronicSpecificationId;
+        
         $queryString = 'INSERT INTO ElectronicItem SET ';
         foreach ($parameters as $key => $value) {
             if ($value !== null) {
@@ -26,6 +30,7 @@ class ElectronicItemTDG {
                 $queryString .= ' , ';
             }
         }
+        
         //We delete the last useless ' , '
         $queryString = substr($queryString, 0, -2);
         return $this->conn->query($queryString, $parameters);

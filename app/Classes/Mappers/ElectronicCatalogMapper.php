@@ -5,6 +5,7 @@ namespace App\Classes\Mappers;
 use App\Classes\TDG\ElectronicSpecificationTDG;
 use App\Classes\TDG\ElectronicItemTDG;
 use App\Classes\Core\ElectronicCatalog;
+use App\Classes\Core\ElectronicItem;
 use App\Classes\UnitOfWork;
 use App\Classes\IdentityMap;
 
@@ -25,45 +26,67 @@ class ElectronicCatalogMapper {
     }
 
     function saveES($electronicSpecification) {
-        return $this->electronicSpecificationTDG->insert($electronicSpecification);
+        $this->electronicSpecificationTDG->insert($electronicSpecification);
+    }
+
+    function saveEI($eI) {
+        $this->electronicItemTDG->insert($eI);
+        
+        $this->electronicCatalog->makeElectronicItem($eI);
     }
 
     function updateES($electronicSpecification) {
-        return $this->electronicSpecificationTDG->update($electronicSpecification);
+        $this->electronicSpecificationTDG->update($electronicSpecification);
+        
+        $this->electronicCatalog->modifyElectronicSpecification($electronicSpecification);
     }
 
     function deleteEI($electronicItem) {
-        return $this->electronicItemTDG->delete($electronicItem);
+        $this->electronicItemTDG->delete($electronicItem);
+        
+        $this->identityMap->delete('ElectronicItem', $electronicItem);
+
+        $this->electronicCatalog->deleteElectronicItem($electronicItem);
+    }
+    
+    function deleteES($eS){
+        $this->electronicSpecificationTDG->delete($eS);
+        
+        $this->identityMap->delete('ElectronicSpecification', $eS);
+        
+        $this->electronicCatalog->deleteElectronicSpecification($eS);
+    }
+
+    function applyChanges() {
+        $this->unitOfWork->commit();
+    }
+    
+    function cancelChanges() {
+        $this->unitOfWork->cancel();
     }
 
     function makeNewElectronicSpecification($quantity, $eSData) {
-        $this->lockDataAccess();
-        //add image path to ESData
-
         $modelNumberExists = $this->electronicCatalog->findElectronicSpecification($eSData->modelNumber);
-        $this->unlockDataAccess();
 
         if (!$modelNumberExists) {
-            $this->lockDataAccess();
-
             //Add to eSList of the catalog
             $electronicSpecification = $this->electronicCatalog->makeElectronicSpecification($eSData);
 
             //Add to database
-            $this->unitOfWork->registerNew($electronicSpecification);
-            $this->unitOfWork->commit();
-
+            $eSData = $this->electronicSpecificationTDG->insert($electronicSpecification)[0];
+            
             $serialNumber = $this->generateSerialNumber();
             for ($i = 1; $i <= $quantity; $i++) {
                 $electronicItemData = new \stdClass();
                 $electronicItemData->serialNumber = $serialNumber . $i;
+                $electronicItemData->ElectronicSpecification_id = $eSData->id;
+                
+                $eI = new ElectronicItem($electronicItemData);
 
-                $this->electronicCatalog->makeElectronicItem($eSData->modelNumber, $electronicItemData);
+                $this->electronicCatalog->makeElectronicItem($eI);
 
-                $this->electronicItemTDG->insert($eSData->modelNumber, $electronicItemData);
+                $this->electronicItemTDG->insert($eI);
             }
-
-            $this->unlockDataAccess();
 
             return true;
         } else {
@@ -71,54 +94,41 @@ class ElectronicCatalogMapper {
         }
     }
 
-    function modifyElectronicSpecification($quantity, $eS, $eSData) {
-        $eSId = $eS->id;
-
-        $this->lockDataAccess();
-        // verify if the newly entered model number exists
+    function prepareModifyES($quantity, $eSData) {
         $newModelNumberExists = $this->electronicCatalog->findElectronicSpecification($eSData->modelNumber);
-        $this->unlockDataAccess();
 
-        if (!$newModelNumberExists || $this->electronicCatalog->getElectronicSpecificationById($eSId)->get()->modelNumber === $eSData->modelNumber) {
-            $this->lockDataAccess();
+        if (!$newModelNumberExists || $this->electronicCatalog->getElectronicSpecificationById($eSData->id)->get()->modelNumber === $eSData->modelNumber) {
+            $eS = $this->electronicCatalog->getElectronicSpecificationById($eSData->id);
 
-            //Delete old file
-            $splitLink = explode("/", $eS->image);
-            $fileName = end($splitLink);
-            if ($fileName !== "" && file_exists(public_path('images/' . $fileName))) {
-                unlink(public_path('images/' . $fileName));
-            }
+            $eS->set($eSData);
 
-            $electronicSpecification = $this->electronicCatalog->modifyElectronicSpecification($eSId, $eSData);
+            $this->unitOfWork->registerDirty($eS);
 
-            $this->unitOfWork->registerDirty($electronicSpecification);
-            $this->unitOfWork->commit();
-
-            if (sizeOf($eS->electronicItems) === 0) {
+            if (sizeOf($eS->get()->electronicItems) === 0) {
                 $serialNumber = $this->generateSerialNumber();
                 for ($i = 1; $i <= $quantity; $i++) {
                     $electronicItemData = new \stdClass();
                     $electronicItemData->serialNumber = $serialNumber . $i;
+                    $electronicItemData->ElectronicSpecification_id = $eS->get()->id;
 
-                    $this->electronicCatalog->makeElectronicItem($eSData->modelNumber, $electronicItemData);
-
-                    $this->electronicItemTDG->insert($eSData->modelNumber, $electronicItemData);
+                    $eI = new ElectronicItem($electronicItemData);
+                    
+                    $this->unitOfWork->registerNew($eI);
                 }
             } else {
                 for ($i = 1; $i <= $quantity; $i++) {
-                    $lastChar = substr(end($eS->electronicItems)->serialNumber, -1);
-                    $serialNumber = substr(end($eS->electronicItems)->serialNumber, 0, -1);
+                    $lastChar = substr(end($eS->get()->electronicItems)->serialNumber, -1);
+                    $serialNumber = substr(end($eS->get()->electronicItems)->serialNumber, 0, -1);
 
                     $electronicItemData = new \stdClass();
                     $electronicItemData->serialNumber = $serialNumber . ($lastChar + $i);
+                    $electronicItemData->ElectronicSpecification_id = $eS->get()->id;
 
-                    $this->electronicCatalog->makeElectronicItem($eSData->modelNumber, $electronicItemData);
-
-                    $this->electronicItemTDG->insert($eSData->modelNumber, $electronicItemData);
+                    $eI = new ElectronicItem($electronicItemData);
+                    
+                    $this->unitOfWork->registerNew($eI);
                 }
             }
-
-            $this->unlockDataAccess();
 
             return true;
         } else {
@@ -126,23 +136,16 @@ class ElectronicCatalogMapper {
         }
     }
 
-    function deleteElectronicItems($eIIds) {
-        $this->lockDataAccess();
+    function prepareDeleteEI($eIId) {
+        $eI = $this->electronicCatalog->getElectronicItemById($eIId);
 
-        foreach ($eIIds as $eIId) {
-            $this->deleteElectronicItem($eIId);
-        }
-        $this->unitOfWork->commit();
-
-        $this->unlockDataAccess();
+        $this->unitOfWork->registerDeleted($eI);
     }
-
-    function deleteElectronicItem($eIId) {
-        $electronicItem = $this->electronicCatalog->deleteElectronicItem($eIId);
+    
+    function prepareDeleteES($eSId) {
+        $eS = $this->electronicCatalog->getElectronicSpecificationById($eSId);
         
-        $this->deletedEIId = $eIId;
-
-        $this->unitOfWork->registerDeleted($electronicItem);
+        $this->unitOfWork->registerDeleted($eS);
     }
 
     function getAllElectronicSpecifications() {
@@ -336,6 +339,12 @@ class ElectronicCatalogMapper {
         }
 
         return $eSArray;
+    }
+    
+    function setUOWLists($newList, $changedList, $deletedList){
+        $this->unitOfWork->setNewList($newList);
+        $this->unitOfWork->setChangedList($changedList);
+        $this->unitOfWork->setDeletedList($deletedList);
     }
 
 }

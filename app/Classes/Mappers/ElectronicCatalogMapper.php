@@ -8,6 +8,10 @@ use App\Classes\Core\ElectronicCatalog;
 use App\Classes\Core\ElectronicItem;
 use App\Classes\UnitOfWork;
 use App\Classes\IdentityMap;
+use App\Classes\Core\DesktopSpecification;
+use App\Classes\Core\LaptopSpecification;
+use App\Classes\Core\MonitorSpecification;
+use App\Classes\Core\TabletSpecification;
 
 class ElectronicCatalogMapper {
 
@@ -27,45 +31,47 @@ class ElectronicCatalogMapper {
 
     function saveES($electronicSpecification) {
         $this->electronicSpecificationTDG->insert($electronicSpecification);
+        
+        $this->electronicCatalog->insertElectronicSpecification($electronicSpecification);
     }
 
     function saveEI($eI) {
         $this->electronicItemTDG->insert($eI);
-        
+
         $this->electronicCatalog->makeElectronicItem($eI);
     }
 
     function updateES($electronicSpecification) {
         $this->electronicSpecificationTDG->update($electronicSpecification);
-        
+
         $this->electronicCatalog->modifyElectronicSpecification($electronicSpecification);
     }
 
     function deleteEI($electronicItem) {
         $this->electronicItemTDG->delete($electronicItem);
-        
+
         $this->identityMap->delete('ElectronicItem', $electronicItem);
 
         $this->electronicCatalog->deleteElectronicItem($electronicItem);
     }
-    
-    function deleteES($eS){
+
+    function deleteES($eS) {
         $this->electronicSpecificationTDG->delete($eS);
-        
+
         $this->identityMap->delete('ElectronicSpecification', $eS);
-        
+
         $this->electronicCatalog->deleteElectronicSpecification($eS);
     }
 
     function applyChanges() {
         $this->unitOfWork->commit();
     }
-    
+
     function cancelChanges() {
         $this->unitOfWork->cancel();
     }
 
-    function makeNewElectronicSpecification($quantity, $eSData) {
+    function makeNewElectronicSpecificationWithEI($quantity, $eSData) {
         $modelNumberExists = $this->electronicCatalog->findElectronicSpecification($eSData->modelNumber);
 
         if (!$modelNumberExists) {
@@ -74,19 +80,47 @@ class ElectronicCatalogMapper {
 
             //Add to database
             $eSData = $this->electronicSpecificationTDG->insert($electronicSpecification)[0];
-            
+
             $serialNumber = $this->generateSerialNumber();
             for ($i = 1; $i <= $quantity; $i++) {
                 $electronicItemData = new \stdClass();
                 $electronicItemData->serialNumber = $serialNumber . $i;
                 $electronicItemData->ElectronicSpecification_id = $eSData->id;
-                
+
                 $eI = new ElectronicItem($electronicItemData);
 
                 $this->electronicCatalog->makeElectronicItem($eI);
 
                 $this->electronicItemTDG->insert($eI);
             }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function makeNewElectronicSpecification($eSData) {
+        $modelNumberExists = $this->electronicCatalog->findElectronicSpecification($eSData->modelNumber);
+
+        if (!$modelNumberExists) {
+            //Add to eSList of the catalog
+            switch ($eSData->ElectronicType_name) {
+                case "Desktop":
+                    $eS = new DesktopSpecification($eSData);
+                    break;
+                case "Laptop":
+                    $eS = new LaptopSpecification($eSData);
+                    break;
+                case "Monitor":
+                    $eS = new MonitorSpecification($eSData);
+                    break;
+                case "Tablet":
+                    $eS = new TabletSpecification($eSData);
+                    break;
+            }
+            
+            $this->unitOfWork->registerNew($eS);
 
             return true;
         } else {
@@ -112,7 +146,7 @@ class ElectronicCatalogMapper {
                     $electronicItemData->ElectronicSpecification_id = $eS->get()->id;
 
                     $eI = new ElectronicItem($electronicItemData);
-                    
+
                     $this->unitOfWork->registerNew($eI);
                 }
             } else {
@@ -125,7 +159,7 @@ class ElectronicCatalogMapper {
                     $electronicItemData->ElectronicSpecification_id = $eS->get()->id;
 
                     $eI = new ElectronicItem($electronicItemData);
-                    
+
                     $this->unitOfWork->registerNew($eI);
                 }
             }
@@ -141,10 +175,10 @@ class ElectronicCatalogMapper {
 
         $this->unitOfWork->registerDeleted($eI);
     }
-    
+
     function prepareDeleteES($eSId) {
         $eS = $this->electronicCatalog->getElectronicSpecificationById($eSId);
-        
+
         $this->unitOfWork->registerDeleted($eS);
     }
 
@@ -340,8 +374,8 @@ class ElectronicCatalogMapper {
 
         return $eSArray;
     }
-    
-    function setUOWLists($newList, $changedList, $deletedList){
+
+    function setUOWLists($newList, $changedList, $deletedList) {
         $this->unitOfWork->setNewList($newList);
         $this->unitOfWork->setChangedList($changedList);
         $this->unitOfWork->setDeletedList($deletedList);

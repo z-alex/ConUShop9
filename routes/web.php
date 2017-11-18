@@ -45,11 +45,19 @@ Route::post('modify', array(
 ));
 
 Route::get('/add-electronic', array(
-    'uses' => 'AdminController@showAddItems'
+    'uses' => 'AdminController@showAddElectronic'
 ));
 
 Route::post('add-electronic', array(
-    'uses' => 'AdminController@doAddItems'
+    'uses' => 'AdminController@doAddElectronic'
+));
+
+Route::get('/add-electronic-specification', array(
+    'uses' => 'AdminController@showAddElectronicSpecification'
+));
+
+Route::post('add-electronic-specification', array(
+    'uses' => 'AdminController@doAddElectronicSpecification'
 ));
 
 Route::get('registration', array(

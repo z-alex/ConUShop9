@@ -139,6 +139,12 @@ class ElectronicCatalog {
         return $eS;
     }
     
+    function insertElectronicSpecification($eS) {
+        array_push($this->eSList, $eS);
+
+        return $eS;
+    }
+    
     function makeElectronicItem($eI) {
         foreach($this->eSList as $key => $value){
             if($this->eSList[$key]->get()->id === $eI->get()->id){

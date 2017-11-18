@@ -115,29 +115,6 @@ class ElectronicCatalog {
 
         return null;
     }
-
-    function makeElectronicSpecification($eSData) {
-        //dd($eSData);
-
-        switch ($eSData->ElectronicType_name) {
-            case "Desktop":
-                $eS = new DesktopSpecification($eSData);
-                break;
-            case "Laptop":
-                $eS = new LaptopSpecification($eSData);
-                break;
-            case "Monitor":
-                $eS = new MonitorSpecification($eSData);
-                break;
-            case "Tablet":
-                $eS = new TabletSpecification($eSData);
-                break;
-        }
-        //dd($eSData);
-        array_push($this->eSList, $eS);
-
-        return $eS;
-    }
     
     function insertElectronicSpecification($eS) {
         array_push($this->eSList, $eS);
@@ -145,7 +122,7 @@ class ElectronicCatalog {
         return $eS;
     }
     
-    function makeElectronicItem($eI) {
+    function insertElectronicItem($eI) {
         foreach($this->eSList as $key => $value){
             if($this->eSList[$key]->get()->id === $eI->get()->id){
                 $this->eSList[$key]->addElectronicItem($eI);

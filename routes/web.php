@@ -44,14 +44,6 @@ Route::post('modify', array(
     'uses' => 'AdminController@doModify'
 ));
 
-Route::get('/add-electronic', array(
-    'uses' => 'AdminController@showAddElectronic'
-));
-
-Route::post('add-electronic', array(
-    'uses' => 'AdminController@doAddElectronic'
-));
-
 Route::get('/add-electronic-specification', array(
     'uses' => 'AdminController@showAddElectronicSpecification'
 ));

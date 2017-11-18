@@ -37,39 +37,6 @@ class AdminController extends BaseController {
         $this->middleware('CheckAdmin');
     }
 
-    //to locally save the image and also access them publicly,
-    //create a simlink that  allow public access to the local images directory with command:
-    //php artisan storage:link
-    //more info: https://laravel.com/docs/5.5/filesystem#the-public-disk
-    public function doAddElectronic(Request $request) {
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            //image will be saved with timestamp as its name
-            $name = time() . '.' . $image->getClientOriginalExtension();
-            //file destination  is in 'app/public/image' folder in laravel project
-            $destinationPath = public_path('images/' . $name);
-            Image::make($image)->resize(500, 500, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPath);
-
-            // direct access to the image with url stored in $url
-            $url = asset('/images/' . $name);
-        } else {
-            $url = null;
-        }
-
-        $electronicSpecificationData = (object) $request->except(['_token', 'quantity']);
-        $electronicSpecificationData->image = $url;
-
-        if ($this->electronicCatalogMapper->makeNewElectronicSpecificationWithEI($request->input('quantity'), $electronicSpecificationData)) { //
-            Session::flash('success_msg', "Successfully added the electronic specification.");
-            return Redirect::to('inventory');
-        } else {
-            Session::flash('error_msg', "The Model number already exists.");
-            return Redirect::back()->withInput();
-        }
-    }
-
     public function doModifyOrDelete(Request $request) {
         if ($request->input('modifyESButton') !== null) {
             $eSToModify = $this->electronicCatalogMapper->getElectronicSpecification($request->input('modifyESButton'));
@@ -147,10 +114,6 @@ class AdminController extends BaseController {
         $electronicSpecifications = $this->electronicCatalogMapper->getAllElectronicSpecifications();
 
         return view('pages.inventory', ['electronicSpecifications' => $electronicSpecifications]);
-    }
-
-    public function showAddElectronic() {
-        return view('pages.add-electronic');
     }
     
     public function showAddElectronicSpecification() {

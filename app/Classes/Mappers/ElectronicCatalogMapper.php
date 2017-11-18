@@ -38,7 +38,7 @@ class ElectronicCatalogMapper {
     function saveEI($eI) {
         $this->electronicItemTDG->insert($eI);
 
-        $this->electronicCatalog->makeElectronicItem($eI);
+        $this->electronicCatalog->insertElectronicItem($eI);
     }
 
     function updateES($electronicSpecification) {
@@ -69,35 +69,6 @@ class ElectronicCatalogMapper {
 
     function cancelChanges() {
         $this->unitOfWork->cancel();
-    }
-
-    function makeNewElectronicSpecificationWithEI($quantity, $eSData) {
-        $modelNumberExists = $this->electronicCatalog->findElectronicSpecification($eSData->modelNumber);
-
-        if (!$modelNumberExists) {
-            //Add to eSList of the catalog
-            $electronicSpecification = $this->electronicCatalog->makeElectronicSpecification($eSData);
-
-            //Add to database
-            $eSData = $this->electronicSpecificationTDG->insert($electronicSpecification)[0];
-
-            $serialNumber = $this->generateSerialNumber();
-            for ($i = 1; $i <= $quantity; $i++) {
-                $electronicItemData = new \stdClass();
-                $electronicItemData->serialNumber = $serialNumber . $i;
-                $electronicItemData->ElectronicSpecification_id = $eSData->id;
-
-                $eI = new ElectronicItem($electronicItemData);
-
-                $this->electronicCatalog->makeElectronicItem($eI);
-
-                $this->electronicItemTDG->insert($eI);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
     }
 
     function makeNewElectronicSpecification($eSData) {

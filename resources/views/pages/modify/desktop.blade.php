@@ -5,6 +5,7 @@
 </div>
 
 <input type="hidden" name="ElectronicType_id" value=1>
+<input type="hidden" name="ElectronicType_name" value="Desktop">
 
 <div class="form-group">
     <label class="control-label col-sm-2" for="brandName">Brand</label>

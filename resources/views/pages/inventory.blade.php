@@ -1,199 +1,252 @@
 @extends('layouts.default')
 @section('content')
 <script type="text/javascript" src="{{ URL::asset('js/inventory.js') }}"></script>
-<div class="text-center"><h2 class="blueTitle">Inventory</h2></div>
 
 <form method="post" action="inventory">
-    <table>
-        <tr>
-            <th>Select</th>
-            <th>Select</th>
-            <th>Dimension</th>
-            <th>Weight</th>
-            <th>Model Number</th>
-            <th>Brand Name</th>
-            <th>Hard drive size</th>
-            <th>Price</th>
-            <th>Processor Type</th>
-            <th>Ram Size</th>
-            <th>CPU Cores</th>
-            <th>Battery Info</th>
-            <th>OS</th>
-            <th>Camera</th>
-            <th>Touch Screen</th>
-            <th>Display Size</th>
-            <th>Electronic Type</th>
-            <th>Product Image</th>
-        </tr>
-        <tr>
-            <td colspan="17">
+    <div class="col-lg-9 text-center">
+        <h2 class="blueTitle">Inventory</h2>
+        <table>
+            <tr>
+                <th>Select</th>
+                <th>Select</th>
+                <th>ID</th>
+                <th>Dimension</th>
+                <th>Weight</th>
+                <th>Model Number</th>
+                <th>Brand Name</th>
+                <th>Hard drive size</th>
+                <th>Price</th>
+                <th>Processor Type</th>
+                <th>Ram Size</th>
+                <th>CPU Cores</th>
+                <th>Battery Info</th>
+                <th>OS</th>
+                <th>Camera</th>
+                <th>Touch Screen</th>
+                <th>Display Size</th>
+                <th>Electronic Type</th>
+                <th>Product Image</th>
+            </tr>
+            @if (! empty($electronicSpecifications))
+            @foreach ($electronicSpecifications as $eS)
+            <tr bgcolor="#cce6ff">
+                <td>
+                    <button type="submit" id="modifyButton" name="modifyESButton" value="{{$eS->id}}">Modify</button>
+                </td>
+                <td>
+                    <button type="submit" id="deleteESButton" name="deleteESButton" value="{{$eS->id}}">Delete</button>
+                </td>
+                <td>
+                    @if ( isset($eS->id) )
+                    {{$eS->id}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->dimension) )
+                    {{$eS->dimension}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->weight )
+                    {{$eS->weight}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->modelNumber )
+                    {{$eS->modelNumber}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->brandName )
+                    {{$eS->brandName}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->hdSize) )
+                    {{$eS->hdSize}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->price )
+                    {{$eS->price}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->processorType) )
+                    {{$eS->processorType}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->ramSize) )
+                    {{$eS->ramSize}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->cpuCores) )
+                    {{$eS->cpuCores}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->batteryInfo) )
+                    {{$eS->batteryInfo}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->os) )
+                    {{$eS->os}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->camera) && !is_null($eS->camera) )
+                    @if ($eS->camera === "1")
+                    Yes
+                    @else
+                    No
+                    @endif
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->touchScreen) && !is_null($eS->touchScreen) )
+                    @if ($eS->camera === "1")
+                    Yes
+                    @else
+                    No
+                    @endif
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->displaySize) && $eS->displaySize )
+                    {{$eS->displaySize}} {{$eS->ElectronicType_displaySizeUnit}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->ElectronicType_name )
+                    {{$eS->ElectronicType_name}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->image && $eS->image !== null )
+                    <img src="{{$eS->image}}" width="auto" height="50px">
+                    @else
+                    N/A
+                    @endif
+                </td>
 
-            </td>
-        </tr>
-        @if (! empty($electronicSpecifications))
-        @foreach ($electronicSpecifications as $eS)
-        <tr bgcolor="#cce6ff">
-            <td>
-                <input type="radio" name="modifyRadioSelection" value="{{$eS->id}}">
-            </td>
-            <td>
+            </tr>
+            @if ($eS->electronicItems)
+            @foreach ($eS->electronicItems as $eI)
 
-            </td>
-            <td>
-                @if ( isset($eS->dimension) )
-                {{$eS->dimension}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( $eS->weight )
-                {{$eS->weight}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( $eS->modelNumber )
-                {{$eS->modelNumber}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( $eS->brandName )
-                {{$eS->brandName}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( isset($eS->hdSize) )
-                {{$eS->hdSize}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( $eS->price )
-                {{$eS->price}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( isset($eS->processorType) )
-                {{$eS->processorType}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( isset($eS->ramSize) )
-                {{$eS->ramSize}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( isset($eS->cpuCores) )
-                {{$eS->cpuCores}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( isset($eS->batteryInfo) )
-                {{$eS->batteryInfo}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( isset($eS->os) )
-                {{$eS->os}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( isset($eS->camera) && !is_null($eS->camera) )
-                @if ($eS->camera === "1")
-                Yes
-                @else
-                No
-                @endif
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( isset($eS->touchScreen) && !is_null($eS->touchScreen) )
-                @if ($eS->camera === "1")
-                Yes
-                @else
-                No
-                @endif
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( isset($eS->displaySize) && $eS->displaySize )
-                {{$eS->displaySize}} {{$eS->ElectronicType_displaySizeUnit}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-                @if ( $eS->ElectronicType_name )
-                {{$eS->ElectronicType_name}}
-                @else
-                N/A
-                @endif
-            </td>
-            <td>
-              @if ( $eS->image && $eS->image !== null )
-                  <img src="{{$eS->image}}" width="50%" height="auto">
-                @else
-                  N/A
-              @endif
-            </td>
+            <tr>
+                <td>
 
-        </tr>
-        @if ($eS->electronicItems)
-        @foreach ($eS->electronicItems as $eI)
+                </td>
+                <td>
+                    <button type="submit" id="deleteEIButton" name="deleteEIButton" value="{{$eI->id}}">Delete</button>
+                </td>
+                <td>
+                    @if ( isset($eI->id) )
+                    {{$eI->id}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td colspan="16">
+                    @if ( $eI->serialNumber )
+                    <b>Serial Number:</b> {{$eI->serialNumber}}
+                    @endif
+                </td>
+            </tr>
+            @endforeach
+            @endif
+            @endforeach
+            @endif
+        </table>
 
-        <tr>
-            <td>
+    </div>
 
-            </td>
-            <td>
-                <input type="checkbox" name="deleteCheckboxSelections[]" value="{{$eI->id}}">
-            </td>
-            <td colspan="16">
-                @if ( $eI->serialNumber )
-                <b>Serial Number:</b> {{$eI->serialNumber}}
-                @endif
-            </td>
-        </tr>
-        @endforeach
-        @endif
-        <tr #cce6ff>
-            <td colspan="17">
 
-            </td>
-        </tr>
-        @endforeach
-        @endif
-        <tr>
-            <td>
-                <button type="submit" id="modifyButton" name="submitButton" value="modify">Modify</button>
-            </td>
-            <td><button type="submit" id="deleteButton" name="submitButton" value="delete">Delete</button></td>
-            <td colspan="17"></td>
-        </tr>
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    </table>
+    <?php
+
+    use App\Classes\Core\ElectronicItem;
+    use App\Classes\Core\ElectronicSpecification;
+    ?>
+    @if(Session::has('newList') || Session::has('changedList') || Session::has('deletedList'))
+    <div class="col-lg-3 panel panel-info" id="changesPanel">
+        <div class="panel-heading"> Changes </div>
+        <div class="panel-body">
+            @if( !empty(Session::get('newList')) )
+            <h3>New list:</h3>
+            @foreach(Session::get('newList') as $new)
+
+            @if($new instanceof ElectronicSpecification)
+            <b>Specification ID</b> #{{$new->get()->id}} <b>MN: </b> {{$new->get()->modelNumber}}
+            @elseif($new instanceof ElectronicItem)
+            <b>Item SN:</b> {{$new->get()->serialNumber}} for <b>Specification ID</b> #{{$new->get()->ElectronicSpecification_id}}
+            @endif
+            <br/>
+            @endforeach
+            @endif
+
+            @if( !empty(Session::get('changedList')) )
+            <h3>Changed list:</h3>
+            @foreach(Session::get('changedList') as $changed)
+            <b>Specification ID</b> #{{$changed->get()->id}} <b>MN: </b> {{$changed->get()->modelNumber}}
+            <br/>
+            @endforeach
+            @endif
+
+            @if( !empty(Session::get('deletedList')) )
+            <h3>Deleted list:</h3>
+            @foreach(Session::get('deletedList') as $deleted)
+            @if($deleted instanceof ElectronicSpecification)
+            <b>Specification ID</b> #{{$deleted->get()->id}} <b>MN: </b> {{$deleted->get()->modelNumber}}
+            @elseif($deleted instanceof ElectronicItem)
+            <b>Item ID</b> #{{$deleted->get()->id}} <b>SN:</b> {{$deleted->get()->serialNumber}}
+            @endif
+            <br/>
+            @endforeach
+            @endif
+
+            <br/>
+
+            <button type="submit" id="applyChangesButton" name="applyChangesButton" value=true>Apply Changes</button>
+            <button type="submit" id="cancelChangesButton" name="cancelChangesButton" value=true>Cancel Changes</button>
+        </div>
+    </div>
+    @endif
+
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
 </form>
 @stop

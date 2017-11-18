@@ -5,6 +5,7 @@
 </div>
 
 <input type="hidden" name="ElectronicType_id" value=3>
+<input type="hidden" name="ElectronicType_name" value="Monitor">
 
 <div class="form-group">
     <label class="control-label col-sm-2" for="displaySize">Display Size</label>

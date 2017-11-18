@@ -5,6 +5,7 @@
 </div>
 
 <input type="hidden" name="ElectronicType_id" value=5>
+<input type="hidden" name="ElectronicType_name" value="Television">
 
 <div class="form-group">
     <label class="control-label col-sm-2" for="dimension">Dimension</label>

@@ -44,11 +44,11 @@ Route::post('modify', array(
     'uses' => 'AdminController@doModify'
 ));
 
-Route::get('/add-items', array(
+Route::get('/add-electronic', array(
     'uses' => 'AdminController@showAddItems'
 ));
 
-Route::post('add-items', array(
+Route::post('add-electronic', array(
     'uses' => 'AdminController@doAddItems'
 ));
 

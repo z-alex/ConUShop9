@@ -19,10 +19,10 @@ class IdentityMap {
         }
     }
 
-    function delete($objectClass, $objectProperty, $objectPropertyValue) {
+    function delete($objectClass, $object) {
         if (isset($this->map[$objectClass])) {
             foreach ($this->map[$objectClass] as $key => $value) {
-                if ($this->map[$objectClass][$key]->get()->$objectProperty === $objectPropertyValue) {
+                if ($this->map[$objectClass][$key]->get()->id === $object->get()->id) {
                     unset($this->map[$objectClass][$key]);
                 }
             }

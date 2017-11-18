@@ -5,20 +5,20 @@ namespace App\Classes\Core;
 class ElectronicCatalog {
 
     private $eSList;
-    
+
     function __construct() {
-         $argv = func_get_args();
-         switch (func_num_args()) {
-             case 0:
-                 self::__construct0();
-                 break;
-             case 1:
-                 self::__construct1($argv[0]);
-                 break;
-         }
-     }
-     
-     function __construct0() {
+        $argv = func_get_args();
+        switch (func_num_args()) {
+            case 0:
+                self::__construct0();
+                break;
+            case 1:
+                self::__construct1($argv[0]);
+                break;
+        }
+    }
+
+    function __construct0() {
         $this->eSList = array();
     }
 
@@ -59,8 +59,9 @@ class ElectronicCatalog {
         return $returnObject;
     }
 
-    function deleteElectronicItem($id) {
-        //dd($ids);
+    function deleteElectronicItem($eI) {
+        $id = $eI->get()->id;
+
         foreach ($this->eSList as $eS) {
             foreach ($eS->getElectronicItems() as $eI) {
                 if ($eI->get()->id === $id) {
@@ -71,6 +72,14 @@ class ElectronicCatalog {
         }
 
         return null;
+    }
+    
+    function deleteElectronicSpecification($eSToDelete){
+        foreach($this->eSList as $key => $value){
+            if($this->eSList[$key]->get()->id === $eSToDelete->get()->id){
+                unset($this->eSList[$key]);
+            }
+        }
     }
 
     function findElectronicSpecification($modelNumber) {
@@ -89,6 +98,18 @@ class ElectronicCatalog {
         foreach ($this->eSList as $eS) {
             if ($eS->getId() === $id) {
                 return $eS;
+            }
+        }
+
+        return null;
+    }
+
+    function getElectronicItemById($id) {
+        foreach ($this->eSList as $eS) {
+            foreach($eS->getElectronicItems() as $eI) {
+                if ($eI->get()->id === $id) {
+                    return $eI;
+                }
             }
         }
 
@@ -117,21 +138,20 @@ class ElectronicCatalog {
 
         return $eS;
     }
-
-    function makeElectronicItem($modelNumber, $electronicItemData) {
-        foreach ($this->eSList as $key => $value) {
-            if ($this->eSList[$key]->getModelNumber() === $modelNumber) {
-                return $this->eSList[$key]->addElectronicItem($electronicItemData);
-
+    
+    function makeElectronicItem($eI) {
+        foreach($this->eSList as $key => $value){
+            if($this->eSList[$key]->get()->id === $eI->get()->id){
+                $this->eSList[$key]->addElectronicItem($eI);
                 break;
             }
         }
     }
 
-    function modifyElectronicSpecification($eSId, $newESData) {
+    function modifyElectronicSpecification($newES) {
         foreach ($this->eSList as &$eS) {
-            if ($eS->get()->id === $eSId) {
-                $eS->set((object) $newESData);
+            if ($eS->get()->id === $newES->get()->id) {
+                $eS->set($newES->get());
                 return $eS;
             }
         }
@@ -151,30 +171,6 @@ class ElectronicCatalog {
             }
         }
         return $firstAvailableEI;
-    }
-
-    function getESListFromEIList($eIList) {
-
-        $ESList = array();
-        foreach ($eIList as $eI) {
-            $eSData = $this->getElectronicSpecificationById($eI->get()->ElectronicSpecification_id)->get();
-            switch ($eSData->ElectronicType_name) {
-                case "Desktop":
-                    $eS = new DesktopSpecification($eSData);
-                    break;
-                case "Laptop":
-                    $eS = new LaptopSpecification($eSData);
-                    break;
-                case "Monitor":
-                    $eS = new MonitorSpecification($eSData);
-                    break;
-                case "Tablet":
-                    $eS = new TabletSpecification($eSData);
-                    break;
-            }
-            array_push($ESList, $eS);
-        }
-        return $ESList;
     }
 
     function unsetUserAndExpiryFromEI($eSId, $userId) {

@@ -133,7 +133,7 @@ class ElectronicCatalogTest extends TestCase {
 
         $electronicCatalog = new ElectronicCatalog();
         $electronicCatalog->makeElectronicSpecification($electronicData);
-        $electronicCatalog->makeElectronicItem($electronicData->modelNumber, $item1Data);
+        $electronicCatalog->insertElectronicItem($electronicData->modelNumber, $item1Data);
 
         $catalogList = $electronicCatalog->getEsList();
         $catalogListJson = json_decode(json_encode($catalogList), true);

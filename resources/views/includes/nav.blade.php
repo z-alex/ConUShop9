@@ -12,20 +12,16 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-
-
+                <li><a href="/">Electronic Catalog</a></li>
                 @if( !Auth::check() )
-                    <li><a href="/login">Log In<span class="sr-only">(current)</span></a></li>
-                    <li><a href="/registration">Register<span class="sr-only">(current)</span></a></li>
+                <li><a href="/login">Log In</a></li>
+                <li><a href="/registration">Register</a></li>
+                @elseif( Auth::user()->admin === 1 )
+                <li><a href="/inventory">Inventory</a></li>
+                <li><a href="/logout">Log Out</a></li>
                 @else
-                    @if( Auth::user()->admin === 1 )
-                        <li><a href="add-electronic">Add Electronic</a></li>
-                        <li><a href="inventory">Inventory</a></li>
-                        <li><a href="/logout">Log Out</a></li>
-                    @else
-                        <li><a href="/logout">Log Out</a></li>
-                        <li><a href="/shopping-cart">View Cart<span class="sr-only">(current)</span></a></li>
-                    @endif
+                <li><a href="/shopping-cart">View Cart</a></li>
+                <li><a href="/logout">Log Out</a></li>
                 @endif
             </ul>
         </div>

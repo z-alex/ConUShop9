@@ -34,7 +34,7 @@
             @foreach ($electronicSpecifications as $eS)
             <tr bgcolor="#ededed">
                 <td>
-                    <button type="submit" id="modifyButton" name="modifyESButton" class="btn btn-xs btn-primary" value="{{$eS->id}}">Modify</button>
+                    <button type="submit" id="modifyButton" name="modifyESButton" class="btn btn-xs btn-primary" value="{{$eS->id}}">Add/Modify</button>
                 </td>
                 <td>
                     <button type="submit" id="deleteESButton" name="deleteESButton" class="btn btn-xs btn-info " value="{{$eS->id}}">Delete</button>

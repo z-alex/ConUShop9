@@ -96,8 +96,9 @@ class MainController extends BaseController {
     }
 
     public function doRegistration(Request $request) {
-
-        if ($this->userCatalogMapper->makeNewCustomer((object) $request->input())) {
+        $userData = (object) $request->input();
+        $userData->admin = "0";
+        if ($this->userCatalogMapper->makeNewCustomer($userData)) {
             Session::flash('success_msg', "Successfully registered.");
             return Redirect::to('/');
         } else {

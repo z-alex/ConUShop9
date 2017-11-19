@@ -11,6 +11,9 @@ use PhpDeal\Aspect\InvariantCheckerAspect;
 use PhpDeal\Aspect\PostconditionCheckerAspect;
 use PhpDeal\Aspect\PreconditionCheckerAspect;
 use Psr\Log\LoggerInterface;
+use App\Aspect\IdentityMapAspect;
+use App\Aspect\TestAspect;
+use Session;
 
 class AopServiceProvider extends ServiceProvider
 {
@@ -31,6 +34,11 @@ class AopServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        //Register the IdentityMapAspect
+        $this->app->singleton(IdentityMapAspect::class, function (Application $app) {
+            return new IdentityMapAspect();
+        });
+        
         $this->app->singleton(LoggingAspect::class, function (Application $app) {
             return new LoggingAspect($app->make(LoggerInterface::class));
         });
@@ -52,6 +60,7 @@ class AopServiceProvider extends ServiceProvider
 
         $this->app->tag(
             [
+                IdentityMapAspect::class,
                 LoggingAspect::class,
                 InvariantCheckerAspect::class,
                 PreconditionCheckerAspect::class,

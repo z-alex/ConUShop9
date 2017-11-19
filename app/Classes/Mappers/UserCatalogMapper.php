@@ -5,7 +5,7 @@ namespace App\Classes\Mappers;
 use App\Classes\TDG\UserTDG;
 use App\Classes\Core\UserCatalog;
 use App\Classes\UnitOfWork;
-use App\Classes\IdentityMap;
+use App\Aspect\IdentityMapAspect;
 use Hash;
 
 class UserCatalogMapper {
@@ -13,17 +13,13 @@ class UserCatalogMapper {
     private $userCatalog;
     private $userTDG;
     private $unitOfWork;
-    private $identityMap;
+    private $identityMapAspect;
 
     function __construct() {
         $this->userTDG = new UserTDG();
         $this->userCatalog = new UserCatalog($this->userTDG->findAll());
         $this->unitOfWork = new UnitOfWork(['userCatalogMapper' => $this]);
-        $this->identityMap = new IdentityMap();
-    }
-
-    function saveUser($user) {
-        return $this->userTDG->add($user);
+        $this->identityMapAspect = new IdentityMapAspect();
     }
 
     function makeLoginLog($id) {
@@ -34,7 +30,6 @@ class UserCatalogMapper {
     }
 
     function makeNewCustomer($userData) {
-        $userData->admin = "0";
         $emailExists = $this->userCatalog->findUser($userData->email);
 
         if (!$emailExists) {
@@ -42,10 +37,10 @@ class UserCatalogMapper {
 
             $user = $this->userCatalog->makeCustomer($userData);
 
-            $this->unitOfWork->registerNew($user);
-            $this->unitOfWork->commit();
-
+            $id = $this->userTDG->add($user);
             
+            $user->set((object) ['id' => $id]);
+
             //Add for identity map
             $this->identityUser = $user;
 
@@ -54,20 +49,21 @@ class UserCatalogMapper {
             return false;
         }
     }
-    
-    function login($email, $password){
-        if($this->userCatalog->checkUser($email, $password)){
+
+    function login($email, $password) {
+        if ($this->userCatalog->checkUser($email, $password)) {
             return true;
-        }else{
+        } else {
             return $this->userTDG->findUserTestPsw($email, $password);
         }
     }
 
-function getAllCustomers() {
-		return $this->userCatalog->getCustomerList();
-	}
+    function getAllCustomers() {
+        return $this->userCatalog->getCustomerList();
+    }
 
-	function deleteAccount($userID) {
-		$this->userCatalog->deleteUser($userID);
-	}
+    function deleteAccount($userID) {
+        $this->userCatalog->deleteUser($userID);
+    }
+
 }

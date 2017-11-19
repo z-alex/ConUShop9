@@ -18,16 +18,13 @@ use Image;
 use Session;
 use App\Classes\Mappers\UserCatalogMapper;
 
-	
-
-//reference: https://www.cloudways.com/blog/laravel-login-authentication/
 class AdminController extends BaseController {
 
     private $electronicCatalogMapper;
 
     public function __construct() {
         $this->electronicCatalogMapper = new ElectronicCatalogMapper();
-		$this->userCatalogMapper = new UserCatalogMapper();
+        $this->userCatalogMapper = new UserCatalogMapper();
         $this->middleware(function ($request, $next) {
 
             if (session()->has('newList') || session()->has('changedList') || session()->has('deletedList')) {
@@ -57,19 +54,19 @@ class AdminController extends BaseController {
             return view('index', ['eSToModify' => $eSToModify]);
         } else if ($request->input('deleteEIButton') !== null) {
             $result = $this->electronicCatalogMapper->prepareDeleteEI($request->input('deleteEIButton'));
-            if($result == false){
+            if ($result == false) {
                 Session::flash('error_msg', "EI already on changed item list.");
                 return Redirect::back();
-            }else{
+            } else {
                 Session::flash('success_msg', "Successfully added to changed item list.");
                 return Redirect::back();
             }
         } else if ($request->input('deleteESButton') !== null) {
             $result = $this->electronicCatalogMapper->prepareDeleteES($request->input('deleteESButton'));
-            if($result == false){
+            if ($result == false) {
                 Session::flash('error_msg', "ES already on changed item list.");
                 return Redirect::back();
-            }else{
+            } else {
                 Session::flash('success_msg', "Successfully added to changed item list.");
                 return Redirect::back();
             }
@@ -81,7 +78,7 @@ class AdminController extends BaseController {
             $this->electronicCatalogMapper->cancelChanges();
             Session::flash('success_msg', "Successfully cancelled changes.");
             return Redirect::back();
-        } else if ($request->input('addESButton') !== null){
+        } else if ($request->input('addESButton') !== null) {
             return Redirect::to('/add-electronic-specification');
         }
     }
@@ -125,14 +122,14 @@ class AdminController extends BaseController {
 
     public function showInventory() {
         $electronicSpecifications = $this->electronicCatalogMapper->getAllElectronicSpecifications();
-
+        
         return view('pages.inventory', ['electronicSpecifications' => $electronicSpecifications]);
     }
-    
+
     public function showAddElectronicSpecification() {
         return view('pages.add-electronic-specification');
     }
-    
+
     public function doAddElectronicSpecification(Request $request) {
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -162,11 +159,10 @@ class AdminController extends BaseController {
         }
     }
 
-	public function showAllCustomers() {
-		$userList = $this->userCatalogMapper->getAllCustomers();
+    public function showAllCustomers() {
+        $userList = $this->userCatalogMapper->getAllCustomers();
 
-		return view('pages.view-all-customers', ['userList' => $userList]);
-	}
-
+        return view('pages.view-all-customers', ['userList' => $userList]);
+    }
 
 }

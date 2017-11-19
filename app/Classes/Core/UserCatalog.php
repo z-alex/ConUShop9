@@ -49,7 +49,8 @@ class UserCatalog
 
     function checkUser($email, $password)
     {
-
+        //IdentityMapAspect checks before this method if it's in the map. Please see the method login in IdentityMapAspect
+        
         foreach ($this->userList as $user) {
             if ($user->get()->email === $email) {
                 if (Hash::check($user->get()->password, $password)) {
@@ -61,7 +62,6 @@ class UserCatalog
         }
 
         return false;
-
     }
 
     function findUser($email)

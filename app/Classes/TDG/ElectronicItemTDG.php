@@ -33,7 +33,9 @@ class ElectronicItemTDG {
         
         //We delete the last useless ' , '
         $queryString = substr($queryString, 0, -2);
-        return $this->conn->query($queryString, $parameters);
+        $this->conn->query($queryString, $parameters);
+        
+        return $this->conn->getPDOConnection()->lastInsertId();
     }
     
     function update($eI) {

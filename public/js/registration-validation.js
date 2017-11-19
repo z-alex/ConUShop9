@@ -30,9 +30,9 @@ $(document).ready(function () {
     email.required = true;
 
     var password = document.getElementById("password");
-    password.setAttribute("pattern", "^[A-z,1-9]*$");
+    password.setAttribute("pattern", "^.{6,16}$");
     password.oninvalid = function (event) {
-        event.target.setCustomValidity("Password must not contail special characters.");
+        event.target.setCustomValidity("Password must be of length between 6 to 16.");
     };
     password.required = true;
 
@@ -44,9 +44,9 @@ $(document).ready(function () {
     phone.required = true;
 
     var physicalAddress = document.getElementById("physicalAddress");
-    physicalAddress.setAttribute("pattern", "^[0-9]{1,5}\\s[A-z][A-z]*\\s[A-Z][0-9][A-Z]-[0-9][A-Z][0-9]$");
+    physicalAddress.setAttribute("pattern", "^[A-z,0-9,',\\-,.,\\s]*$");
     physicalAddress.oninvalid = function (event) {
-        event.target.setCustomValidity("Address must be of format ie: 111 Street H1Z-4C9");
+        event.target.setCustomValidity("Address must be of format ie: 111 Street H1Z 4C9");
     };
     physicalAddress.required = true;
 

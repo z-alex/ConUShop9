@@ -5,27 +5,27 @@
 
 
 <div class="pageContainer container-fluid">
-  <div class="text-center"><h3>Registration Form</h3>
+  <div class="text-center"><h3>Registration</h3>
   </div>
 
     <div class="row">
     <div class="col-sm-4"></div>
-    <div class="col-sm-4" id="registerForm">
+    <div class="col-sm-4" id="registration">
 
-      <form method="post" action="/registration" name="registration" id = "registerForm">
+      <form method="post" action="/registration" name="registration" id = "registration">
         {{ csrf_field() }}
         <div class ="form-group">
-  			       <label for="firstName">First name</label>
+  			       <label for="firstName">First Name</label>
   			          <input type="text" class ="form-control" id="firstName" placeholder="John" name="firstName">
 
         </div>
   		  <div class ="form-group">
-  			   <label for="lastName">Last name</label>
+  			   <label for="lastName">Last Name</label>
   			      <input type="text" class ="form-control" id="lastName" placeholder="Doe" name="lastName">
   		  </div>
 
   		    <div class ="form-group">
-  			       <label for="email">Email address</label>
+  			       <label for="email">Email Address</label>
   			          <input type="email" class ="form-control" id="email" placeholder="123@example.com" name="email">
   		   </div>
 
@@ -35,13 +35,13 @@
   		  </div>
 
   		  <div class ="form-group">
-  			     <label for="phone">Phone number</label>
+  			     <label for="phone">Phone Number</label>
   			        <input type="text" class ="form-control" id="phone" placeholder="514-123-4567" name="phone">
   		  </div>
 
           <div class ="form-group">
   			       <label for="physicalAddress">Address</label>
-  			          <input type="text" class ="form-control" id="physicalAddress" placeholder="123 Avenue" name="physicalAddress">
+  			          <input type="text" class ="form-control" id="physicalAddress" placeholder="123 Avenue H1C-4G9" name="physicalAddress">
   		    </div>
 
             <button type="submit" class="btn btn-info btn-block">Register</button>

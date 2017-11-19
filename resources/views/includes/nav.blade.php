@@ -18,6 +18,7 @@
                 <li><a href="/registration">Register</a></li>
                 @elseif( Auth::user()->admin === 1 )
                 <li><a href="/inventory">Inventory</a></li>
+				<li><a href="users">View Users</a></li> 
                 <li><a href="/logout">Log Out</a></li>
                 @else
                 <li><a href="/shopping-cart">View Cart</a></li>

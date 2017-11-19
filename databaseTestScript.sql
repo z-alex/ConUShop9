@@ -143,27 +143,6 @@ REPLACE INTO User (id, email, password, admin) values (1, 'admin1@conushop.com',
 REPLACE INTO User (id, email, password, admin) values (2, 'admin2@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1);
 REPLACE INTO User (id, email, password, admin) values (3, 'admin3@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1);
 
-REPLACE INTO User (id, firstName, lastName, email, password, phone, admin, physicalAddress) values (4, 'First', 'Client', 'client1@conushop.com', '$2y$10$9TXiu1Zu4uxhwxrBXDOnmu6Dg3XhjXmV4hJggc/XfSQX9gObXqac6', '123-456-7890', 0, '123 Avenue H1B-4G9');
-REPLACE INTO User (id, firstName, lastName, email, password, phone, admin, physicalAddress) values (5, 'Second', 'Client', 'client2@conushop.com', '$2y$10$9TXiu1Zu4uxhwxrBXDOnmu6Dg3XhjXmV4hJggc/XfSQX9gObXqac6', '123-456-7890', 0, '234 Avenue H1C-5G0');
-REPLACE INTO User (id, firstName, lastName, email, password, phone, admin, physicalAddress) values (6, 'Third', 'Client', 'client3@conushop.com', '$2y$10$9TXiu1Zu4uxhwxrBXDOnmu6Dg3XhjXmV4hJggc/XfSQX9gObXqac6', '123-456-7890', 0, '345 Avenue H1D-6G1');
-
-REPLACE INTO ElectronicSpecification SET id = '1', dimension = '10 x 50 x 100', weight = '10', modelNumber = '123', brandName = 'Asus', hdSize ='512', price = '1200', processorType = 'Intel i7', ramSize = '16', cpuCores = '4', os = 'Windows', ElectronicType_id = '1', image = 'http://laravel.dev/images/1511129568.jpg';
-REPLACE INTO ElectronicItem SET id = '1', ElectronicSpecification_id = '1', serialNumber = '8MU4D5MQGN2I1';
-REPLACE INTO ElectronicItem SET id = '2', ElectronicSpecification_id = '1', serialNumber = '8MU4D5MQGN2I2';
-REPLACE INTO ElectronicItem SET id = '3', ElectronicSpecification_id = '1', serialNumber = '8MU4D5MQGN2I3';
-
-REPLACE INTO ElectronicSpecification SET id = '2', weight = '5', modelNumber = '9560', brandName = 'Dell', hdSize = '512', price = '2500', processorType = 'Intel i7', ramSize = '16', cpuCores = '4', batteryInfo = '84 Wh', os = 'Linux', camera = '1', touchScreen = '1', ElectronicType_id = '2', displaySize = '15.0', image = 'http://laravel.dev/images/1511130460.jpg';
-REPLACE INTO ElectronicItem SET id = '4', ElectronicSpecification_id = '2', serialNumber = 'GZY6DOXV5F1';
-REPLACE INTO ElectronicItem SET id = '5', ElectronicSpecification_id = '2', serialNumber = 'GZY6DOXV5F2';
-REPLACE INTO ElectronicItem SET id = '6', ElectronicSpecification_id = '2', serialNumber = 'GZY6DOXV5F3';
-
-REPLACE INTO ElectronicSpecification SET id = '3', weight = '4', modelNumber = 'XR3501', brandName = 'BenQ', price = '1000', ElectronicType_id = '3', displaySize = '4.0', image = 'http://laravel.dev/images/1511130961.jpg';
-REPLACE INTO ElectronicItem SET id = '7', ElectronicSpecification_id = '3', serialNumber = 'MBIX3Q7UHWSG1';
-REPLACE INTO ElectronicItem SET id = '8', ElectronicSpecification_id = '3', serialNumber = 'MBIX3Q7UHWSG2';
-REPLACE INTO ElectronicItem SET id = '9', ElectronicSpecification_id = '3', serialNumber = 'MBIX3Q7UHWSG3';
-
-
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

@@ -22,15 +22,15 @@
 
 *Client 1:*
 - Username: ```client1@conushop.com```
-- Password: ```admin```
+- Password: ```client```
 
 *Client 2:*
 - Username: ```client2@conushop.com```
-- Password: ```admin```
+- Password: ```client```
 
 *Client 3:*
 - Username: ```client3@conushop.com```
-- Password: ```admin```
+- Password: ```client```
 
 ## Team 9 Members
 - Jean-Michel Laliberté

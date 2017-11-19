@@ -6,6 +6,7 @@
             <br>
             <hr>
             @foreach ($slis as $sli)
+            <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&shoppingCart=true">
                 @if ( $sli->getElectronicSpecification()->get()->image && $sli->getElectronicSpecification()->get()->image !== null )
                     <img src="{{$sli->getElectronicSpecification()->get()->image}}" class="img-responsive" width="10%" height="auto">
                     <br/>
@@ -22,15 +23,25 @@
                     <br/>
                 @endif
                 @if ( $sli->getElectronicSpecification()->get()->modelNumber )
-                    Model {{$sli->getElectronicSpecification()->get()->modelNumber}}
+                Model {{$sli->getElectronicSpecification()->get()->modelNumber}}
                     <br/>
                 @endif
+                </a>
                 @if ( $sli->getElectronicSpecification()->get()->price )
-                    Price: ${{$sli->getElectronicSpecification()->get()->price}}
+                <b>Price:</b> ${{$sli->getElectronicSpecification()->get()->price}}
                     <br/>
                 @endif
                 
-                Quantity: {{ count($sli->getElectronicItems()) }}
+                <b>Quantity:</b> {{ count($sli->getElectronicItems()) }}
+                <br/>
+                
+                <?php $count = 1; ?>
+                @foreach($sli->getElectronicItems() as $eI)
+                <b>Item {{$count}} expiry: </b>{{$eI->get()->expiryForUser}}
+                <br/>
+                <?php $count++; ?>
+                @endforeach
+                
                 <a href="/remove-from-cart?eSId={{$sli->getElectronicSpecification()->get()->id}}" class="btn btn-info" role="button"> Remove </a>
                 <hr>
             @endforeach

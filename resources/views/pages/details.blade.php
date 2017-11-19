@@ -155,6 +155,8 @@
         <br/>
         @if(isset($queryStringBack))
         <a href="/?{{$queryStringBack}}" class="btn btn-info" role="button"> Back to Filtering Result </a>
+        @elseif($shoppingCart)
+        <a href="/shopping-cart" class="btn btn-info" role="button"> Back to Shopping Cart </a>
         @else
         <a href="/" class="btn btn-info" role="button"> Back to Catalog </a>
         @endif

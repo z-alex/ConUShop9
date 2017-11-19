@@ -110,46 +110,48 @@ class MainController extends BaseController {
     public function showDetails(Request $request) {
         $eS = $this->electronicCatalogMapper->getElectronicSpecification($request->input('id'));
 
-        $lastInputs = $request->session()->get('lastInputs');
-        $eSpecifications = $request->session()->get('electronicSpecifications');
+        if ($request->input('shoppingCart')) {
+            return view('pages.details', ['eS' => $eS, 'shoppingCart' => true]);
+        } else {
+            $lastInputs = $request->session()->get('lastInputs');
+            $eSpecifications = $request->session()->get('electronicSpecifications');
 
-        if($eSpecifications){
-        //Determine previous id of the filtered ES list
-        $previousESId = -1;
-        $previousES = null;
-        foreach ($eSpecifications as $eSpecification) {
-            if ($eSpecification->id === $request->input('id') && $previousES !== null) {
-                $previousESId = $previousES->id;
-                break;
+            if ($eSpecifications) {
+                //Determine previous id of the filtered ES list
+                $previousESId = -1;
+                $previousES = null;
+                foreach ($eSpecifications as $eSpecification) {
+                    if ($eSpecification->id === $request->input('id') && $previousES !== null) {
+                        $previousESId = $previousES->id;
+                        break;
+                    }
+                    $previousES = $eSpecification;
+                }
+
+                //Determine next id of the filtered ES list
+                $nextESId = -1;
+                $backwards = array_reverse($eSpecifications);
+                $nextES = null;
+                foreach ($backwards as $eSpecification) {
+                    if ($eSpecification->id === $request->input('id') && $nextES !== null) {
+                        $nextESId = $nextES->id;
+                        break;
+                    }
+                    $nextES = $eSpecification;
+                }
+
+                //Create a query string that will be used to return to the catalog with the same filtering results
+                $queryStringBack = "";
+                foreach ($lastInputs as $key => $value) {
+                    $queryStringBack .= $key . "=" . $value . "&";
+                }
+                $queryStringBack = rtrim($queryStringBack, '&');
+
+                return view('pages.details', ['eS' => $eS, 'queryStringBack' => $queryStringBack, 'nextESId' => $nextESId, 'previousESId' => $previousESId]);
+            } else {
+                return view('pages.details', ['eS' => $eS]);
             }
-            $previousES = $eSpecification;
         }
-
-        //Determine next id of the filtered ES list
-        $nextESId = -1;
-        $backwards = array_reverse($eSpecifications);
-        $nextES = null;
-        foreach ($backwards as $eSpecification) {
-            if ($eSpecification->id === $request->input('id') && $nextES !== null) {
-                $nextESId = $nextES->id;
-                break;
-            }
-            $nextES = $eSpecification;
-        }
-
-        //Create a query string that will be used to return to the catalog with the same filtering results
-        $queryStringBack = "";
-        foreach ($lastInputs as $key => $value) {
-            $queryStringBack .= $key . "=" . $value . "&";
-        }
-        $queryStringBack = rtrim($queryStringBack, '&');
-        
-        return view('pages.details', ['eS' => $eS, 'queryStringBack' => $queryStringBack, 'nextESId' => $nextESId, 'previousESId' => $previousESId]);
-        }else{
-            return view('pages.details', ['eS' => $eS]);
-        }
-        
-        
     }
 
 }

@@ -9,108 +9,189 @@ use Go\Lang\Annotation\After;
 use Go\Lang\Annotation\Around;
 use Go\Lang\Annotation\Pointcut;
 use Psr\Log\LoggerInterface;
+use Session;
+use Hash;
 
 /**
  * Application logging aspect (Example provided by goaop-laravel-bridge)
  */
-class IdentityMapAspect implements Aspect
-{
-    /**
-     * 
-     */
-    //private $logger;
-    
+class IdentityMapAspect implements Aspect {
+
     private $map;
 
-    public function __construct()
-    {
-        //$this->logger = $logger;
+    function __construct() {
+        $this->map = array();
     }
 
     /**
-     * Writes a log info before method execution
+     * Intercept saveES
      *
      * @param MethodInvocation $invocation
-     * @Before("execution(public **->*(*))")
+     * @After("execution(public App\Classes\Mappers\ElectronicCatalogMapper->saveES(*))")
      */
-    public function beforeMethod(MethodInvocation $invocation)
-    {
-        $this->logger->info($invocation, $invocation->getArguments());
+    public function saveES(MethodInvocation $invocation) {
+        /** @var ElectronicCatalogMapper $callee|$this */
+        $eS = $invocation->getArguments()[0];
+
+        $this->add('ElectronicSpecification', $eS);
+    }
+
+    /**
+     * Intercept updateES
+     *
+     * @param MethodInvocation $invocation
+     * @After("execution(public App\Classes\Mappers\ElectronicCatalogMapper->updateES(*))")
+     */
+    public function updateES(MethodInvocation $invocation) {
+        /** @var ElectronicCatalogMapper $callee|$this */
+        $eS = $invocation->getArguments()[0];
+
+        $this->modify('ElectronicSpecification', $eS);
+    }
+
+    /**
+     * Intercept saveEI
+     *
+     * @param MethodInvocation $invocation
+     * @After("execution(public App\Classes\Mappers\ElectronicCatalogMapper->saveEI(*))")
+     */
+    public function saveEI(MethodInvocation $invocation) {
+        /** @var ElectronicCatalogMapper $callee|$this */
+        $eI = $invocation->getArguments()[0];
+
+        $this->add('ElectronicItem', $eI);
+    }
+
+    /**
+     * Intercept deleteEI
+     *
+     * @param MethodInvocation $invocation
+     * @After("execution(public App\Classes\Mappers\ElectronicCatalogMapper->deleteEI(*))")
+     */
+    public function deleteEI(MethodInvocation $invocation) {
+        /** @var ElectronicCatalogMapper $callee|$this */
+        $eI = $invocation->getArguments()[0];
+
+        $this->delete('ElectronicItem', $eI);
+    }
+
+    /**
+     * Intercept deleteES
+     *
+     * @param MethodInvocation $invocation
+     * @After("execution(public App\Classes\Mappers\ElectronicCatalogMapper->deleteES(*))")
+     */
+    public function deleteES(MethodInvocation $invocation) {
+        /** @var ElectronicCatalogMapper $callee|$this */
+        $eS = $invocation->getArguments()[0];
+
+        $this->delete('ElectronicSpecification', $eS);
     }
     
     /**
-     * Intercept makeNewElectronicSpecification
-     * http://go.aopphp.com/docs/pointcut-reference/
+     * Intercept getElectronicSpecification
      *
      * @param MethodInvocation $invocation
-     * @After("execution(public ElectronicCatalogMapper->makeNewElectronicSpecification(*))", scope="target")
+     * @Before("execution(public App\Classes\Mappers\ElectronicCatalogMapper->getElectronicSpecification(*))")
      */
-    public function makeNewElectronicSpecification(MethodInvocation $invocation)
-    {
-        //http://go.aopphp.com/docs/privileged-advices/
-        
+    public function getElectronicSpecification(MethodInvocation $invocation) {
         /** @var ElectronicCatalogMapper $callee|$this */
-        $callee = $invocation->getThis();
+        $id = $invocation->getArguments()[0];
+
+        $eS = $this->get('ElectronicSpecification', 'id', $id);
         
-        $this->add('ElectronicSpecification', $callee->electronicSpecification);
-    }
-    
-    /**
-     * Intercept deleteElectronicItem
-     * http://go.aopphp.com/docs/pointcut-reference/
-     *
-     * @param MethodInvocation $invocation
-     * @After("execution(public ElectronicCatalogMapper->deleteElectronicItem(*))", scope="target")
-     */
-    public function deleteElectronicItem(MethodInvocation $invocation)
-    {        
-        /** @var ElectronicCatalogMapper $callee|$this */
-        $callee = $invocation->getThis();
-        
-        $this->delete('ElectronicItem', 'id', $callee->deletedEIId);
-    }
-    
-    /**
-     * Intercept makeNewCustomer
-     * http://go.aopphp.com/docs/pointcut-reference/
-     *
-     * @param MethodInvocation $invocation
-     * @After("execution(public UserCatalogMapper->makeNewCustomer(*))", scope="target")
-     */
-    public function makeNewCustomer(MethodInvocation $invocation){
-        
-        /** @var ElectronicCatalogMapper $callee|$this */
-        $callee = $invocation->getThis();
-        
-        if(!empty($callee->identityUser)){
-            $this->add('User', $callee->identityUser);
+        if($eS !== null){
+            return $eS;
         }
     }
-    
-    
-    
-    
-    
+
+    /**
+     * Intercept makeNewCustomer
+     *
+     * @param MethodInvocation $invocation
+     * @After("execution(public App\Classes\Mappers\UserCatalogMapper->makeNewCustomer(*))")
+     */
+    public function makeNewCustomer(MethodInvocation $invocation) {
+        $user = $invocation->getThis()->identityUser;
+
+        if (!empty($user)) {
+            $this->add('User', $user);
+        }
+    }
+
+    /**
+     * Intercept login
+     *
+     * @param MethodInvocation $invocation
+     * @Before("execution(public App\Classes\Mappers\UserCatalogMapper->login(*))")
+     */
+    public function login(MethodInvocation $invocation) {
+        $email = $invocation->getArguments()[0];
+        $password = $invocation->getArguments()[1];
+
+        $user = $this->get('User', 'email', $email);
+
+        if($user) {
+            if (Hash::check($user->get()->password, $password)) {
+                return true;
+            }
+        }
+    }
+
     private function add($objectClass, $object) {
+        if (Session::has('map')) {
+            $this->map = Session::get('map');
+        }
+
         if (isset($this->map[$objectClass])) {
             array_push($this->map[$objectClass], $object);
         } else {
             $this->map[$objectClass] = array();
             array_push($this->map[$objectClass], $object);
         }
+
+        Session::put('map', $this->map);
     }
 
-    private function delete($objectClass, $objectProperty, $objectPropertyValue) {
+    private function delete($objectClass, $object) {
+        if (Session::has('map')) {
+            $this->map = Session::get('map');
+        }
+
         if (isset($this->map[$objectClass])) {
             foreach ($this->map[$objectClass] as $key => $value) {
-                if ($this->map[$objectClass][$key]->get()->$objectProperty === $objectPropertyValue) {
+                if ($this->map[$objectClass][$key]->get()->id === $object->get()->id) {
                     unset($this->map[$objectClass][$key]);
+                    break;
                 }
             }
         }
+
+        Session::put('map', $this->map);
+    }
+
+    private function modify($objectClass, $object) {
+        if (Session::has('map')) {
+            $this->map = Session::get('map');
+        }
+
+        if (isset($this->map[$objectClass])) {
+            foreach ($this->map[$objectClass] as $key => $value) {
+                if ($this->map[$objectClass][$key]->get()->id === $object->get()->id) {
+                    $this->map[$objectClass][$key] = $object;
+                    break;
+                }
+            }
+        }
+
+        Session::put('map', $this->map);
     }
 
     private function get($objectClass, $objectProperty, $objectPropertyValue) {
+        if (Session::has('map')) {
+            $this->map = Session::get('map');
+        }
+
         if (isset($this->map[$objectClass])) {
             foreach ($this->map[$objectClass] as $object) {
                 if ($object->get()->$objectProperty === $objectPropertyValue) {
@@ -126,6 +207,7 @@ class IdentityMapAspect implements Aspect
 
     private function clear() {
         $this->map = array();
+        Session::forget('map');
     }
-    
+
 }

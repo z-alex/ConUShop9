@@ -27,9 +27,7 @@ class ElectronicSpecificationTDG {
         $queryString = substr($queryString, 0, -2);
         $this->conn->query($queryString, $parameters);
         
-        $queryString = "SELECT * FROM ElectronicSpecification WHERE id = LAST_INSERT_ID()";
-
-        return $this->conn->directQuery($queryString);
+        return $this->conn->getPDOConnection()->lastInsertId();
     }
 
     public function update($eS) {

@@ -7,60 +7,73 @@ use App\Classes\TDG\ElectronicItemTDG;
 use App\Classes\Core\ElectronicCatalog;
 use App\Classes\Core\ElectronicItem;
 use App\Classes\UnitOfWork;
-use App\Classes\IdentityMap;
+//use App\Classes\IdentityMap;
 use App\Classes\Core\DesktopSpecification;
 use App\Classes\Core\LaptopSpecification;
 use App\Classes\Core\MonitorSpecification;
 use App\Classes\Core\TabletSpecification;
+use App\Aspect\IdentityMapAspect;
 
 class ElectronicCatalogMapper {
 
     private $electronicCatalog;
     private $electronicSpecificationTDG;
     private $unitOfWork;
-    private $identityMap;
+    //private $identityMap;
     private $lockFilePointer;
+    private $identityMapAspect;
 
     function __construct() {
         $this->electronicSpecificationTDG = new ElectronicSpecificationTDG();
         $this->electronicItemTDG = new ElectronicItemTDG();
         $this->electronicCatalog = new ElectronicCatalog($this->electronicSpecificationTDG->findAll());
         $this->unitOfWork = new UnitOfWork(['electronicCatalogMapper' => $this]);
-        $this->identityMap = new IdentityMap();
+        //$this->identityMap = new IdentityMap();
+        $this->identityMapAspect = new IdentityMapAspect();
     }
 
     function saveES($electronicSpecification) {
-        $this->electronicSpecificationTDG->insert($electronicSpecification);
-        
+        $id = $this->electronicSpecificationTDG->insert($electronicSpecification);
+
+        $electronicSpecification->set((object) ['id' => $id]);
+
         $this->electronicCatalog->insertElectronicSpecification($electronicSpecification);
+
+        //The IdentityMapAspect adds the element to the identity map after the execution of this method. Please see the class IdentityMapAspect.
     }
 
     function saveEI($eI) {
-        $this->electronicItemTDG->insert($eI);
+        $id = $this->electronicItemTDG->insert($eI);
+
+        $eI->set((object) ['id' => $id]);
 
         $this->electronicCatalog->insertElectronicItem($eI);
+
+        //The IdentityMapAspect adds the element to the identity map after the execution of this method. Please see the class IdentityMapAspect.
     }
 
     function updateES($electronicSpecification) {
         $this->electronicSpecificationTDG->update($electronicSpecification);
 
         $this->electronicCatalog->modifyElectronicSpecification($electronicSpecification);
+
+        //The IdentityMapAspect updates the element to the identity map after the execution of this method. Please see the class IdentityMapAspect.
     }
 
     function deleteEI($electronicItem) {
         $this->electronicItemTDG->delete($electronicItem);
 
-        $this->identityMap->delete('ElectronicItem', $electronicItem);
-
         $this->electronicCatalog->deleteElectronicItem($electronicItem);
+
+        //The IdentityMapAspect deletes the element to the identity map after the execution of this method. Please see the class IdentityMapAspect.
     }
 
     function deleteES($eS) {
         $this->electronicSpecificationTDG->delete($eS);
 
-        $this->identityMap->delete('ElectronicSpecification', $eS);
-
         $this->electronicCatalog->deleteElectronicSpecification($eS);
+        
+        //The IdentityMapAspect deletes the element to the identity map after the execution of this method. Please see the class IdentityMapAspect.
     }
 
     function applyChanges() {
@@ -90,7 +103,7 @@ class ElectronicCatalogMapper {
                     $eS = new TabletSpecification($eSData);
                     break;
             }
-            
+
             $this->unitOfWork->registerNew($eS);
 
             return true;
@@ -143,16 +156,14 @@ class ElectronicCatalogMapper {
 
     function prepareDeleteEI($eIId) {
 
-            $eI = $this->electronicCatalog->getElectronicItemById($eIId);
-            return $this->unitOfWork->registerDeleted($eI);
-
+        $eI = $this->electronicCatalog->getElectronicItemById($eIId);
+        return $this->unitOfWork->registerDeleted($eI);
     }
 
     function prepareDeleteES($eSId) {
 
-            $eS = $this->electronicCatalog->getElectronicSpecificationById($eSId);
-            return $this->unitOfWork->registerDeleted($eS);
-
+        $eS = $this->electronicCatalog->getElectronicSpecificationById($eSId);
+        return $this->unitOfWork->registerDeleted($eS);
     }
 
     function getAllElectronicSpecifications() {
@@ -166,11 +177,9 @@ class ElectronicCatalogMapper {
     }
 
     function getElectronicSpecification($id) {
-        $this->lockDataAccess();
+        //The IdentityMapAspect checks in the identityMap before the execution of this method. Please see the class IdentityMapAspect.
 
         $electronicSpecification = $this->electronicCatalog->getElectronicSpecificationById($id)->get();
-
-        $this->unlockDataAccess();
 
         return $electronicSpecification;
     }

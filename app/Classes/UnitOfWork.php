@@ -81,9 +81,6 @@ class UnitOfWork {
             if ($new instanceof ElectronicItem) {
                 $this->electronicCatalogMapper->saveEI($new);
             }
-            if ($new instanceof User) {
-                $this->userCatalogMapper->saveUser($new);
-            }
         }
         foreach ($this->changedList as $changed) {
             if ($changed instanceof ElectronicSpecification) {

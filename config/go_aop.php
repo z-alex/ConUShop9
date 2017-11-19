@@ -69,7 +69,9 @@ return [
      */
     'includePaths' => [
         app_path('Classes/Core/ShoppingCart'),
-        app_path('Classes/Mappers/ShoppingCartMapper')
+        app_path('Classes/Mappers'),
+        app_path('Classes/TDG'),
+        app_path('Classes/UnitOfWork')
     ],
 
     /*

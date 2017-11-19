@@ -55,7 +55,7 @@ class AdminController extends BaseController {
         } else if ($request->input('deleteEIButton') !== null) {
             $result = $this->electronicCatalogMapper->prepareDeleteEI($request->input('deleteEIButton'));
             if ($result == false) {
-                Session::flash('error_msg', "EI already on changed item list.");
+                Session::flash('error_msg', "The Electronic Item is already in the deleted list.");
                 return Redirect::back();
             } else {
                 Session::flash('success_msg', "Successfully added to changed item list.");
@@ -64,7 +64,7 @@ class AdminController extends BaseController {
         } else if ($request->input('deleteESButton') !== null) {
             $result = $this->electronicCatalogMapper->prepareDeleteES($request->input('deleteESButton'));
             if ($result == false) {
-                Session::flash('error_msg', "ES already on changed item list.");
+                Session::flash('error_msg', "The Electronic Specification is already in the deleted list.");
                 return Redirect::back();
             } else {
                 Session::flash('success_msg', "Successfully added to changed item list.");

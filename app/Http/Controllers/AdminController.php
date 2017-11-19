@@ -53,13 +53,23 @@ class AdminController extends BaseController {
             }
             return view('index', ['eSToModify' => $eSToModify]);
         } else if ($request->input('deleteEIButton') !== null) {
-            $this->electronicCatalogMapper->prepareDeleteEI($request->input('deleteEIButton'));
-            Session::flash('success_msg', "Successfully added to changed item list.");
-            return Redirect::back();
+            $result = $this->electronicCatalogMapper->prepareDeleteEI($request->input('deleteEIButton'));
+            if($result == false){
+                Session::flash('error_msg', "EI already on changed item list.");
+                return Redirect::back();
+            }else{
+                Session::flash('success_msg', "Successfully added to changed item list.");
+                return Redirect::back();
+            }
         } else if ($request->input('deleteESButton') !== null) {
-            $this->electronicCatalogMapper->prepareDeleteES($request->input('deleteESButton'));
-            Session::flash('success_msg', "Successfully added to changed item list.");
-            return Redirect::back();
+            $result = $this->electronicCatalogMapper->prepareDeleteES($request->input('deleteESButton'));
+            if($result == false){
+                Session::flash('error_msg', "ES already on changed item list.");
+                return Redirect::back();
+            }else{
+                Session::flash('success_msg', "Successfully added to changed item list.");
+                return Redirect::back();
+            }
         } else if ($request->input('applyChangesButton') !== null) {
             $this->electronicCatalogMapper->applyChanges();
             Session::flash('success_msg', "Successfully applied changes.");

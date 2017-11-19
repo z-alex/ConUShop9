@@ -124,7 +124,7 @@ class ElectronicCatalog {
     
     function insertElectronicItem($eI) {
         foreach($this->eSList as $key => $value){
-            if($this->eSList[$key]->get()->id === $eI->get()->id){
+            if($this->eSList[$key]->get()->id === $eI->get()->ElectronicSpecification_id){
                 $this->eSList[$key]->addElectronicItem($eI);
                 break;
             }

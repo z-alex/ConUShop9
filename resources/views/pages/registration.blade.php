@@ -41,7 +41,7 @@
 
           <div class ="form-group">
   			       <label for="physicalAddress">Address</label>
-  			          <input type="text" class ="form-control" id="physicalAddress" placeholder="123 Avenue H1C-4G9" name="physicalAddress">
+  			          <input type="text" class ="form-control" id="physicalAddress" placeholder="123 Avenue H1C 4G9" name="physicalAddress">
   		    </div>
 
             <button type="submit" class="btn btn-info btn-block">Register</button>

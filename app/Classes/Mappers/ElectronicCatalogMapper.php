@@ -142,15 +142,17 @@ class ElectronicCatalogMapper {
     }
 
     function prepareDeleteEI($eIId) {
-        $eI = $this->electronicCatalog->getElectronicItemById($eIId);
 
-        $this->unitOfWork->registerDeleted($eI);
+            $eI = $this->electronicCatalog->getElectronicItemById($eIId);
+            return $this->unitOfWork->registerDeleted($eI);
+
     }
 
     function prepareDeleteES($eSId) {
-        $eS = $this->electronicCatalog->getElectronicSpecificationById($eSId);
 
-        $this->unitOfWork->registerDeleted($eS);
+            $eS = $this->electronicCatalog->getElectronicSpecificationById($eSId);
+            return $this->unitOfWork->registerDeleted($eS);
+
     }
 
     function getAllElectronicSpecifications() {

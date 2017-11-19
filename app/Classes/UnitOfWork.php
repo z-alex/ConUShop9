@@ -57,8 +57,19 @@ class UnitOfWork {
     }
 
     function registerDeleted($object) {
-        array_push($this->deletedList, $object);
-        $this->setSession();
+        $exist = false;
+        foreach ($this->deletedList as $deleted){
+            if($object->get()->id == $deleted->get()->id){
+                $exist = true;
+            }
+        }
+        if($exist){
+            return false;
+        } else {
+            array_push($this->deletedList, $object);
+            $this->setSession();
+            return true;
+        }
     }
 
     function commit() {
@@ -106,7 +117,7 @@ class UnitOfWork {
         $this->newList = array();
         $this->changedList = array();
         $this->deletedList = array();
-        
+
         Session::forget('newList');
         Session::forget('changedList');
         Session::forget('deletedList');

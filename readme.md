@@ -20,6 +20,18 @@
 - Username: ```admin3@conushop.com```
 - Password: ```admin```
 
+*Client 1:*
+- Username: ```client1@conushop.com```
+- Password: ```admin```
+
+*Client 2:*
+- Username: ```client2@conushop.com```
+- Password: ```admin```
+
+*Client 3:*
+- Username: ```client3@conushop.com```
+- Password: ```admin```
+
 ## Team 9 Members
 - Jean-Michel Laliberté
 - Alex Zhang

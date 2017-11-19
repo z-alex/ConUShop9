@@ -63,4 +63,11 @@ class UserCatalogMapper {
         }
     }
 
+function getAllCustomers() {
+		return $this->userCatalog->getCustomerList();
+	}
+
+	function deleteAccount($userID) {
+		$this->userCatalog->deleteUser($userID);
+	}
 }

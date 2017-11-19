@@ -85,4 +85,35 @@ class UserCatalog
         return $user;
     }
 
+	function getCustomerList(){
+		
+		$customers = array();
+		foreach($this->getUserlist() as $user){
+			if(!($user->admin)){
+				array_push($customers, $user);
+			}
+		}
+		return $customers;
+	
+		//return $this->getUserList();
+
+		/*$customers = array();
+        foreach ($this->userList as $user) {
+			if($user->admin ===1){
+            array_push($customers, $user->get());
+			}
+        }
+        return $customers;
+		*/
+		 
+		/*$customers = array();
+
+		foreach ($this->userList as $user){
+			if ($user->admin === 0) {
+				array_push($customers, $user->getUserList());
+			}
+		}
+		return $customers;
+		*/
+	}
 }

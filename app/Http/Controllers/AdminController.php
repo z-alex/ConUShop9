@@ -16,6 +16,9 @@ use Illuminate\Http\Request;
 use App\Classes\Mappers\ElectronicCatalogMapper;
 use Image;
 use Session;
+use App\Classes\Mappers\UserCatalogMapper;
+
+	
 
 //reference: https://www.cloudways.com/blog/laravel-login-authentication/
 class AdminController extends BaseController {
@@ -24,7 +27,7 @@ class AdminController extends BaseController {
 
     public function __construct() {
         $this->electronicCatalogMapper = new ElectronicCatalogMapper();
-
+		$this->userCatalogMapper = new UserCatalogMapper();
         $this->middleware(function ($request, $next) {
 
             if (session()->has('newList') || session()->has('changedList') || session()->has('deletedList')) {
@@ -158,5 +161,12 @@ class AdminController extends BaseController {
             return Redirect::back()->withInput();
         }
     }
+
+	public function showAllCustomers() {
+		$userList = $this->userCatalogMapper->getAllCustomers();
+
+		return view('pages.view-all-customers', ['userList' => $userList]);
+	}
+
 
 }

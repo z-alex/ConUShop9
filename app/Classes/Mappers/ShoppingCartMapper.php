@@ -29,7 +29,7 @@ class ShoppingCartMapper {
         $this->identityMap = new IdentityMap();
 
         //$this->shoppingCart->setEIList($this->electronicItemTDG->findAllEIFromUser($userId));
-        $this->shoppingCart->setSLIs($this->electronicItemTDG->findAllSLIFromUser($userId));
+        $this->shoppingCart->setSLIs($this->electronicItemTDG->findAllShoppingCartSLIFromUser($userId));
     }
 
     /**
@@ -60,7 +60,7 @@ class ShoppingCartMapper {
     }
 
     function viewCart(){
-        return $this->shoppingCart->getSLIs();
+        return $this->shoppingCart->getSalesLineItems();
     }
 
     function removeFromCart($eSId, $userId){

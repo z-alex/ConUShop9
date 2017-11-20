@@ -40,8 +40,7 @@ class ElectronicSpecification {
 
     public function addElectronicItem($electronicItemData) {
         $electronicItem = new ElectronicItem($electronicItemData);
-        
-        $this->electronicItems[] = $electronicItem;
+        array_push($this->electronicItems, $electronicItem);
 
         return $electronicItem;
     }

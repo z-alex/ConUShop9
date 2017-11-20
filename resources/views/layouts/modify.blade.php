@@ -9,7 +9,7 @@
 
         @include('includes.feedback')
 
-        <script type="text/javascript" src="{{ URL::asset('js/validation.js') }}"></script>
+       <script type="text/javascript" src="{{ URL::asset('js/validation.js') }}"></script>
         <div class="pageContainer container-fluid">
 
             <div class="container">
@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="quantity">Add Quantity: </label>
                         <div class="col-sm-10">
-                            <input type="number" min=0 max=200 class="form-control" id="quantity" name="quantity" value=0>
+                            <input type="number" max=50 class="form-control" id="quantity" name="quantity" value=1>
                         </div>
                     </div>
                     @yield('content')

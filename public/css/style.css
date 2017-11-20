@@ -107,7 +107,6 @@ th, td {
 .affix {
     position: fixed;
     top: 30%;
-    bottom: 0;
     right: 0;
     overflow-y: auto;
 }

@@ -93,7 +93,7 @@ class UserTDG {
 
     public function add($user) {
 
-        $objectData = (array) ( $user->get());
+        $objectData = (array) ($user->get());
 
         foreach ($objectData as $key => $value) {
             if (is_array($objectData[$key]) || is_null($objectData[$key])) {

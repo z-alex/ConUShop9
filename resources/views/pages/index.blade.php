@@ -100,6 +100,7 @@
     <?php $k = 0 ?>
 
     @foreach ($electronicSpecifications as $eS)
+    @if(!$eS->isDeleted)
     @if($k % 5 == 0)
     <div class="row catalogRow">
         @endif
@@ -133,11 +134,11 @@
             <a href="/add-to-cart?eSId={{$eS->id}}" class="btn btn-info" role="button"> Add To Cart </a>
             @endif
         </div>
-         <?php $k++ ?>
+        <?php $k++ ?>
         @if($k % 5 == 0)
     </div>
     @endif
-   
+    @endif
     @endforeach
     @endif
 

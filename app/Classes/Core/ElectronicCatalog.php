@@ -77,7 +77,7 @@ class ElectronicCatalog {
     function deleteElectronicSpecification($eSToDelete){
         foreach($this->eSList as $key => $value){
             if($this->eSList[$key]->get()->id === $eSToDelete->get()->id){
-                unset($this->eSList[$key]);
+                $this->eSList[$key]->set((object) ['isDeleted' => 1]);
             }
         }
     }

@@ -23,7 +23,7 @@ $(document).ready(function () {
     lastName.required = true;
 
     var email = document.getElementById("email");
-    email.setAttribute("pattern", "[A-z,1-9]*@[A-z]*(.com|.ca)");
+    email.setAttribute("pattern", "[^[^%$#!^&*()+]+@[a-zA-Z]*(.com|.ca)$");
     email.oninvalid = function (event) {
         event.target.setCustomValidity("Email must be valid ie:JohnDoe@hotmail.com");
     };
@@ -37,9 +37,9 @@ $(document).ready(function () {
     password.required = true;
 
     var phone = document.getElementById("phone");
-    phone.setAttribute("pattern", "^(\\d){3}-(\\d){3}-(\\d){4}$");
+    phone.setAttribute("pattern", "^(\\d){3}-?(\\d){3}-?(\\d){4}$");
     phone.oninvalid = function (event) {
-        event.target.setCustomValidity("Phone number must be of format XXX-XXX-XXXX");
+        event.target.setCustomValidity("Phone number must contain 10 digits or be in the form XXX-XXX-XXXX");
     };
     phone.required = true;
 

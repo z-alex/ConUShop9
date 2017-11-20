@@ -10,14 +10,14 @@
 <div class="form-group">
     <label class="control-label col-sm-2" for="displaySize">Display Size</label>
     <div class="col-sm-10">
-        <input type="number" min="0" step="0.1" class="form-control" id="displaySize" placeholder="Enter display size" name="displaySize" value="{{$eSToModify->weight}}">
+        <input type="text" class="form-control" id="displaySize" placeholder="Enter display size" name="displaySize" value="{{$eSToModify->weight}}">
     </div>
 </div>
 
 <div class="form-group">
     <label class="control-label col-sm-2" for="weight">Weight</label>
     <div class="col-sm-10">
-        <input type="number" min=0 class="form-control" id="weight" placeholder="Enter weight" name="weight" value="{{$eSToModify->weight}}">
+        <input type="text" class="form-control" id="weight" placeholder="Enter weight" name="weight" value="{{$eSToModify->weight}}">
     </div>
 </div>
 
@@ -41,7 +41,7 @@
 <div class="form-group">
     <label class="control-label col-sm-2" for="price">Price</label>
     <div class="col-sm-10">
-        <input type="number" min=0 class="form-control" id="price" placeholder="Enter price" name="price" value="{{$eSToModify->price}}">
+        <input type="text" class="form-control" id="price" placeholder="Enter price" name="price" value="{{$eSToModify->price}}">
     </div>
 </div>
 

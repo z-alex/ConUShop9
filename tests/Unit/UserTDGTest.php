@@ -14,7 +14,7 @@ use App\Classes\Core\UserCatalog;
 use App\Classes\TDG\UserTDG;
 use App\Classes\Mappers\UserCatalogMapper;
 
-class userTDGTest extends TestCase {
+class UserTDGTest extends TestCase {
 
 //Test the add method in userTDG to see if user got added into the database
 	public function testAdd(){

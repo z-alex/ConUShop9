@@ -64,7 +64,7 @@ class ElectronicCatalog {
 
         foreach ($this->eSList as $eS) {
             foreach ($eS->getElectronicItems() as $eI) {
-                if ($eI->get()->id === $id) {
+                if ($eI->get()->id == $id) {
                     $eS->deleteElectronicItem($id);
                     return $eI;
                 }

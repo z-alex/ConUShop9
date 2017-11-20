@@ -5,7 +5,7 @@
 <form method="post" action="inventory">
     <div class="col-lg-9">
         <h2 class="blueTitle text-center">Inventory</h2>
-        
+
         <button type="submit" id="addESButton" name="addESButton" class="btn btn-primary" value="true">Add Specification</button>
         <br /><br />
         <table>
@@ -32,6 +32,7 @@
             </tr>
             @if (! empty($electronicSpecifications))
             @foreach ($electronicSpecifications as $eS)
+            @if(!$eS->isDeleted)
             <tr bgcolor="#ededed">
                 <td>
                     <button type="submit" id="modifyButton" name="modifyESButton" class="btn btn-xs btn-primary" value="{{$eS->id}}">Add/Modify</button>
@@ -192,6 +193,194 @@
                 </td>
             </tr>
             @endforeach
+            @endif
+            @endif
+            @endforeach
+            @endif
+        </table>
+        
+        <br/>
+        <br/>
+        <h3>Deleted Specifications</h3>
+
+        <table>
+            <tr bgcolor="#bcbcbc">
+                <th>ID</th>
+                <th>Dimension</th>
+                <th>Weight</th>
+                <th>Model Number</th>
+                <th>Brand Name</th>
+                <th>Hard drive size</th>
+                <th>Price</th>
+                <th>Processor Type</th>
+                <th>Ram Size</th>
+                <th>CPU Cores</th>
+                <th>Battery Info</th>
+                <th>OS</th>
+                <th>Camera</th>
+                <th>Touch Screen</th>
+                <th>Display Size</th>
+                <th>Electronic Type</th>
+                <th>Product Image</th>
+            </tr>
+            @if (! empty($electronicSpecifications))
+            @foreach ($electronicSpecifications as $eS)
+            @if($eS->isDeleted)
+            <tr bgcolor="#ededed">
+                <td>
+                    @if ( isset($eS->id) )
+                    {{$eS->id}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->dimension) )
+                    {{$eS->dimension}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->weight )
+                    {{$eS->weight}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->modelNumber )
+                    {{$eS->modelNumber}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->brandName )
+                    {{$eS->brandName}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->hdSize) )
+                    {{$eS->hdSize}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->price )
+                    {{$eS->price}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->processorType) )
+                    {{$eS->processorType}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->ramSize) )
+                    {{$eS->ramSize}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->cpuCores) )
+                    {{$eS->cpuCores}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->batteryInfo) )
+                    {{$eS->batteryInfo}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->os) )
+                    {{$eS->os}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->camera) && !is_null($eS->camera) )
+                    @if ($eS->camera === "1")
+                    Yes
+                    @else
+                    No
+                    @endif
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->touchScreen) && !is_null($eS->touchScreen) )
+                    @if ($eS->camera === "1")
+                    Yes
+                    @else
+                    No
+                    @endif
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( isset($eS->displaySize) && $eS->displaySize )
+                    {{$eS->displaySize}} {{$eS->ElectronicType_displaySizeUnit}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->ElectronicType_name )
+                    {{$eS->ElectronicType_name}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>
+                    @if ( $eS->image && $eS->image !== null )
+                    <img class="imageInv" src="{{$eS->image}}" >
+                    @else
+                    N/A
+                    @endif
+                </td>
+
+            </tr>
+            @if ($eS->electronicItems)
+            @foreach ($eS->electronicItems as $eI)
+
+            <tr>
+                <td>
+
+                </td>
+                <td>
+                    <button type="submit" id="deleteEIButton" name="deleteEIButton" class="btn btn-xs btn-info" value="{{$eI->id}}">Delete</button>
+                </td>
+                <td>
+                    @if ( isset($eI->id) )
+                    {{$eI->id}}
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td colspan="16">
+                    @if ( $eI->serialNumber )
+                    <b>Serial Number:</b> {{$eI->serialNumber}}
+                    @endif
+                </td>
+            </tr>
+            @endforeach
+            @endif
             @endif
             @endforeach
             @endif

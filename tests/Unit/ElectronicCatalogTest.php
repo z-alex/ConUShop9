@@ -54,8 +54,9 @@ class ElectronicCatalogTest extends TestCase {
 
         $electronicCatalog = new ElectronicCatalog();
         $electronicCatalog->setESList(array($electronicData));
-        $electronicCatalog->modifyElectronicSpecification($electronicData->id, $electronicData);
-
+        
+        
+        $electronicCatalog->modifyElectronicSpecification(new ElectronicSpecification($electronicData));
 
         $catalogList = $electronicCatalog->getEsList();
         $catalogListJson = json_decode(json_encode($catalogList), true);
@@ -109,7 +110,7 @@ class ElectronicCatalogTest extends TestCase {
         $item1Data = new \stdClass();
         $item1Data->id = 1;
         $item1Data->serialNumber = 123;
-        $item1Data->ElectronicSpecification_id = "123";
+        $item1Data->ElectronicSpecification_id = "1";
         //$electronicItems=array($item1Data);
 
         $electronicData = new \stdClass();
@@ -132,15 +133,19 @@ class ElectronicCatalogTest extends TestCase {
         $electronicData->electronicItems = array();
 
         $electronicCatalog = new ElectronicCatalog();
-        $electronicCatalog->makeElectronicSpecification($electronicData);
-        $electronicCatalog->insertElectronicItem($electronicData->modelNumber, $item1Data);
+        
+        $electronicCatalog->insertElectronicSpecification(new ElectronicSpecification($electronicData));
+        $electronicCatalog->insertElectronicItem(new ElectronicItem($item1Data));
 
         $catalogList = $electronicCatalog->getEsList();
         $catalogListJson = json_decode(json_encode($catalogList), true);
 
         $itemDataJson = json_decode(json_encode($item1Data), true);
+        
         $valuesMatch = false;
+        
         $valueOfItemIndex;
+        
         //retrieve which array index is the item we have just added into the
         //specification
         foreach ($catalogListJson[0]["electronicItems"] as $itemIndex => $item) {
@@ -153,9 +158,12 @@ class ElectronicCatalogTest extends TestCase {
         //compare values of object retrieved with the ones we used to add into
         //the specification
         foreach ($catalogListJson[0]["electronicItems"] as $itemIndex => $item) {
+            
             foreach ($item as $attributeKey => $attributeValue) {
+                
                 if ($catalogListJson[0]["electronicItems"][$valueOfItemIndex]["id"] == $item1Data->id) {
                     if($attributeKey !== "User_id" && $attributeKey !== "expiryForUser") {
+                        
                         if ($attributeValue == $itemDataJson[$attributeKey]) {
                             $valuesMatch = true;
                         } else {

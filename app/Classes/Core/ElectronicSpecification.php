@@ -38,18 +38,20 @@ class ElectronicSpecification {
     }
 
     public function addElectronicItem($electronicItemData) {
-        $electronicItem = new ElectronicItem();
+        $electronicItem = new ElectronicItem($electronicItemData);
         
-        $electronicItem->set($electronicItemData);
-        
-        array_push($this->electronicItems, $electronicItem);
+        $this->electronicItems[] = $electronicItem;
 
         return $electronicItem;
     }
 
+    /**
+     * Delete an electronic item from an ElectronicSpecification object by id
+     * @param type $id
+     */
     public function deleteElectronicItem($id) {
         foreach ($this->electronicItems as $key => $value) {
-            if ($id === $this->electronicItems[$key]->getId()) {
+            if ($id == $this->electronicItems[$key]->getId()) {
                 unset($this->electronicItems[$key]);
             }
         }
@@ -76,9 +78,9 @@ class ElectronicSpecification {
         }
 
         if (isset($data->electronicItems)) {
-            $this->electronicItems = array();
-            foreach ($data->electronicItems as $key => $value) {
-                $this->addElectronicItem($data->electronicItems[$key]);
+            $this->electronicItems = [];
+            foreach ($data->electronicItems as $entry) {
+                $this->addElectronicItem($entry);
             }
         }
 

@@ -39,8 +39,6 @@ class ElectronicSpecificationTDGTest extends TestCase {
         
         $foundES = (array) $electronicSpecificationTDG->find(['id' => $insertedId])[0];
         
-        print_r($foundES);
-        
         $sameValues = true;
         
         foreach($eSData as $key => $value){            

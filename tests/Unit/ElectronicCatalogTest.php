@@ -214,8 +214,11 @@ class ElectronicCatalogTest extends TestCase {
         $electronicData->electronicItems = $electronicItems;
 
         $electronicCatalog = new ElectronicCatalog();
-        $electronicCatalog->makeElectronicSpecification($electronicData);
+
+        $electronicCatalog->insertElectronicSpecification(new ElectronicSpecification($electronicData));
+        
         $catalogList = $electronicCatalog->getEsList();
+
         $catalogListJson = json_decode(json_encode($catalogList), true);
         $electronicDataJson = json_decode(json_encode($electronicData), true);
 
@@ -303,7 +306,7 @@ class ElectronicCatalogTest extends TestCase {
 
       $electronicDataJson = json_decode(json_encode($electronicData), true);
       $valuesMatch = false;
-      var_dump($electronicDataJson);
+      //var_dump($electronicDataJson);
 
       //compare values added from electronicData with the actual
       //ElectronicSpecification object
@@ -439,9 +442,11 @@ class ElectronicCatalogTest extends TestCase {
         //where it will convert to associative array"
         //https://stackoverflow.com/questions/19495068/convert-stdclass-object-to-array-in-php
         $array = json_decode(json_encode($catalogList), true);
-        $sizeElectronicCatalogBefore = sizeof($array[0]["electronicItems"]);
-        //dump ($sizeElectronicCatalogBefore);
-        $electronicCatalog->deleteElectronicItem(1);
+        $sizeElectronicCatalogBefore = sizeof($array[0]["electronicItems"]);        
+        
+        //$electronicItem = new ElectronicItem($electronicData);
+        
+        $electronicCatalog->deleteElectronicItem(new ElectronicItem($electronicData));
 
         //update the catalog json after the catalog has been modified
         $catalogList = $electronicCatalog->getESList();
@@ -449,8 +454,7 @@ class ElectronicCatalogTest extends TestCase {
         $sizeElectronicCatalogAfter = sizeof($array[0]["electronicItems"]);
         //dump ($sizeElectronicCatalogBefore);
 
-
-        $this->assertTrue($sizeElectronicCatalogBefore !== $sizeElectronicCatalogAfter);
+        $this->assertTrue($sizeElectronicCatalogBefore == 1 + $sizeElectronicCatalogAfter);
     }
 
     public function testSetGet() {

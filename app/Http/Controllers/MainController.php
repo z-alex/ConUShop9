@@ -115,6 +115,12 @@ class MainController extends BaseController {
         } else {
             $lastInputs = $request->session()->get('lastInputs');
             $eSpecifications = $request->session()->get('electronicSpecifications');
+            
+            foreach($eSpecifications as $key => $value){
+                if($eSpecifications[$key]->isDeleted){
+                    unset($eSpecifications[$key]);
+                }
+            }
 
             if ($eSpecifications) {
                 //Determine previous id of the filtered ES list

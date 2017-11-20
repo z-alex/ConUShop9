@@ -123,7 +123,15 @@ class AdminController extends BaseController {
     public function showInventory() {
         $electronicSpecifications = $this->electronicCatalogMapper->getAllElectronicSpecifications();
         
-        return view('pages.inventory', ['electronicSpecifications' => $electronicSpecifications]);
+        $deletedESList = array();
+        foreach($electronicSpecifications as $key => $value){
+            if($electronicSpecifications[$key]->isDeleted){
+                array_push($deletedESList, $electronicSpecifications[$key]);
+                unset($electronicSpecifications[$key]);
+            }
+        }
+        
+        return view('pages.inventory', ['electronicSpecifications' => $electronicSpecifications, 'deletedESList' => $deletedESList]);
     }
 
     public function showAddElectronicSpecification() {

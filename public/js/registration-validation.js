@@ -30,9 +30,9 @@ $(document).ready(function () {
     email.required = true;
 
     var password = document.getElementById("password");
-    password.setAttribute("pattern", "^.{6,16}$");
+    password.setAttribute("pattern", "^\\S{6,16}");
     password.oninvalid = function (event) {
-        event.target.setCustomValidity("Password must be of length between 6 to 16.");
+        event.target.setCustomValidity("Password must be of length between 6 to 16 and must not contain white spaces.");
     };
     password.required = true;
 
@@ -46,7 +46,7 @@ $(document).ready(function () {
     var physicalAddress = document.getElementById("physicalAddress");
     physicalAddress.setAttribute("pattern", "^[A-z,0-9,',\\-,.,\\s]*$");
     physicalAddress.oninvalid = function (event) {
-        event.target.setCustomValidity("Address must be of format ie: 111 Street H1Z 4C9");
+        event.target.setCustomValidity("Address must not contain symbols such as @#$%^*");
     };
     physicalAddress.required = true;
 

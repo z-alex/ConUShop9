@@ -8,14 +8,14 @@
 <input type="hidden" name="ElectronicType_name" value="Monitor">
 
 <div class="form-group">
-    <label class="control-label col-sm-2" for="displaySize">Display Size</label>
+    <label class="control-label col-sm-2" for="displaySize">Display Size(inch)</label>
     <div class="col-sm-10">
         <input type="text" class="form-control" id="displaySize" placeholder="Enter display size" name="displaySize" value="{{$eSToModify->weight}}">
     </div>
 </div>
 
 <div class="form-group">
-    <label class="control-label col-sm-2" for="weight">Weight</label>
+    <label class="control-label col-sm-2" for="weight">Weight(kg)</label>
     <div class="col-sm-10">
         <input type="text" class="form-control" id="weight" placeholder="Enter weight" name="weight" value="{{$eSToModify->weight}}">
     </div>

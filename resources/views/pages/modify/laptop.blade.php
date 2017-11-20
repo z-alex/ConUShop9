@@ -8,7 +8,7 @@
 <input type="hidden" name="ElectronicType_name" value="Laptop">
 
 <div class="form-group">
-    <label class="control-label col-sm-2" for="displaySize">Display Size</label>
+    <label class="control-label col-sm-2" for="displaySize">Display Size(inch)</label>
     <div class="col-sm-10">
         <input type="text" class="form-control" id="displaySize" placeholder="Enter display size (widthxheight)" name="displaySize" value="{{$eSToModify->displaySize}}">
     </div>
@@ -29,7 +29,7 @@
 </div>
 
 <div class="form-group">
-    <label class="control-label col-sm-2" for="hardDriveSize">Hard drive size</label>
+    <label class="control-label col-sm-2" for="hardDriveSize">Hard drive size(GB)</label>
     <div class="col-sm-10">
         <input type="text" class="form-control" id="hdSize" placeholder="Enter hard drive size" name="hdSize" value="{{$eSToModify->hdSize}}">
     </div>
@@ -51,7 +51,7 @@
 </div>
 
 <div class="form-group">
-    <label class="control-label col-sm-2" for="weight">Weight</label>
+    <label class="control-label col-sm-2" for="weight">Weight(kg)</label>
     <div class="col-sm-10">
         <input type="text" class="form-control" id="weight" placeholder="Enter weight" name="weight" value="{{$eSToModify->weight}}">
     </div>

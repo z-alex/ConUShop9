@@ -38,8 +38,7 @@ class ElectronicSpecification {
         $this->set($data);
     }
 
-    public function addElectronicItem($electronicItemData) {
-        $electronicItem = new ElectronicItem($electronicItemData);
+    public function addElectronicItem($electronicItem) {
         array_push($this->electronicItems, $electronicItem);
 
         return $electronicItem;
@@ -83,7 +82,9 @@ class ElectronicSpecification {
         if (isset($data->electronicItems)) {
             $this->electronicItems = [];
             foreach ($data->electronicItems as $entry) {
-                $this->addElectronicItem($entry);
+                $eI = new ElectronicItem($entry);
+                
+                $this->addElectronicItem($eI);
             }
         }
 

@@ -15,16 +15,27 @@ use Illuminate\Http\Request;
 use Session;
 use App\Classes\Mappers\UserCatalogMapper;
 use App\Classes\Mappers\ElectronicCatalogMapper;
+use App\Classes\Mappers\SaleMapper;
 
 //reference: https://www.cloudways.com/blog/laravel-login-authentication/
 class MainController extends BaseController {
 
     private $userCatalogMapper;
     private $electronicCatalogMapper;
+    private $saleMapper;
 
     public function __construct() {
         $this->userCatalogMapper = new UserCatalogMapper();
         $this->electronicCatalogMapper = new ElectronicCatalogMapper();
+
+        $this->middleware(function ($request, $next) {
+            if (auth()->check() && auth()->user()->admin == 0) {
+                $this->saleMapper = new SaleMapper(auth()->user()->id);
+                Session::put('currentSaleExists', $this->saleMapper->currentSaleExists());
+            }
+            
+            return $next($request);
+        });
     }
 
     public function showLogin() {
@@ -115,9 +126,9 @@ class MainController extends BaseController {
         } else {
             $lastInputs = $request->session()->get('lastInputs');
             $eSpecifications = $request->session()->get('electronicSpecifications');
-            
-            foreach($eSpecifications as $key => $value){
-                if($eSpecifications[$key]->isDeleted){
+
+            foreach ($eSpecifications as $key => $value) {
+                if ($eSpecifications[$key]->isDeleted) {
                     unset($eSpecifications[$key]);
                 }
             }

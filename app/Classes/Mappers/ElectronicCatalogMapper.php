@@ -88,6 +88,8 @@ class ElectronicCatalogMapper {
         $modelNumberExists = $this->electronicCatalog->findElectronicSpecification($eSData->modelNumber);
 
         if (!$modelNumberExists) {
+            $eSData->isDeleted = 0;
+            
             //Add to eSList of the catalog
             switch ($eSData->ElectronicType_name) {
                 case "Desktop":
@@ -163,6 +165,8 @@ class ElectronicCatalogMapper {
     function prepareDeleteES($eSId) {
 
         $eS = $this->electronicCatalog->getElectronicSpecificationById($eSId);
+        $eS->set((object) ['isDeleted' => 1]);
+        
         return $this->unitOfWork->registerDeleted($eS);
     }
 

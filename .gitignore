@@ -2,6 +2,9 @@
 
 # exception to the rule
 !public/images/.gitkeep 
+!public/images/1511129568.jpg
+!public/images/1511130460.jpg
+!public/images/1511130961.jpg
 
 .bash_profile
 /node_modules

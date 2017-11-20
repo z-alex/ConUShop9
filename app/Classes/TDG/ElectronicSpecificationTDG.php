@@ -58,7 +58,7 @@ class ElectronicSpecificationTDG {
         
         $this->conn->query($queryString, $parameters);
         
-        $queryString = 'DELETE FROM ElectronicSpecification WHERE ';
+        $queryString = 'UPDATE ElectronicSpecification SET isDeleted = 1 WHERE ';
         $queryString .= 'id' . ' = :' . 'id';
 
         $parameters = new \stdClass();

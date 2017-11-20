@@ -10,27 +10,27 @@
 
 *Admin 1:*
 - Username: ```admin1@conushop.com```
-- Password: ```admin```
+- Password: ```admin123```
 
 *Admin 2:*
 - Username: ```admin2@conushop.com```
-- Password: ```admin```
+- Password: ```admin123```
 
 *Admin 3:*
 - Username: ```admin3@conushop.com```
-- Password: ```admin```
+- Password: ```admin123```
 
 *Client 1:*
 - Username: ```client1@conushop.com```
-- Password: ```client```
+- Password: ```client123```
 
 *Client 2:*
 - Username: ```client2@conushop.com```
-- Password: ```client```
+- Password: ```client123```
 
 *Client 3:*
 - Username: ```client3@conushop.com```
-- Password: ```client```
+- Password: ```client123```
 
 ## Team 9 Members
 - Jean-Michel Laliberté

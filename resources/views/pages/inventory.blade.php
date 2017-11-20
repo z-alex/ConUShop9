@@ -8,6 +8,8 @@
 
         <button type="submit" id="addESButton" name="addESButton" class="btn btn-primary" value="true">Add Specification</button>
         <br /><br />
+
+        @if (! empty($electronicSpecifications))
         <table>
             <tr bgcolor="#bcbcbc">
                 <th>Select</th>
@@ -30,9 +32,7 @@
                 <th>Electronic Type</th>
                 <th>Product Image</th>
             </tr>
-            @if (! empty($electronicSpecifications))
             @foreach ($electronicSpecifications as $eS)
-            @if(!$eS->isDeleted)
             <tr bgcolor="#ededed">
                 <td>
                     <button type="submit" id="modifyButton" name="modifyESButton" class="btn btn-xs btn-primary" value="{{$eS->id}}">Add/Modify</button>
@@ -194,12 +194,16 @@
             </tr>
             @endforeach
             @endif
-            @endif
             @endforeach
-            @endif
         </table>
-        
+        @else
+        The inventory is empty.
+        @endif
+
+
         <br/>
+
+        @if (! empty($deletedESList))
         <br/>
         <h3>Deleted Specifications</h3>
 
@@ -223,9 +227,7 @@
                 <th>Electronic Type</th>
                 <th>Product Image</th>
             </tr>
-            @if (! empty($electronicSpecifications))
-            @foreach ($electronicSpecifications as $eS)
-            @if($eS->isDeleted)
+            @foreach ($deletedESList as $eS)
             <tr bgcolor="#ededed">
                 <td>
                     @if ( isset($eS->id) )
@@ -381,10 +383,10 @@
             </tr>
             @endforeach
             @endif
-            @endif
             @endforeach
-            @endif
         </table>
+        @endif
+
 
     </div>
 

@@ -8,8 +8,6 @@ class ComputerSpecification extends ElectronicSpecification {
     private $cpuCores;
     private $hdSize;
     private $os;
-    private $camera;
-    private $touchScreen;
     
     function __construct($data) {
         parent::__construct($data);
@@ -37,14 +35,6 @@ class ComputerSpecification extends ElectronicSpecification {
             $this->os = $data->os;
         }
         
-        if (isset($data->camera)) {
-            $this->camera = $data->camera;
-        }
-        
-        if (isset($data->touchScreen)) {
-            $this->touchScreen = $data->camera;
-        }
-        
         parent::set($data);
     }
     
@@ -56,8 +46,6 @@ class ComputerSpecification extends ElectronicSpecification {
         $returnData->cpuCores = $this->cpuCores;
         $returnData->hdSize = $this->hdSize;
         $returnData->os = $this->os;
-        $returnData->camera = $this->camera;
-        $returnData->touchScreen = $this->touchScreen;
         
         return $returnData;
     }

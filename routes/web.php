@@ -84,6 +84,10 @@ Route::get('/checkout', array(
     'uses' => 'CustomerController@showCheckout'
 ));
 
-Route::get('/cancel-checkout', array(
+Route::get('/checkout-cancel', array(
     'uses' => 'CustomerController@cancelCheckout'
+));
+
+Route::get('/checkout-pay', array(
+    'uses' => 'CustomerController@doPayment'
 ));

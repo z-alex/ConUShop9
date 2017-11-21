@@ -40,9 +40,21 @@ class ElectronicItemTDG {
     }
 
     function update($eI) {
-        $queryString = "UPDATE ElectronicItem SET User_id = " . $eI->get()->User_id . ", expiryForUser= '" . $eI->get()->expiryForUser . "' WHERE id= " . $eI->get()->id;
+        $parameters = $eI->get();
 
-        return $this->conn->directQuery($queryString);
+        $queryString = "UPDATE ElectronicItem SET ";
+
+        foreach ($parameters as $key => $value) {
+            $queryString .= $key . ' = :' . $key;
+            $queryString .= ' , ';
+        }
+
+        //We delete the last useless ' , '
+        $queryString = substr($queryString, 0, -2);
+
+        $queryString .= " WHERE id = " . $eI->get()->id;
+
+        return $this->conn->Query($queryString, $parameters);
     }
 
     public function delete($electronicItem) {
@@ -64,8 +76,6 @@ class ElectronicItemTDG {
             }
         }
 
-        //dd($eIsData);
-
         return $eIsData;
     }
 
@@ -81,8 +91,6 @@ class ElectronicItemTDG {
                 unset($eIsData[$key]);
             }
         }
-
-        //dd($eIsData);
 
         return $eIsData;
     }

@@ -13,17 +13,17 @@ class SaleCatalog {
         $this->sales = array();
     }
 
-    function get(){
+    function get() {
         $returnData = new \stdClass();
-        
+
         $returnData->sales = $this->sales;
         $returnData->currentSale = $this->currentSale;
-        
+
         return $returnData;
     }
 
     function setCurrentSale($currentSaleData) {
-        if($currentSaleData) {
+        if ($currentSaleData) {
             $eIList = array();
             foreach ($currentSaleData as $eIData) {
                 $eIData->id = $eIData->ElectronicItem_id;
@@ -66,11 +66,75 @@ class SaleCatalog {
             }
 
             $sale = new Sale();
-            $currentSaleData[0]->id = $currentSaleData[0]->Sale_id;
-            $sale->set($currentSaleData[0]);
+
+            reset($currentSaleData);
+            $firstKey = key($currentSaleData);
+
+            $currentSaleData[$firstKey]->id = $currentSaleData[$firstKey]->Sale_id;
+            $sale->set($currentSaleData[$firstKey]);
             $sale->set((object) ['salesLineItemList' => $slis]);
 
             $this->currentSale = $sale;
+        }
+    }
+
+    function setSales($data) {
+        foreach ($data['salesData'] as $saleData) {
+            $sale = new Sale();
+            $sale->set($saleData);
+
+            array_push($this->sales, $sale);
+        }
+
+        foreach ($this->sales as &$sale) {
+            foreach ($data['paymentsData'] as $paymentData) {
+                $payment = new Payment();
+                $payment->set($paymentData);
+
+                if ($payment->get()->id === $sale->get()->Payment_id) {
+                    $sale->set((object) ['payment' => $payment]);
+                }
+            }
+
+            foreach ($data['eSListData'] as $eSData) {
+                foreach ($data['eIListData'] as $eIData) {
+                    if ($eIData->Sale_id === $sale->get()->id && $eIData->ElectronicSpecification_id === $eSData->id) {
+
+                        $sliFound = null;
+                        foreach ($sale->get()->salesLineItemList as &$sli) {
+                            if ($sli->getElectronicSpecification()->get()->id === $eIData->ElectronicSpecification_id) {
+                                $sliFound = $sli;
+                                break;
+                            }
+                        }
+                        $eI = new ElectronicItem();
+                        $eI->set($eIData);
+                        if ($sliFound !== null) {
+                            $sliFound->addElectronicItem($eI);
+                        } else {
+                            $sli = new SalesLineItem();
+                            switch ($eSData->ElectronicType_id) {
+                                case "1":
+                                    $eS = new DesktopSpecification($eSData);
+                                    break;
+                                case "2":
+                                    $eS = new LaptopSpecification($eSData);
+                                    break;
+                                case "3":
+                                    $eS = new MonitorSpecification($eSData);
+                                    break;
+                                case "4":
+                                    $eS = new TabletSpecification($eSData);
+                                    break;
+                            }
+                            $sli->setElectronicSpecification($eS);
+                            $sli->addElectronicItem($eI);
+
+                            $sale->addSalesLineItem($sli);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -80,18 +144,28 @@ class SaleCatalog {
             $sale->set((object) ['salesLineItemList' => $slis, 'User_id' => Auth::user()->id]);
 
             $this->currentSale = $sale;
-            
+
             return true;
         }
 
         return false;
     }
-    
+
     function deleteCurrentSale() {
-        $id = $this->currentSale->get()->id;
+        $deletedSale = $this->currentSale;
         $this->currentSale = null;
-        
-        return $id;
+
+        return $deletedSale;
+    }
+
+    function makePayment() {
+        if ($this->currentSale) { //this if statement is not necessary, it is here to prevent an error when the payment-result page is refreshed
+            $this->currentSale->makePayment();
+            
+            $this->currentSale->becomesComplete();
+        }
+
+        return $this->currentSale;
     }
 
 }

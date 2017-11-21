@@ -152,5 +152,16 @@ class ShoppingCart {
         
         return $count;
     }
+    
+    public function getTotal() {
+        $total = 0;
+        
+        foreach($this->salesLineItems as $sli){
+            $total = $total + $sli->getSubtotal();
+        }
+        
+        return $total;
+        
+    }
 
 }

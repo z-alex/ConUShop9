@@ -8,7 +8,6 @@ use App\Classes\Core\ElectronicCatalog;
 use App\Classes\Core\ShoppingCart;
 use App\Classes\TDG\ElectronicSpecificationTDG;
 use App\Classes\TDG\ElectronicItemTDG;
-use App\Classes\UnitOfWork;
 use App\Classes\IdentityMap;
 
 class ShoppingCartMapper {
@@ -17,7 +16,6 @@ class ShoppingCartMapper {
     private $electronicSpecificationTDG;
     private $electronicItemTDG;
     private $shoppingCart;
-    private $unitOfWork;
     private $identityMap;
 
     function __construct($userId) {
@@ -25,7 +23,6 @@ class ShoppingCartMapper {
         $this->electronicItemTDG = new ElectronicItemTDG();
         $this->electronicCatalog = new ElectronicCatalog($this->electronicSpecificationTDG->findAll());
         $this->shoppingCart = ShoppingCart::getInstance();
-        $this->unitOfWork = new UnitOfWork(['shoppingCartMapper' => $this]);
         $this->identityMap = new IdentityMap();
 
         //$this->shoppingCart->setEIList($this->electronicItemTDG->findAllEIFromUser($userId));
@@ -43,8 +40,7 @@ class ShoppingCartMapper {
                 $eS = $this->electronicCatalog->getElectronicSpecificationById($eSId);
                 
                 $this->shoppingCart->addEIToCart($eI, $eS);
-                $this->unitOfWork->registerDirty($eI);
-                $this->unitOfWork->commit();
+                $this->electronicItemTDG->update($eI);
                 
                 return 'itemAddedToCart';
             } else {
@@ -55,12 +51,8 @@ class ShoppingCartMapper {
         }
     }
 
-    function updateEI($eI) {
-        $this->electronicItemTDG->update($eI);
-    }
-
     function viewCart(){
-        return $this->shoppingCart->getSalesLineItems();
+        return $this->shoppingCart;
     }
 
     function removeFromCart($eSId, $userId){

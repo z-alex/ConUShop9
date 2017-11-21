@@ -60,7 +60,7 @@
 <div class="form-group">
     <label class="control-label col-sm-2" for="os">Operating System</label>
     <div class="col-sm-10">
-        <input type="text" class="form-control" id="os" placeholder="Enter built-in operating system " name="os">
+        <input type="text" class="form-control" id="os" placeholder="Enter built-in operating system " name="os" value="{{$eSToModify->os}}">
     </div>
 </div>
 

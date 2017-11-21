@@ -58,8 +58,7 @@ class ShoppingCartMapper {
     function removeFromCart($eSId, $userId){
         $removedEI = $this->electronicCatalog->unsetUserAndExpiryFromEI($eSId, $userId);
         $this->shoppingCart->removeFromCart($removedEI);
-        $this->unitOfWork->registerDirty($removedEI);
-        $this->unitOfWork->commit();
+        $this->electronicItemTDG->delete($removedEI);
         $this->shoppingCart->updateSLIs();
         return 'Item Removed';
     }

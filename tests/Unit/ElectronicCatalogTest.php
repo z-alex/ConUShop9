@@ -102,8 +102,9 @@ class ElectronicCatalogTest extends TestCase {
         $this->assertTrue($valuesMatch);
     }
 
-//test end
-
+    /**
+     * Test the insertion of an electronic item inside an electronic specification in the ElectronicCatalog
+     */
     public function testmakeElectronicItem() {
         $item1Data = new \stdClass();
         $item1Data->id = 1;
@@ -150,9 +151,9 @@ class ElectronicCatalogTest extends TestCase {
             foreach ($item as $attributeKey => $attributeValue) {
                 if ($catalogListJson[0]["electronicItems"][$itemIndex]["id"] == $item1Data->id) {
                     $valueOfItemIndex = $itemIndex;
-                }//if
-            }//foreach inner
-        }//foreach outer
+                }
+            }
+        }
         //compare values of object retrieved with the ones we used to add into
         //the specification
         foreach ($catalogListJson[0]["electronicItems"] as $itemIndex => $item) {
@@ -160,24 +161,26 @@ class ElectronicCatalogTest extends TestCase {
             foreach ($item as $attributeKey => $attributeValue) {
 
                 if ($catalogListJson[0]["electronicItems"][$valueOfItemIndex]["id"] == $item1Data->id) {
-                    if ($attributeKey !== "User_id" && $attributeKey !== "expiryForUser") {
-
+                    //We only access the hashtable with a valid entry
+                    if (!empty($itemDataJson[$attributeKey])) {
                         if ($attributeValue == $itemDataJson[$attributeKey]) {
                             $valuesMatch = true;
                         } else {
                             $valuesMatch = false;
                             $this->assertTrue($valuesMatch);
                             break;
-                        }//else
+                        }
                     }
-                }//outer if
-            }//foreach inner
-        }//foreach outer
+                }
+            }
+        }
         $this->assertTrue($valuesMatch);
     }
 
-//test end
-
+    /**
+     * Test the insertion of an ElectronicSpecification in the ElectronicCatalog
+     * @return type
+     */
     public function testmakeElectronicSpecification() {
         $electronicSpecification = new ElectronicSpecification();
 
@@ -233,32 +236,34 @@ class ElectronicCatalogTest extends TestCase {
                         } else {
                             $valuesMatch = false;
                             break;
-                        }//else
-                    }//if2
+                        }
+                    }
                 }//if is_array is false
-            }//foreach2
-        }//foreach
+            }
+        }
         //foreach loop that checks if the ElectronicItems object attributes
         //match electronicData->electronicItems values added at the beginning of
         //the code
         foreach ($catalogListJson[0]["electronicItems"] as $itemIndex => $item) {
             foreach ($item as $attributeKey => $attributeValue) {
-                if ($attributeKey !== "User_id" && $attributeKey !== "expiryForUser") {
-                    if ($attributeValue == ($electronicDataJson["electronicItems"][$itemIndex]["$attributeKey"]))
+
+                if (!empty($electronicDataJson["electronicItems"][$itemIndex][$attributeKey])) {
+
+                    if ($attributeValue == ($electronicDataJson["electronicItems"][$itemIndex][$attributeKey])) {
                         $valuesMatch = true;
-                    else {
+                    } else {
                         $valuesMatch = false;
                         return;
-                    }//else
+                    }
                 }
-            }//foreach inner
-        }//foreach outer
+            }
+        }
         $this->assertTrue($valuesMatch);
     }
 
-//test 'testmakeElectronicSpecification' end
-
-
+    /**
+     * Test the obtention of an ElectronicSpecification from the ElectronicCatalog
+     */
     public function testgetElectronicSpecificationById() {
         $electronicSpecification = new ElectronicSpecification();
 
@@ -340,8 +345,9 @@ class ElectronicCatalogTest extends TestCase {
         $this->assertTrue($valuesMatch);
     }
 
-//test
-
+    /**
+     * Test the finding of an ElectronicSpecification in the ElectronicCatalog
+     */
     public function testfindElectronicSpecification() {
         $electronicSpecification = new ElectronicSpecification();
         $electronicItem1 = new ElectronicItem();

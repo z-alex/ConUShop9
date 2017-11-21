@@ -6,9 +6,10 @@ use App\Classes\TDG\ElectronicItemTDG;
 use App\Classes\Core\ElectronicItem;
 
 class ElectronicItemTDGTest {
+
     public function testInsertEI() {
         $electronicItemTDG = new ElectronicItemTDG;
-        $eS = new ElectronicSpecification(); 
+        $eS = new ElectronicSpecification();
 
         $eSData = new \stdClass();
         $eSData->id = 2;
@@ -29,38 +30,37 @@ class ElectronicItemTDGTest {
         $eSData->ElectronicType_id = 3;
 
         $eS->set($eSData);
-        
-        
+
         $electronicItemTDG->insert($eS);
-        
-        $eIData = new \stdClass();        
+
+        $eIData = new \stdClass();
         $eIData->id = 1;
         $eIData->serialNumber = "ABC123";
         $eIData->ElectronicSpecification_id = 2;
-        
+
         $electronicItemTDG->insert($eSData->modelNumber, $eIData);
-        
+
         $this->assertDatabaseHas('ElectronicItem', [
             'id' => 1,
             'serialNumber' => 'ABC123',
         ]);
-    }     
-    
-     public function testDeleteEI() {
+    }
+
+    public function testDeleteEI() {
         $electronicItemTDG = new ElectronicItemTDG;
-         
-        $eIData = new \stdClass();        
+
+        $eIData = new \stdClass();
         $eIData->id = 1;
         $eIData->serialNumber = "ABC123";
         $eIData->ElectronicSpecification_id = 2;
-        $eI= new ElectronicItem($eIData);
-        
+        $eI = new ElectronicItem($eIData);
+
         $electronicItemTDG->delete($eI);
-         
+
         $this->assertDatabaseMissing('ElectronicItem', [
             'id' => 1,
             'serialNumber' => 'ABC123',
         ]);
-         
-     }
+    }
+
 }

@@ -436,26 +436,22 @@ class ElectronicCatalogTest extends TestCase {
 
         $electronicCatalog = new ElectronicCatalog();
         $electronicCatalog->setESList(array($electronicData));
-        $catalogList = $electronicCatalog->getESList();
+        $catalogListBefore = $electronicCatalog->getESList();
 
-        //"first turn your object into a json object,
-        //this will return a string of your object into a JSON representative.
-        //Take that result and decode with an extra parameter of true,
-        //where it will convert to associative array"
-        //https://stackoverflow.com/questions/19495068/convert-stdclass-object-to-array-in-php
-        $array = json_decode(json_encode($catalogList), true);
-        $sizeElectronicCatalogBefore = sizeof($array[0]["electronicItems"]);
-
-        //$electronicItem = new ElectronicItem($electronicData);
+        
+        if (!empty($catalogListBefore) && !empty($catalogListBefore[0])) {
+            $sizeElectronicCatalogBefore = sizeof($catalogListBefore[0]->electronicItems);
+        }
 
         $electronicCatalog->deleteElectronicItem(new ElectronicItem($electronicData));
 
         //update the catalog json after the catalog has been modified
-        $catalogList = $electronicCatalog->getESList();
-        $array = json_decode(json_encode($catalogList), true);
-        $sizeElectronicCatalogAfter = sizeof($array[0]["electronicItems"]);
-        //dump ($sizeElectronicCatalogBefore);
-
+        $catalogListAfter = $electronicCatalog->getESList();
+        
+        if (!empty($catalogListAfter) && !empty($catalogListAfter[0])) {
+            $sizeElectronicCatalogAfter = sizeof($catalogListAfter[0]->electronicItems);
+        }
+        
         $this->assertTrue($sizeElectronicCatalogBefore == 1 + $sizeElectronicCatalogAfter);
     }
 

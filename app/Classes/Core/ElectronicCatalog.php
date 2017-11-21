@@ -30,17 +30,17 @@ class ElectronicCatalog {
     function setESList($eSListData) {
 
         foreach ($eSListData as $eSData) {
-            switch ($eSData->ElectronicType_id) {
-                case "1":
+            switch (intval($eSData->ElectronicType_id)) {
+                case 1:
                     $eS = new DesktopSpecification($eSData);
                     break;
-                case "2":
+                case 2:
                     $eS = new LaptopSpecification($eSData);
                     break;
-                case "3":
+                case 3:
                     $eS = new MonitorSpecification($eSData);
                     break;
-                case "4":
+                case 4:
                     $eS = new TabletSpecification($eSData);
                     break;
             }
@@ -133,7 +133,7 @@ class ElectronicCatalog {
 
     function modifyElectronicSpecification($newES) {
         foreach ($this->eSList as &$eS) {
-            if ($eS->get()->id === $newES->get()->id) {
+            if ($eS->get()->id == $newES->get()->id) {
                 $eS->set($newES->get());
                 return $eS;
             }

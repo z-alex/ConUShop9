@@ -11,8 +11,10 @@ use App\Classes\Core\ElectronicSpecification;
 class ElectronicCatalogTest extends TestCase {
 
     public function testmodifyElectronicSpecification() {
+
         $electronicSpecification = new ElectronicSpecification();
 
+        //We create 2 electronic item
         $item1Data = new \stdClass();
         $item1Data->id = 1;
         $item1Data->serialNumber = 123;
@@ -26,7 +28,9 @@ class ElectronicCatalogTest extends TestCase {
         $item2Data->ElectronicSpecification_id = "123";
         $item2Data->User_id = 123;
         $item2Data->expiryForUser = date('Y-m-d H:i:s', strtotime('+5 minutes'));
-        $electronicItems = array($item1Data, $item2Data);
+
+        //We plan to add them to the ElectronicData
+        $electronicItems = array(new ElectronicItem($item1Data), new ElectronicItem($item2Data));
 
         $electronicData = new \stdClass();
         $electronicData->id = '123'; //electronic specification id
@@ -40,7 +44,7 @@ class ElectronicCatalogTest extends TestCase {
         $electronicData->ramSize = '16';
         $electronicData->cpuCores = '4';
         $electronicData->batteryInfo = 'infinite';
-        $electronicData->os = 'ubuntu';
+        //$electronicData->os = 'ubuntu';
         $electronicData->camera = true;
         $electronicData->touchScreen = true;
         $electronicData->displaySize = '1';
@@ -48,15 +52,17 @@ class ElectronicCatalogTest extends TestCase {
         $electronicData->image = 'C:/Users/Mel';
         $electronicData->electronicItems = $electronicItems;
 
-        //update the os by overwriting previous os value
-        $electronicData->os = 'windows';
-
         $electronicCatalog = new ElectronicCatalog();
         $electronicCatalog->setESList(array($electronicData));
 
+        //update the os by overwriting previous os value
+        $electronicData->dimension = '2X3X5';
+
         $electronicCatalog->modifyElectronicSpecification(new ElectronicSpecification($electronicData));
 
+        //We get the ElectronicSpecification list from the catalog
         $catalogList = $electronicCatalog->getEsList();
+
         $catalogListJson = json_decode(json_encode($catalogList), true);
         $electronicDataJson = json_decode(json_encode($electronicData), true);
 
@@ -65,40 +71,30 @@ class ElectronicCatalogTest extends TestCase {
 
         //compare values added from electronicData with the actual
         //ElectronicSpecification object
-        foreach ($catalogListJson as $outerKey => $outerValue) {
-            foreach ($outerValue as $innerKey => $innerValue) {
-                if (is_array($catalogListJson[$outerKey][$innerKey]) == false) {
-                    if ($innerKey != "ElectronicType_displaySizeUnit" && $innerKey != "ElectronicType_dimensionUnit" && $innerKey != "ElectronicType_name") {
-                        if (isset($catalogListJson[$outerKey][$innerKey]) && $catalogListJson[$outerKey][$innerKey] == $electronicDataJson[$innerKey])
-                            $valuesMatch = true;
-                        else {
-                            $valuesMatch = false;
-                            //if the values don't match for the first values,
-                            //then this is enough to fail the test
-                            //don't execute the rest of the code
-                            $this->assertTrue($valuesMatch);
-                            break;
-                        }//else
-                    }//if2
-                }//if is_array is false
-            }//foreach2
-        }//foreach
-        //foreach loop that checks if the ElectronicItems object attributes
-        //match electronicData->electronicItems values added at the beginning of
-        //the code
+        
+        
+        foreach ($catalogList as $electronicCatalogItem) {
+            $electronicCatalogItemAttributes = get_object_vars($electronicCatalogItem);
 
-        foreach ($catalogListJson[0]["electronicItems"] as $itemIndex => $item) {
-            foreach ($item as $attributeKey => $attributeValue) {
-                if ($attributeValue == ($electronicDataJson["electronicItems"][$itemIndex][$attributeKey]))
-                    $valuesMatch = true;
-                else {
-                    $valuesMatch = false;
-                    //$this->assertTrue($valuesMatch);
-                    break;
-                }//else
-            }//foreach inner
-        }//foreach outer
+            $baseElectronicCatalogAttributesReference = get_object_vars($electronicData);
 
+            //Foreach ElectronicCatalog item
+            foreach ($electronicCatalogItemAttributes as $key => $value) {
+                //If the attributes are set in both the object and the ElectronicCatalog item
+                if (isset($baseElectronicCatalogAttributesReference[$key]) && isset($electronicCatalogItemAttributes[$key]) && 
+                        !is_array($electronicCatalogItemAttributes[$key]) && !is_array($baseElectronicCatalogAttributesReference[$key])) {
+                    
+                    if ($baseElectronicCatalogAttributesReference[$key] == $electronicCatalogItemAttributes[$key]) {
+                        $valuesMatch = true;
+                    } else {                        
+                        $valuesMatch = false;
+                        $this->assertTrue($valuesMatch);
+                        break;
+                    }
+                }
+            }
+        }
+        
         $this->assertTrue($valuesMatch);
     }
 
@@ -438,7 +434,7 @@ class ElectronicCatalogTest extends TestCase {
         $electronicCatalog->setESList(array($electronicData));
         $catalogListBefore = $electronicCatalog->getESList();
 
-        
+
         if (!empty($catalogListBefore) && !empty($catalogListBefore[0])) {
             $sizeElectronicCatalogBefore = sizeof($catalogListBefore[0]->electronicItems);
         }
@@ -447,11 +443,11 @@ class ElectronicCatalogTest extends TestCase {
 
         //update the catalog json after the catalog has been modified
         $catalogListAfter = $electronicCatalog->getESList();
-        
+
         if (!empty($catalogListAfter) && !empty($catalogListAfter[0])) {
             $sizeElectronicCatalogAfter = sizeof($catalogListAfter[0]->electronicItems);
         }
-        
+
         $this->assertTrue($sizeElectronicCatalogBefore == 1 + $sizeElectronicCatalogAfter);
     }
 

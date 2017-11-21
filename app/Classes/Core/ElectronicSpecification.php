@@ -175,7 +175,8 @@ class ElectronicSpecification {
      */
     private function &findNextAvailableEI() {
         foreach ($this->electronicItems as &$eI) {
-            if (($eI->getExpiryForUser() === null) || ($eI->getUserId() === null) || (strtotime($eI->getExpiryForUser()) < strtotime(date("Y-m-d H:i:s")))) {
+            //if (($eI->getExpiryForUser() === null) || ($eI->getUserId() === null) || (strtotime($eI->getExpiryForUser()) < strtotime(date("Y-m-d H:i:s")))) {
+            if ($eI->get()->Sale_id === null && ($eI->getExpiryForUser() === null || $eI->getUserId() === null || strtotime($eI->getExpiryForUser()) < strtotime(date("Y-m-d H:i:s")))) {
                 return $eI;
             }
         }
@@ -195,7 +196,7 @@ class ElectronicSpecification {
             }
         }
 
-        $eIToRemove->setUserId("null");
+        $eIToRemove->setUserId(null);
         $eIToRemove->setExpiryForUser(null);
         return $eIToRemove;
     }

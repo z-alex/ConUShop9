@@ -6,7 +6,6 @@ class DesktopSpecification extends ComputerSpecification {
     private $dimension;
     
     function __construct($data) {
-        //dd($data);
         parent::__construct($data);
         $this->set($data);
     }

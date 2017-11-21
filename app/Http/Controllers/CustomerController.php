@@ -47,10 +47,9 @@ class CustomerController extends Controller {
 
     public function doViewCart() {
 
-        $slis = $this->shoppingCartMapper->viewCart();
-        //dd($slis);
+        $shoppingCart = $this->shoppingCartMapper->viewCart();
 
-        return view('pages.shopping-cart', ['slis' => $slis]);
+        return view('pages.shopping-cart', ['shoppingCart' => $shoppingCart]);
     }
 
     public function doRemove(Request $request) {
@@ -71,6 +70,14 @@ class CustomerController extends Controller {
         $this->saleMapper->cancelCheckout();
 
         return Redirect::to('/');
+    }
+    
+    public function doPayment() {
+        $completedSale = $this->saleMapper->makePayment();
+        
+        Session::forget('currentSaleExists');
+        
+        return view('pages.payment-result', ['sale' => $completedSale]);
     }
 
 }

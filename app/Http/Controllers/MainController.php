@@ -64,8 +64,6 @@ class MainController extends BaseController {
                 Session::flash('success_msg', "Successfully logged in.");
                 return Redirect::to('');
             } else {
-                //dd(Hash::make('admin'));
-                //return Redirect::to('login');
                 return view('pages.login', ['email' => $request->input('email'), 'error_msg' => 'Wrong email or password.']);
             }
         }

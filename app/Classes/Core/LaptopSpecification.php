@@ -5,6 +5,8 @@ namespace App\Classes\Core;
 class LaptopSpecification extends ComputerSpecification {
     private $displaySize;
     private $batteryInfo;
+    private $touchScreen;
+    private $camera;
 
     function __construct($data) {
         parent::__construct($data);
@@ -20,6 +22,14 @@ class LaptopSpecification extends ComputerSpecification {
             $this->batteryInfo = $data->batteryInfo;
         }
         
+        if (isset($data->touchScreen)){
+            $this->touchScreen = $data->touchScreen;
+        }
+        
+        if(isset($data->camera)) {
+            $this->camera = $data->camera;
+        }
+        
         parent::set($data);
     }
     
@@ -28,6 +38,8 @@ class LaptopSpecification extends ComputerSpecification {
         
         $returnData->displaySize = $this->displaySize;
         $returnData->batteryInfo = $this->batteryInfo;
+        $returnData->touchScreen = $this->touchScreen;
+        $returnData->camera = $this->camera;
         
         return $returnData;
     }

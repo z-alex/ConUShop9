@@ -36,20 +36,18 @@
         <b>Price:</b> ${{$sli->getElectronicSpecification()->get()->price}}
         <br/>
         @endif
-
         <b>Quantity:</b> {{ count($sli->getElectronicItems()) }}
         <br/>
-
-        <?php $count = 1; ?>
-        @foreach($sli->getElectronicItems() as $eI)
-        <b>Item {{$count}} expiry: </b>{{$eI->get()->expiryForUser}}
+        Subtotal: ${{$sli->getSubtotal()}}
         <br/>
-        <?php $count++; ?>
-        @endforeach
         <hr>
     </div>
     @endforeach
-    <a href="/cancel-checkout" class="btn btn-info" role="button"> Cancel Checkout </a>
+    Total: ${{$sale->getTotal()}}
+    <br/>
+    <br/>
+    <a href="/checkout-pay" class="btn btn-info" role="button"> Pay </a>
+    <a href="/checkout-cancel" class="btn btn-info" role="button"> Cancel Checkout </a>
     @endif
 </div>
 @stop

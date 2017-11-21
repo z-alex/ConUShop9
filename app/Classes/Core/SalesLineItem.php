@@ -35,6 +35,16 @@ class SalesLineItem {
     public function getElectronicItems() {
         return $this->electronicItems;
     }
+    
+    public function getSubtotal() {
+        $subtotal = 0;
+        
+        $price = $this->electronicSpecification->get()->price;
+        
+        $subtotal = $price * count($this->electronicItems);
+        
+        return $subtotal;
+    }
 
     public function unsetEI($eI) {
         foreach ($this->electronicItems as $key => $value) {

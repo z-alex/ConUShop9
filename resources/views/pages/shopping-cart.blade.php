@@ -1,11 +1,11 @@
 @extends('layouts.default')
 @section('content')
 <div class="container">
-    @if (!empty($slis))
+    @if (!empty($shoppingCart->getSalesLineItems()))
     <h3>Here are the items in your Cart</h3>
     <br>
     <hr>
-    @foreach ($slis as $sli)
+    @foreach ($shoppingCart->getSalesLineItems() as $sli)
     <div>
     <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&shoppingCart=true">
         @if ( $sli->getElectronicSpecification()->get()->image && $sli->getElectronicSpecification()->get()->image !== null )
@@ -35,21 +35,21 @@
     <b>Price:</b> ${{$sli->getElectronicSpecification()->get()->price}}
     <br/>
     @endif
-
     <b>Quantity:</b> {{ count($sli->getElectronicItems()) }}
     <br/>
-
+    Subtotal: ${{$sli->getSubtotal()}}
+    <br/>
     <?php $count = 1; ?>
     @foreach($sli->getElectronicItems() as $eI)
     <b>Item {{$count}} expiry: </b>{{$eI->get()->expiryForUser}}
     <br/>
     <?php $count++; ?>
     @endforeach
-
     <a href="/remove-from-cart?eSId={{$sli->getElectronicSpecification()->get()->id}}" class="btn btn-info" role="button"> Remove </a>
     <hr>
     </div>
     @endforeach
+    Total: ${{$shoppingCart->getTotal()}}
     <a href="/checkout" class="btn btn-info" role="button"> Checkout </a>
     <br/>
     @else

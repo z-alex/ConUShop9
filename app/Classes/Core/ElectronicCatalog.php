@@ -145,8 +145,6 @@ class ElectronicCatalog {
     function reserveFirstEIFromES($eSId, $userId, $expiry) {
         $firstAvailableEI = null;
 
-        //dd($this->eSList);
-
         foreach ($this->eSList as &$eS) {
             if ($eS->get()->id === $eSId) {
                 $firstAvailableEI = $eS->reserveFirstAvailableEI($userId, $expiry);

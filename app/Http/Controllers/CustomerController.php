@@ -93,5 +93,11 @@ class CustomerController extends Controller {
 
         return view('pages.payment-result', ['sale' => $completedSale]);
     }
+    
+    public function showMyOrders() {
+        $orders = $this->saleMapper->getMyOrders(Auth::user()->id);
+
+        return view('pages.my-orders', ['orders' => $orders]);
+    }
 
 }

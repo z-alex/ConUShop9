@@ -100,4 +100,6 @@ Route::get('/delete-my-account',array(
 	'uses' => 'CustomerController@doDeleteMyAccount'
 ));
 
-
+Route::get('/my-orders',array(
+	'uses' => 'CustomerController@showMyOrders'
+));

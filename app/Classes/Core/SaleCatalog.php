@@ -161,11 +161,23 @@ class SaleCatalog {
     function makePayment() {
         if ($this->currentSale) { //this if statement is not necessary, it is here to prevent an error when the payment-result page is refreshed
             $this->currentSale->makePayment();
-            
+
             $this->currentSale->becomesComplete();
         }
 
         return $this->currentSale;
+    }
+
+    function getMyOrders($userId) {
+        $myOrders = array();
+
+        foreach ($this->sales as $sale) {
+            if ($sale->get()->User_id == $userId) {
+                array_push($myOrders, $sale);
+            }
+        }
+
+        return $myOrders;
     }
 
 }

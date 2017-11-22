@@ -137,7 +137,7 @@
 
 <div class="row">
     <div class="text-center">
-        @if( Auth::check() && Auth::user()->admin === 0 )
+        @if( Auth::check() && Auth::user()->admin === 0 && !isset($myOrders) )
         <a href="/add-to-cart?eSId={{$eS->id}}" class="btn btn-success btn-lg" role="button"> Add To Cart </a>
         <br/>
         <br/>
@@ -155,8 +155,10 @@
         <br/>
         @if(isset($queryStringBack))
         <a href="/?{{$queryStringBack}}" class="btn btn-info" role="button"> Back to Filtering Result </a>
-        @elseif($shoppingCart)
+        @elseif(isset($shoppingCart) && $shoppingCart)
         <a href="/shopping-cart" class="btn btn-info" role="button"> Back to Shopping Cart </a>
+        @elseif(isset($myOrders) && $myOrders)
+        <a href="/my-orders" class="btn btn-info" role="button"> Back to My Orders </a>
         @else
         <a href="/" class="btn btn-info" role="button"> Back to Catalog </a>
         @endif

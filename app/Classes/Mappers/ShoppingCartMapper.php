@@ -9,6 +9,7 @@ use App\Classes\Core\ShoppingCart;
 use App\Classes\TDG\ElectronicSpecificationTDG;
 use App\Classes\TDG\ElectronicItemTDG;
 use App\Classes\IdentityMap;
+use PhpDeal\Annotation as Contract;
 
 class ShoppingCartMapper {
 
@@ -30,7 +31,7 @@ class ShoppingCartMapper {
     }
 
     /**
-     * //@Contract\Verify("Auth::check() && Auth::user()->admin === 0 && count($this->shoppingCart->getEIList()) < 7")
+     * @Contract\Verify("Auth::check() == true && Auth::user()->admin === 0 && count($this->shoppingCart->getSalesLineItems()) < 7")
      */
     function addToCart($eSId, $userId, $expiry) {
         if ($this->shoppingCart->getSize() < 7) {

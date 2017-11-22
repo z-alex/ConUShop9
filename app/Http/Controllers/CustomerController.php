@@ -83,7 +83,7 @@ class CustomerController extends Controller {
     public function cancelCheckout() {
         $this->saleMapper->cancelCheckout();
 
-        return Redirect::to('/');
+        return Redirect::to('/shopping-cart');
     }
 
     public function doPayment() {

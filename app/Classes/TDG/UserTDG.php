@@ -84,7 +84,10 @@ class UserTDG {
         //Please mind that stdClass and associative arrays are not the same data structure, althought being both based on the big family of hashtables
         $array = $this->conn->query($queryString, $parameters);
 
-        if (count($array) > 0 && Hash::check($password, $array[0]->password)) {
+        if (count($array) > 0 && $array[0]->isLoggedIn == 0 && $array[0]->isDeleted == 0 && Hash::check($password, $array[0]->password)) {
+            $queryString = "UPDATE User SET isLoggedIn = 1 WHERE id = " . $array[0]->id;
+            $this->conn->directQuery($queryString);
+
             return true;
         } else {
             return false;
@@ -116,22 +119,26 @@ class UserTDG {
 
 
         $this->conn->query($queryString, $parameters);
-        
+
         return $this->conn->getPDOConnection()->lastInsertId();
     }
 
-	public function deleteAccount($userID){
-		 $queryString = "UPDATE user SET isDeleted = 1, isLoggedIn=0 WHERE id =" . $userID ;
+    public function update($user) {
+        $parameters = $user->get();
 
+        $queryString = 'UPDATE User SET ';
 
-        return $this->conn->directQuery($queryString);
-	}
+        foreach ($parameters as $key => $value) {
+            $queryString .= $key . ' = :' . $key;
+            $queryString .= ' , ';
+        }
 
-	public function loginUser($userID){
-		 $queryString = "UPDATE user SET isLoggedIn = 1, isDeleted = 0 WHERE id =" . $userID ;
+        //We delete the last useless ' , '
+        $queryString = substr($queryString, 0, -2);
 
-        return $this->conn->directQuery($queryString);
-	}
+        $queryString .= ' WHERE id = ' . $user->get()->id;
 
+        $this->conn->query($queryString, $parameters);
+    }
 
 }

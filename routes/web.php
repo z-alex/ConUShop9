@@ -92,11 +92,11 @@ Route::get('/checkout-pay', array(
     'uses' => 'CustomerController@doPayment'
 ));
 
-Route::get('/viewmyaccount',array(
+Route::get('/view-my-account',array(
 	'uses' => 'CustomerController@doViewAccount'
 ));
 
-Route::get('/deletemyaccount',array(
+Route::get('/delete-my-account',array(
 	'uses' => 'CustomerController@doDeleteMyAccount'
 ));
 

@@ -25,7 +25,7 @@
 								 Address : {{$user->get()->physicalAddress}}
 								  <br/>
 								  <br/>
-								  <div><a href="/deletemyaccount" class="btn btn-danger" role="button"> Delete Account </a></div>
+								  <div><a href="/delete-my-account" class="btn btn-danger" role="button"> Delete Account </a></div>
 							</div>
 						</div>
 					</div>

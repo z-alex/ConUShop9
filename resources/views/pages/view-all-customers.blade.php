@@ -3,106 +3,112 @@
 
 <form method="post" action="user">
 
-	<div class="col-lg-9">
+    <div class="col-lg-9">
         <h2 class="blueTitle text-center">Registered Customers</h2>
 
-		<h3> Non-deleted Customers </h3>
-    <table>
-        <tr class="grayBgWhiteText">
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>PhysicalAddress</th>
-        </tr>
-	
+        <h3> Customers </h3>
+        <table>
+            <tr class="grayBgWhiteText">
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>PhysicalAddress</th>
+                <th>Active</th>
+            </tr>
 
-		@if (!empty($userList))
-		@foreach ($userList as $user)
-		
-		<tr bgcolor="#ccebff">
-		<td>
-              @if ( isset($user->firstName))
-              {{$user->firstName}}  
-              @endif  
-         </td>
-		 <td>
-              @if ( isset($user->lastName) )
-              {{$user->lastName}}
-              @endif  
-         </td>
-		 <td>
-              @if ( isset($user->email) )
-              {{$user->email}}
-              @endif  
-         </td>
-		 <td>
-              @if ( isset($user->phone) )
-              {{$user->phone}}
-              @endif  
-         </td>
-		 <td>
-              @if ( isset($user->physicalAddress) )
-              {{$user->physicalAddress}}
-              @endif  
-         </td>
 
-		</tr>
-		@endforeach
-		@endif
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    </table>
-	<br/>
-	<br/>
+            @if (!empty($allCustomers))
+            @foreach ($allCustomers as $user)
 
-	<h3> Deleted Customers </h3>
-	<table>
-        <tr class="grayBgWhiteText">
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>PhysicalAddress</th>
-        </tr>
-	
+            <tr bgcolor="#ccebff">
+                <td>
+                    @if ( isset($user->get()->firstName))
+                    {{$user->get()->firstName}}  
+                    @endif  
+                </td>
+                <td>
+                    @if ( isset($user->get()->lastName) )
+                    {{$user->get()->lastName}}
+                    @endif  
+                </td>
+                <td>
+                    @if ( isset($user->get()->email) )
+                    {{$user->get()->email}}
+                    @endif  
+                </td>
+                <td>
+                    @if ( isset($user->get()->phone) )
+                    {{$user->get()->phone}}
+                    @endif  
+                </td>
+                <td>
+                    @if ( isset($user->get()->physicalAddress) )
+                    {{$user->get()->physicalAddress}}
+                    @endif  
+                </td>
+                <td>
+                    @if ( $user->get()->isLoggedIn )
+                    Online
+                    @else
+                    Offline
+                    @endif
+                </td>
 
-		@if (!empty($userList))
-		@foreach ($userList as $user)
-		@if($user->isDeleted==1)
-		<tr bgcolor="#ccebff">
-		<td>
-              @if ( isset($user->firstName))
-              {{$user->firstName}}  
-              @endif  
-         </td>
-		 <td>
-              @if ( isset($user->lastName) )
-              {{$user->lastName}}
-              @endif  
-         </td>
-		 <td>
-              @if ( isset($user->email) )
-              {{$user->email}}
-              @endif  
-         </td>
-		 <td>
-              @if ( isset($user->phone) )
-              {{$user->phone}}
-              @endif  
-         </td>
-		 <td>
-              @if ( isset($user->physicalAddress) )
-              {{$user->physicalAddress}}
-              @endif  
-         </td>
+            </tr>
+            @endforeach
+            @endif
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        </table>
+        <br/>
+        <br/>
 
-		</tr>
-		@endif
-		@endforeach
-		@endif
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    </table>
-</div>
+        <h3> Deleted Customers </h3>
+        <table>
+            <tr class="grayBgWhiteText">
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>PhysicalAddress</th>
+            </tr>
+
+
+            @if (!empty($deletedCustomers))
+            @foreach ($deletedCustomers as $user)
+            <tr bgcolor="#ccebff">
+                <td>
+                    @if ( isset($user->get()->firstName))
+                    {{$user->get()->firstName}}  
+                    @endif  
+                </td>
+                <td>
+                    @if ( isset($user->get()->lastName) )
+                    {{$user->get()->lastName}}
+                    @endif  
+                </td>
+                <td>
+                    @if ( isset($user->get()->email) )
+                    {{$user->get()->email}}
+                    @endif  
+                </td>
+                <td>
+                    @if ( isset($user->get()->phone) )
+                    {{$user->get()->phone}}
+                    @endif  
+                </td>
+                <td>
+                    @if ( isset($user->get()->physicalAddress) )
+                    {{$user->get()->physicalAddress}}
+                    @endif  
+                </td>
+
+            </tr>
+            @endforeach
+            @endif
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        </table>
+    </div>
 
 </form>
 @stop

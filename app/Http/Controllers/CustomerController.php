@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Classes\Mappers\ShoppingCartMapper;
-use App\Classes\Mappers\UserCatalogMapper;
+use App\Classes\Mappers\UserMapper;
 use App\Classes\Mappers\SaleMapper;
 use Auth;
 use Redirect;
@@ -21,7 +21,7 @@ class CustomerController extends Controller {
 
         $this->middleware(function ($request, $next) {
             $this->shoppingCartMapper = new ShoppingCartMapper(auth()->user()->id);
-			      $this->userCatalogMapper = new UserCatalogMapper(auth()->user()->id);
+            $this->userCatalogMapper = new UserMapper(auth()->user()->id);
             $this->saleMapper = new SaleMapper(auth()->user()->id);
 
             Session::put('currentSaleExists', $this->saleMapper->currentSaleExists());
@@ -59,20 +59,19 @@ class CustomerController extends Controller {
         return Redirect::back();
     }
 
-	public function doViewAccount(Request $request){
+    public function doViewAccount(Request $request) {
         $user = $this->userCatalogMapper->getUserInfo(Auth::user()->id);
 
-      return view('pages.view-customer-info', ['user' => $user]);
+        return view('pages.view-customer-info', ['user' => $user]);
     }
-	
-	
-	public function doDeleteMyAccount(Request $request){
-		$user = $this->userCatalogMapper->deleteAccount(Auth::user()->id);
 
-		// Return the homepage & log out the user.
-		return Redirect::to('logout');
-	}
-  
+    public function doDeleteMyAccount(Request $request) {
+        $user = $this->userCatalogMapper->deleteAccount(Auth::user()->id);
+
+        // Return the homepage & log out the user.
+        return Redirect::to('logout');
+    }
+
     public function showCheckout() {
         $sale = $this->saleMapper->makeNewSale();
 
@@ -86,12 +85,12 @@ class CustomerController extends Controller {
 
         return Redirect::to('/');
     }
-    
+
     public function doPayment() {
         $completedSale = $this->saleMapper->makePayment();
-        
+
         Session::forget('currentSaleExists');
-        
+
         return view('pages.payment-result', ['sale' => $completedSale]);
     }
 

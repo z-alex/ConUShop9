@@ -21,7 +21,7 @@
                 <li><a href="users">View Users</a></li> 
                 <li><a href="/logout">Log Out</a></li>
                 @else
-				        <li><a href="/viewmyaccount">My Account</a></li>
+                <li><a href="/view-my-account">My Account</a></li>
                 @if( Session::has('currentSaleExists') && Session::get('currentSaleExists') === true )
                 <li><a href="/checkout">Checkout</a></li>
                 @else

@@ -5,14 +5,21 @@ namespace App\Classes\Mappers;
 use App\Classes\TDG\ElectronicItemTDG;
 use App\Classes\TDG\SaleTDG;
 use App\Classes\TDG\PaymentTDG;
+use App\Classes\TDG\ReturnTransactionTDG;
 use App\Classes\Core\SaleCatalog;
 use App\Classes\Core\ShoppingCart;
+use App\Classes\UnitOfWork;
+use App\Classes\Core\ReturnTransaction;
+use Session;
 
 class SaleMapper {
     //TDGs
     private $electronicItemTDG;
     private $saleTDG;
     private $paymentTDG;
+    private $returnTransactionTDG;
+            
+    private $unitOfWork;
     
     private $saleCatalog;
     private $shoppingCart;
@@ -20,15 +27,19 @@ class SaleMapper {
     function __construct($userId) {
         $this->electronicItemTDG = new ElectronicItemTDG();
         $this->saleTDG = new SaleTDG();
+        $this->returnTransactionTDG = new ReturnTransactionTDG();
         $this->saleCatalog = new SaleCatalog();
         $this->paymentTDG = new PaymentTDG();
 
         $this->saleCatalog->setCurrentSale($this->saleTDG->findCurrentSaleFromUser($userId));
         $this->saleCatalog->setSales($this->saleTDG->findAllSales());
+        $this->saleCatalog->setReturnTransactions($this->returnTransactionTDG->findAll());
 
         $this->shoppingCart = ShoppingCart::getInstance();
 
         $this->shoppingCart->setSLIs($this->electronicItemTDG->findAllShoppingCartSLIFromUser($userId));
+        
+        $this->unitOfWork = new UnitOfWork(['saleMapper' => $this]);
     }
 
     function makeNewSale() {
@@ -74,8 +85,46 @@ class SaleMapper {
         return $completedSale;
     }
     
-    function getMyOrders($userId){
+    function getMyOrders($userId) {
         return $this->saleCatalog->getMyOrders($userId);
+    }
+    
+    function getMyReturnTransactions($userId) {
+        return $this->saleCatalog->getMyReturnTransactions($userId);
+    }
+    
+    function prepareAddReturn($eIId, $userId) {
+        $returnTransaction = new ReturnTransaction();
+        $returnTransaction->set((object) ['ElectronicItem_id' => $eIId, 'User_id' => $userId]);
+        
+        return $this->unitOfWork->registerNew($returnTransaction);
+    }
+    
+    function saveRT($rT){
+        $rT->set((object) ['isComplete' => 1, 'timestamp' => date("Y-m-d H:i:s")]);
+        $this->returnTransactionTDG->insert($rT);
+        $this->saleCatalog->insertReturnTransaction($rT);
+        
+        $eI = $this->saleCatalog->getElectronicItemById($rT->get()->ElectronicItem_id);
+        //$eI->set((object) ['Sale_id' => null, 'User_id' => null]);
+        $eI->setUserId(null);
+        $eI->setSaleId(null);
+        
+        $this->electronicItemTDG->update($eI);
+    }
+    
+    function applyReturns(){
+        $this->unitOfWork->commit();
+    }
+    
+    function cancelReturns(){
+        $this->unitOfWork->cancel();
+    }
+    
+    function setUOWLists($newList, $changedList, $deletedList) {
+        $this->unitOfWork->setNewList($newList);
+        $this->unitOfWork->setChangedList($changedList);
+        $this->unitOfWork->setDeletedList($deletedList);
     }
 
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Classes\Mappers\ShoppingCartMapper;
 use App\Classes\Mappers\UserMapper;
 use App\Classes\Mappers\SaleMapper;
+use App\Classes\Mappers\ElectronicCatalogMapper;
 use Auth;
 use Redirect;
 use Session;
@@ -14,6 +15,7 @@ class CustomerController extends Controller {
 
     private $shoppingCartMapper;
     private $saleMapper;
+    private $electronicCatalogMapper;
 
     public function __construct() {
         $this->middleware('auth');
@@ -23,6 +25,11 @@ class CustomerController extends Controller {
             $this->shoppingCartMapper = new ShoppingCartMapper(auth()->user()->id);
             $this->userCatalogMapper = new UserMapper(auth()->user()->id);
             $this->saleMapper = new SaleMapper(auth()->user()->id);
+            $this->electronicCatalogMapper = new ElectronicCatalogMapper();
+
+            if (session()->has('newList') || session()->has('changedList') || session()->has('deletedList')) {
+                $this->saleMapper->setUOWLists(session()->get('newList'), session()->get('changedList'), session()->get('deletedList'));
+            }
 
             Session::put('currentSaleExists', $this->saleMapper->currentSaleExists());
             return $next($request);
@@ -93,11 +100,29 @@ class CustomerController extends Controller {
 
         return view('pages.payment-result', ['sale' => $completedSale]);
     }
-    
+
     public function showMyOrders() {
         $orders = $this->saleMapper->getMyOrders(Auth::user()->id);
+        $returns = $this->saleMapper->getMyReturnTransactions(Auth::user()->id);
+        $eSList = $this->electronicCatalogMapper->getAllElectronicSpecifications();
 
-        return view('pages.my-orders', ['orders' => $orders]);
+        return view('pages.my-orders', ['orders' => $orders, 'returns' => $returns, 'eSList' => $eSList]);
+    }
+
+    public function doPrepareReturn(Request $request) {
+        $this->saleMapper->prepareAddReturn($request->input('eIId'), Auth::user()->id);
+
+        return Redirect::to('/my-orders');
+    }
+
+    public function doCompleteOrCancelReturns(Request $request) {
+        if ($request->input('applyReturnsButton')) {
+            $this->saleMapper->applyReturns();
+        } else if ($request->input('cancelReturnsButton')) {
+            $this->saleMapper->cancelReturns();
+        }
+
+        return Redirect::to('/my-orders');
     }
 
 }

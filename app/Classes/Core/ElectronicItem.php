@@ -87,6 +87,10 @@ class ElectronicItem {
         $this->User_id=$userId;
     }
     
+    function setSaleId($saleId){
+        $this->Sale_id = $saleId;
+    }
+    
     function setExpiryForUser($expiry){
         $this->expiryForUser=$expiry;
     }

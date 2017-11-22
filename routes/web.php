@@ -103,3 +103,11 @@ Route::get('/delete-my-account',array(
 Route::get('/my-orders',array(
 	'uses' => 'CustomerController@showMyOrders'
 ));
+
+Route::get('/return',array(
+	'uses' => 'CustomerController@doPrepareReturn'
+));
+
+Route::post('my-orders', array(
+    'uses' => 'CustomerController@doCompleteOrCancelReturns'
+));

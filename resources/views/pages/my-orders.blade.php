@@ -1,6 +1,9 @@
 @extends('layouts.default')
 @section('content')
+<?php
 
+use App\Classes\Core\ReturnTransaction;
+?>
 <div class="container">
     <h3>My Orders</h3>
     <br>
@@ -19,14 +22,18 @@
         <div class="panel-body">
             @if( !empty($sale->get()->salesLineItemList) )
             @foreach($sale->get()->salesLineItemList as $sli)
-            <div>
-                <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&myOrders=true">
-                    @if ( $sli->getElectronicSpecification()->get()->image && $sli->getElectronicSpecification()->get()->image !== null )
-                    <div>
-                        <img src="{{$sli->getElectronicSpecification()->get()->image}}" class="img-responsive" width="10%" height="auto">
-                    </div>
-                    @endif
-                    <div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&myOrders=true">
+                        @if ( $sli->getElectronicSpecification()->get()->image && $sli->getElectronicSpecification()->get()->image !== null )
+
+                        <img src="{{$sli->getElectronicSpecification()->get()->image}}" class="img-responsive" width="100%" height="auto">
+
+                    </a>
+                </div>
+                @endif
+                <div class="col-sm-3">
+                    <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&myOrders=true">
                         @if ( $sli->getElectronicSpecification()->get()->brandName )
                         {{$sli->getElectronicSpecification()->get()->brandName}}
                         @endif
@@ -42,17 +49,20 @@
                         Model {{$sli->getElectronicSpecification()->get()->modelNumber}}
                         <br/>
                         @endif
-                    </div>
-                </a>
-                @if ( $sli->getElectronicSpecification()->get()->price )
-                <b>Price:</b> ${{$sli->getElectronicSpecification()->get()->price}}
-                <br/>
-                @endif
-                <b>Quantity:</b> {{ count($sli->getElectronicItems()) }}
-                <br/>
-                Subtotal: ${{$sli->getSubtotal()}}
-                <br/>
-                <hr>
+                    </a>
+
+
+                    @if ( $sli->getElectronicSpecification()->get()->price )
+                    <b>Price:</b> ${{$sli->getElectronicSpecification()->get()->price}}
+                    <br/>
+                    @endif
+                    <b>Quantity:</b> {{ count($sli->getElectronicItems()) }}
+                    <br/>
+                    Subtotal: ${{$sli->getSubtotal()}}
+                    <br/>
+                    <a href="/return?eIId={{$sli->getElectronicItems()[0]->get()->id}}" class="btn btn-info" role="button"> Return Item </a>
+                    <hr>
+                </div>
             </div>
             @endforeach
             Total: ${{$sale->getTotal()}}
@@ -61,8 +71,128 @@
         </div>
     </div>
     @endforeach
-    @else
-    <h4>You don't have any order.</h4>
+
+    
+    <form method="post" action="/my-orders">
+        @if(Session::has('newList') || Session::has('changedList') || Session::has('deletedList'))
+        <div class="col-lg-3 panel panel-primary affix" id="changesPanel">
+            <div class="panel-heading"> List of Items to Return </div>
+            <div class="panel-body">
+                @if( !empty(Session::get('newList')) )
+                @foreach(Session::get('newList') as $new)
+                @if($new instanceof ReturnTransaction)
+                <b>Return Transaction for </b>
+                <br/>
+
+
+
+
+
+                @foreach($orders as $order)
+                @foreach($order->get()->salesLineItemList as $sli)
+                @foreach($sli->getElectronicItems() as $eI)
+                @if($eI->get()->id == $new->get()->ElectronicItem_id)
+
+                @if ( $sli->getElectronicSpecification()->get()->brandName )
+                {{$sli->getElectronicSpecification()->get()->brandName}}
+                @endif
+                @if ( $sli->getElectronicSpecification()->get()->ElectronicType_name )
+                {{$sli->getElectronicSpecification()->get()->ElectronicType_name}}
+                <br/>
+                @endif
+                @if ( isset($sli->getElectronicSpecification()->get()->displaySize) )
+                {{$sli->getElectronicSpecification()->get()->displaySize}} inch display
+                <br/>
+                @endif
+                @if ( $sli->getElectronicSpecification()->get()->modelNumber )
+                Model {{$sli->getElectronicSpecification()->get()->modelNumber}}
+                <br/>
+                @endif
+
+                @endif
+                @endforeach
+                @endforeach
+                @endforeach
+
+
+
+                <br/>
+                @endif
+                @endforeach
+                @endif
+                <br/>
+                <button type="submit" id="applyReturnsButton" name="applyReturnsButton" class="btn btn-info" value=true>Apply Returns</button>
+                <button type="submit" id="cancelReturnsButton" name="cancelReturnsButton" class="btn btn-primary" value=true>Cancel Returns</button>
+            </div>
+        </div>
+        @endif
+
+        @else
+        <h4>You don't have any order.</h4>
+        @endif
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    </form>
+    
+    @if( isset($returns) && !empty($returns) )
+    <br/>
+    <br/>
+    <h3>My Returns</h3>
+    @foreach($returns as $return)
+
+    @foreach($eSList as $eS)
+    @foreach($eS->electronicItems as $eI)
+    @if($eI->id == $return->get()->ElectronicItem_id)
+
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Return Transaction ID:</b> {{$return->get()->id}}
+            <br/>
+            <b>Return Placed:</b> {{$return->get()->timestamp}}
+            <br/>
+            <b>Refund:</b> ${{$eS->price}}
+            <br/>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-2">
+                    <a href="/details?id={{$eS->id}}&myOrders=true">
+                        @if ( $eS->image && $eS->image !== null )
+
+                        <img src="{{$eS->image}}" class="img-responsive" width="100%" height="auto">
+
+                    </a>
+                </div>
+                @endif
+                <div class="col-sm-3">
+                    <a href="/details?id={{$eS->id}}&myOrders=true">
+                        @if ( $eS->brandName )
+                        {{$eS->brandName}}
+                        @endif
+                        @if ( $eS->ElectronicType_name )
+                        {{$eS->ElectronicType_name}}
+                        <br/>
+                        @endif
+                        @if ( isset($eS->displaySize) )
+                        {{$eS->displaySize}} inch display
+                        <br/>
+                        @endif
+                        @if ( $eS->modelNumber )
+                        Model {{$eS->modelNumber}}
+                        <br/>
+                        @endif
+                    </a>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @endif
+    @endforeach
+    @endforeach
+
+    @endforeach
     @endif
 </div>
 

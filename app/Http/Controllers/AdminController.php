@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use App\Classes\Mappers\ElectronicCatalogMapper;
 use Image;
 use Session;
-use App\Classes\Mappers\UserCatalogMapper;
+use App\Classes\Mappers\UserMapper;
 
 class AdminController extends BaseController {
 
@@ -24,7 +24,7 @@ class AdminController extends BaseController {
 
     public function __construct() {
         $this->electronicCatalogMapper = new ElectronicCatalogMapper();
-        $this->userCatalogMapper = new UserCatalogMapper();
+        $this->userCatalogMapper = new UserMapper();
         $this->middleware(function ($request, $next) {
 
             if (session()->has('newList') || session()->has('changedList') || session()->has('deletedList')) {
@@ -168,9 +168,17 @@ class AdminController extends BaseController {
     }
 
     public function showAllCustomers() {
-        $userList = $this->userCatalogMapper->getAllCustomers();
+        $allCustomers = $this->userCatalogMapper->getAllCustomers();
+        $deletedCustomers = array();
+        
+        foreach($allCustomers as $key => $value){
+            if($allCustomers[$key]->get()->isDeleted){
+                array_push($deletedCustomers, $allCustomers[$key]);
+                unset($allCustomers[$key]);
+            }
+        }
 
-        return view('pages.view-all-customers', ['userList' => $userList]);
+        return view('pages.view-all-customers', ['allCustomers' => $allCustomers, 'deletedCustomers' => $deletedCustomers]);
     }
 
 }

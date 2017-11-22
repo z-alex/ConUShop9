@@ -188,9 +188,9 @@ REPLACE INTO ElectronicType (id, name) values (3, "Monitor");
 REPLACE INTO ElectronicType (id, name) values (4, "Tablet");
 /**REPLACE INTO ElectronicType (id, name) values (5, "Television");**/
 
-REPLACE INTO User (id, email, password, admin) values (1, 'admin1@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1);
-REPLACE INTO User (id, email, password, admin) values (2, 'admin2@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1);
-REPLACE INTO User (id, email, password, admin) values (3, 'admin3@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1);
+REPLACE INTO User (id, email, password, admin, isDeleted, isLoggedIn) values (1, 'admin1@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1, 0, 0);
+REPLACE INTO User (id, email, password, admin, isDeleted, isLoggedIn) values (2, 'admin2@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1,  0, 0);
+REPLACE INTO User (id, email, password, admin, isDeleted, isLoggedIn) values (3, 'admin3@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1,  0, 0);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

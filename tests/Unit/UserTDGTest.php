@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Classes\Core\User;
 use App\Classes\Core\UserCatalog;
 use App\Classes\TDG\UserTDG;
-use App\Classes\Mappers\UserCatalogMapper;
+use App\Classes\Mappers\UserMapper;
 
 class UserTDGTest extends TestCase {
 
@@ -43,7 +43,7 @@ class UserTDGTest extends TestCase {
     //Test the login method in userTDG to see if user has been logged in succesfully
     public function testLogin() {
 
-        $userCatalogMapper = new UserCatalogMapper();
+        $userCatalogMapper = new UserMapper();
 
         $this->assertTrue($userCatalogMapper->login('admin1@conushop.com', 'admin'));
     }

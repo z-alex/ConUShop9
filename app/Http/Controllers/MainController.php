@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Http\Request;
 use Session;
-use App\Classes\Mappers\UserCatalogMapper;
+use App\Classes\Mappers\UserMapper;
 use App\Classes\Mappers\ElectronicCatalogMapper;
 use App\Classes\Mappers\SaleMapper;
 
@@ -25,7 +25,7 @@ class MainController extends BaseController {
     private $saleMapper;
 
     public function __construct() {
-        $this->userCatalogMapper = new UserCatalogMapper();
+        $this->userCatalogMapper = new UserMapper();
         $this->electronicCatalogMapper = new ElectronicCatalogMapper();
 
         $this->middleware(function ($request, $next) {
@@ -60,11 +60,11 @@ class MainController extends BaseController {
         } else {
             if ($this->userCatalogMapper->login($request->input('email'), $request->input('password')) && Auth::attempt($inputs)) {
                 $this->userCatalogMapper->makeLoginLog($request->user()->id);
-
+				
                 Session::flash('success_msg', "Successfully logged in.");
                 return Redirect::to('');
             } else {
-                return view('pages.login', ['email' => $request->input('email'), 'error_msg' => 'Wrong email or password.']);
+                return view('pages.login', ['email' => $request->input('email'), 'error_msg' => 'Login Unsuccessful.']);
             }
         }
     }

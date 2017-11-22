@@ -91,3 +91,13 @@ Route::get('/checkout-cancel', array(
 Route::get('/checkout-pay', array(
     'uses' => 'CustomerController@doPayment'
 ));
+
+Route::get('/view-my-account',array(
+	'uses' => 'CustomerController@doViewAccount'
+));
+
+Route::get('/delete-my-account',array(
+	'uses' => 'CustomerController@doDeleteMyAccount'
+));
+
+

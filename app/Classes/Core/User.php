@@ -92,5 +92,9 @@ class User extends Authenticatable {
 
         return $returnData;
     }
+    
+    public function becomesLoggedIn(){
+        $this->isLoggedIn = 1;
+    }
 
 }

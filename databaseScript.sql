@@ -188,13 +188,13 @@ REPLACE INTO ElectronicType (id, name) values (3, "Monitor");
 REPLACE INTO ElectronicType (id, name) values (4, "Tablet");
 /**REPLACE INTO ElectronicType (id, name) values (5, "Television");**/
 
-REPLACE INTO User (id, email, password, admin) values (1, 'admin1@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1);
-REPLACE INTO User (id, email, password, admin) values (2, 'admin2@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1);
-REPLACE INTO User (id, email, password, admin) values (3, 'admin3@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1);
+REPLACE INTO User (id, email, password, admin, isDeleted, isLoggedIn) values (1, 'admin1@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1, 0, 0);
+REPLACE INTO User (id, email, password, admin, isDeleted, isLoggedIn) values (2, 'admin2@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1,  0, 0);
+REPLACE INTO User (id, email, password, admin, isDeleted, isLoggedIn) values (3, 'admin3@conushop.com', '$2y$10$wwTY.Z0ROcEgdQLlGAYuSOOGtEbm9JMo887OtiHQdgpV6h6LFhMqO', 1,  0, 0);
 
-REPLACE INTO User (id, firstName, lastName, email, password, phone, admin, physicalAddress) values (4, 'First', 'Client', 'client1@conushop.com', '$2y$10$9TXiu1Zu4uxhwxrBXDOnmu6Dg3XhjXmV4hJggc/XfSQX9gObXqac6', '123-456-7890', 0, '123 Avenue H1B-4G9');
-REPLACE INTO User (id, firstName, lastName, email, password, phone, admin, physicalAddress) values (5, 'Second', 'Client', 'client2@conushop.com', '$2y$10$9TXiu1Zu4uxhwxrBXDOnmu6Dg3XhjXmV4hJggc/XfSQX9gObXqac6', '123-456-7890', 0, '234 Avenue H1C-5G0');
-REPLACE INTO User (id, firstName, lastName, email, password, phone, admin, physicalAddress) values (6, 'Third', 'Client', 'client3@conushop.com', '$2y$10$9TXiu1Zu4uxhwxrBXDOnmu6Dg3XhjXmV4hJggc/XfSQX9gObXqac6', '123-456-7890', 0, '345 Avenue H1D-6G1');
+REPLACE INTO User (id, firstName, lastName, email, password, phone, admin, physicalAddress, isDeleted, isLoggedIn) values (4, 'First', 'Client', 'client1@conushop.com', '$2y$10$9TXiu1Zu4uxhwxrBXDOnmu6Dg3XhjXmV4hJggc/XfSQX9gObXqac6', '438-456-7890', 0, '123 Avenue H1B-4G9', 0, 0);
+REPLACE INTO User (id, firstName, lastName, email, password, phone, admin, physicalAddress, isDeleted, isLoggedIn) values (5, 'Second', 'Client', 'client2@conushop.com', '$2y$10$9TXiu1Zu4uxhwxrBXDOnmu6Dg3XhjXmV4hJggc/XfSQX9gObXqac6', '514-438-4190', 0, '234 Avenue H1C-5G0', 0, 0);
+REPLACE INTO User (id, firstName, lastName, email, password, phone, admin, physicalAddress, isDeleted, isLoggedIn) values (6, 'Third', 'Client', 'client3@conushop.com', '$2y$10$9TXiu1Zu4uxhwxrBXDOnmu6Dg3XhjXmV4hJggc/XfSQX9gObXqac6', '514-168-3590', 0, '345 Avenue H1D-6G1', 0, 0);
 
 REPLACE INTO ElectronicSpecification SET id = '1', dimension = '10 x 50 x 100', weight = '10', modelNumber = '123', brandName = 'Asus', hdSize ='512', price = '1200', processorType = 'Intel i7', ramSize = '16', cpuCores = '4', os = 'Windows', ElectronicType_id = '1', image = 'http://laravel.dev/images/1511129568.jpg', isDeleted = '0';
 REPLACE INTO ElectronicItem SET id = '1', ElectronicSpecification_id = '1', serialNumber = '8MU4D5MQGN2I1';
@@ -211,7 +211,7 @@ REPLACE INTO ElectronicItem SET id = '7', ElectronicSpecification_id = '3', seri
 REPLACE INTO ElectronicItem SET id = '8', ElectronicSpecification_id = '3', serialNumber = 'MBIX3Q7UHWSG2';
 REPLACE INTO ElectronicItem SET id = '9', ElectronicSpecification_id = '3', serialNumber = 'MBIX3Q7UHWSG3';
 
-REPLACE INTO ElectronicSpecification SET id = '4', weight = '0.5', modelNumber = 'MLPY2CLA1', brandName = 'Apple iPad Pro', hdSize = '32', price = '700.89', processorType = 'A9X chip', ramSize = '4', cpuCores = '4', batteryInfo = '10 hours', os = 'iOS 9', camera = '1', ElectronicType_id = '2', displaySize = '9.7', image = 'http://laravel.dev/images/1511155838.jpg';
+REPLACE INTO ElectronicSpecification SET id = '4', weight = '0.5', modelNumber = 'MLPY2CLA1', brandName = 'Apple iPad Pro', hdSize = '32', price = '700.89', processorType = 'A9X chip', ramSize = '4', cpuCores = '4', batteryInfo = '10 hours', os = 'iOS 9', camera = '1', ElectronicType_id = '2', displaySize = '9.7', image = 'http://laravel.dev/images/1511155838.jpg', isDeleted = '0';
 REPLACE INTO ElectronicItem SET id = '10', ElectronicSpecification_id = '4', serialNumber = 'GXQSJG4SXV701';
 REPLACE INTO ElectronicItem SET id = '11', ElectronicSpecification_id = '4', serialNumber = 'GXQSJG4SXV702';
 REPLACE INTO ElectronicItem SET id = '12', ElectronicSpecification_id = '4', serialNumber = 'GXQSJG4SXV703';

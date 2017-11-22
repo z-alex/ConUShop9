@@ -8,7 +8,7 @@ use App\Classes\UnitOfWork;
 use App\Aspect\IdentityMapAspect;
 use Hash;
 
-class UserCatalogMapper {
+class UserMapper {
 
     private $userCatalog;
     private $userTDG;
@@ -38,7 +38,7 @@ class UserCatalogMapper {
             $user = $this->userCatalog->makeCustomer($userData);
 
             $id = $this->userTDG->add($user);
-            
+
             $user->set((object) ['id' => $id]);
 
             //Add for identity map
@@ -51,19 +51,38 @@ class UserCatalogMapper {
     }
 
     function login($email, $password) {
-        if ($this->userCatalog->checkUser($email, $password)) {
+        // Before the execution of this method, the IdentityMapAspect class verifies if the user is in the IdentityMap. Please check the class in App\Aspect\ for the code.
+        
+        return $this->userTDG->findUserTestPsw($email, $password);
+        
+        // Alternative part
+        $loggedInUser = $this->userCatalog->checkUser($email, $password);
+        
+        if ($loggedInUser !== null) {
+            $this->userTDG->update($loggedInUser);
             return true;
-        } else {
-            return $this->userTDG->findUserTestPsw($email, $password);
         }
+        
+        return false;
+    }
+    
+    function logout(){
+        $loggedOutUser = $this->userCatalog->logoutUser();
+        
+        $this->userTDG->update($loggedOutUser);
     }
 
     function getAllCustomers() {
         return $this->userCatalog->getCustomerList();
     }
 
+    function getUserInfo($userID) {
+        return $this->userCatalog->getUserInfo($userID);
+    }
+
     function deleteAccount($userID) {
-        $this->userCatalog->deleteUser($userID);
+        $deletedUser = $this->userCatalog->deleteUser($userID);
+        $this->userTDG->update($deletedUser);
     }
 
 }

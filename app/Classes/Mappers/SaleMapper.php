@@ -11,6 +11,7 @@ use App\Classes\Core\ShoppingCart;
 use App\Classes\UnitOfWork;
 use App\Classes\Core\ReturnTransaction;
 use Session;
+use PhpDeal\Annotation as Contract;
 
 class SaleMapper {
     //TDGs

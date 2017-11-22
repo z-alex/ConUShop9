@@ -75,10 +75,20 @@ class ShoppingCart {
                 }
             }
         }
-        
+
         return $eISuccessfullyAdded;
     }
-    
+
+    /**
+     * Remove an item from the shopping cart
+     *
+     * @param ElectronicItem $eIToRemove
+     *
+     * @Contract\Verify("Auth::check() === true && Auth::user()->admin === 0 && $this->size >= 1")
+     *
+     * @Contract\Ensure("$this->size == $__old->size-1 && $this->containsEI($eIToRemove) == false")
+     *
+     */
     public function removeFromCart($eIToRemove){
         foreach ($this->salesLineItems as $sli) {
             foreach ($sli->getElectronicItems() as $eI) {
@@ -87,6 +97,9 @@ class ShoppingCart {
                 }
             }
         }
+
+        $this->updateSLIs();
+        return $eIToRemove;
     }
 
     /**
@@ -162,6 +175,18 @@ class ShoppingCart {
         
         return $total;
         
+    }
+
+    public function containsEI($eIToCheck) {
+        $contains = false;
+        foreach ($this->salesLineItems as $sli) {
+            foreach ($sli->getElectronicItems() as $eI) {
+                if ($eIToCheck->get()->id === $eI->get()->id) {
+                    $contains = true;
+                }
+            }
+        }
+        return $contains;
     }
 
 }

@@ -42,6 +42,12 @@ class SaleMapper {
         $this->unitOfWork = new UnitOfWork(['saleMapper' => $this]);
     }
 
+     /**
+     * Make a new sale for checkout
+     *
+     * @Contract\Verify("Auth::check() === true && Auth::user()->admin === 0 && $this->shoppingCart->getSize() >= 1")
+     *
+     */
     function makeNewSale() {
         $slis = $this->shoppingCart->getSalesLineItems();
 
@@ -68,7 +74,14 @@ class SaleMapper {
 
         $this->saleTDG->delete($sale);
     }
-
+  
+    /**
+     * Last step for checkout
+     *
+     * @return Sale $completedSale
+     *
+     * @Contract\Ensure("$__result->get()->isComplete === 1 && $__result->get()->payment->get()->amount == $this->shoppingCart->getTotal()")
+     */
     function makePayment() {
         $completedSale = $this->saleCatalog->makePayment();
 

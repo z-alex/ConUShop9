@@ -7,14 +7,17 @@
     <hr>
     @if( !empty($sale->get()->salesLineItemList) )
     @foreach($sale->get()->salesLineItemList as $sli)
-    <div>
-        <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&shoppingCart=true">
+   <div class="row">
+   <div class="col-sm-2"> 
+       <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&shoppingCart=true">
+           
             @if ( $sli->getElectronicSpecification()->get()->image && $sli->getElectronicSpecification()->get()->image !== null )
-            <div>
-                <img src="{{$sli->getElectronicSpecification()->get()->image}}" class="img-responsive" width="10%" height="auto">
-            </div>
+                <img src="{{$sli->getElectronicSpecification()->get()->image}}" class="img-responsive" width="100%" height="auto">
+       </a>
+   </div>
             @endif
-            <div>
+            <div class="col-sm-10">
+            <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&shoppingCart=true">
                 @if ( $sli->getElectronicSpecification()->get()->brandName )
                 {{$sli->getElectronicSpecification()->get()->brandName}}
                 @endif
@@ -30,8 +33,8 @@
                 Model {{$sli->getElectronicSpecification()->get()->modelNumber}}
                 <br/>
                 @endif
-            </div>
-        </a>
+            </a>
+
         @if ( $sli->getElectronicSpecification()->get()->price )
         <b>Price:</b> ${{$sli->getElectronicSpecification()->get()->price}}
         <br/>
@@ -40,14 +43,19 @@
         <br/>
         Subtotal: ${{$sli->getSubtotal()}}
         <br/>
+            
+   </div>
+ </div>   
         <hr>
-    </div>
+
     @endforeach
-    Total: ${{$sale->getTotal()}}
+            <div class="row">
+                <span class="bigText">Total: ${{$sale->getTotal()}}</span>
     <br/>
     <br/>
-    <a href="/checkout-pay" class="btn btn-info" role="button"> Pay </a>
-    <a href="/checkout-cancel" class="btn btn-info" role="button"> Cancel Checkout </a>
+    <a href="/checkout-pay" class="btn btn-lg btn-success" role="button"> Pay </a>
+    <a href="/checkout-cancel" class="btn btn-lg btn-info" role="button"> Cancel Checkout </a>
     @endif
-</div>
+        </div>
+
 @stop

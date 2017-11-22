@@ -6,19 +6,25 @@
     <br>
     <hr>
     @foreach ($shoppingCart->getSalesLineItems() as $sli)
-    <div>
-    <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&shoppingCart=true">
+    <div class="row">
+   <div class="col-sm-2"> 
+       <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&shoppingCart=true">
+           
         @if ( $sli->getElectronicSpecification()->get()->image && $sli->getElectronicSpecification()->get()->image !== null )
-        <div>
-        <img src="{{$sli->getElectronicSpecification()->get()->image}}" class="img-responsive" width="10%" height="auto">
+    
+        
+        <img src="{{$sli->getElectronicSpecification()->get()->image}}" class="img-responsive" width=100%" height="auto">
+    </a>
         </div>
         @endif
-        <div>
-        @if ( $sli->getElectronicSpecification()->get()->brandName )
+   <div class="col-sm-10">
+        <a href="/details?id={{$sli->getElectronicSpecification()->get()->id}}&shoppingCart=true">
+       @if ( $sli->getElectronicSpecification()->get()->brandName )
         {{$sli->getElectronicSpecification()->get()->brandName}}
         @endif
         @if ( $sli->getElectronicSpecification()->get()->ElectronicType_name )
         {{$sli->getElectronicSpecification()->get()->ElectronicType_name}}
+        
         <br/>
         @endif
         @if ( isset($sli->getElectronicSpecification()->get()->displaySize) )
@@ -28,12 +34,14 @@
         @if ( $sli->getElectronicSpecification()->get()->modelNumber )
         Model {{$sli->getElectronicSpecification()->get()->modelNumber}}
         <br/>
+        </a>
         @endif
-        </div>
-    </a>
+       
+
     @if ( $sli->getElectronicSpecification()->get()->price )
     <b>Price:</b> ${{$sli->getElectronicSpecification()->get()->price}}
     <br/>
+    
     @endif
     <b>Quantity:</b> {{ count($sli->getElectronicItems()) }}
     <br/>
@@ -45,17 +53,25 @@
     <br/>
     <?php $count++; ?>
     @endforeach
-    <a href="/remove-from-cart?eSId={{$sli->getElectronicSpecification()->get()->id}}" class="btn btn-info" role="button"> Remove </a>
-    <hr>
+        
+    <a href="/remove-from-cart?eSId={{$sli->getElectronicSpecification()->get()->id}}" class="btn btn-primary" role="button"> Remove </a>
     </div>
+    </div>
+    <hr>
+
     @endforeach
-    Total: ${{$shoppingCart->getTotal()}}
-    <a href="/checkout" class="btn btn-info" role="button"> Checkout </a>
+    <div class="row">
+        <span class="bigText">Total: ${{$shoppingCart->getTotal()}}</span>
+ 
+    <a href="/checkout" class="btn btn-lg btn-info" role="button"> Checkout </a>
     <br/>
+        
+        
     @else
     <h3>You have no items in your cart</h3>
     @endif
     <br/>
-    <a href="/" class="btn btn-info" role="button"> Continue Shopping </a>
+    <a href="/" class="btn btn-primary" role="primary"> Continue Shopping </a>
+    </div>
 </div>
 @stop

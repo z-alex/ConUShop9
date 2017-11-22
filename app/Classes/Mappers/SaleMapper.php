@@ -2,11 +2,13 @@
 
 namespace App\Classes\Mappers;
 
+use App\Classes\Core\Sale;
 use App\Classes\TDG\ElectronicItemTDG;
 use App\Classes\TDG\SaleTDG;
 use App\Classes\TDG\PaymentTDG;
 use App\Classes\Core\SaleCatalog;
 use App\Classes\Core\ShoppingCart;
+use PhpDeal\Annotation as Contract;
 
 class SaleMapper {
     //TDGs
@@ -31,6 +33,12 @@ class SaleMapper {
         $this->shoppingCart->setSLIs($this->electronicItemTDG->findAllShoppingCartSLIFromUser($userId));
     }
 
+    /**
+     * Make a new sale for checkout
+     *
+     * @Contract\Verify("Auth::check() === true && Auth::user()->admin === 0 && $this->shoppingCart->getSize() >= 1")
+     *
+     */
     function makeNewSale() {
         $slis = $this->shoppingCart->getSalesLineItems();
 
@@ -58,6 +66,13 @@ class SaleMapper {
         $this->saleTDG->delete($sale);
     }
 
+    /**
+     * Last step for checkout
+     *
+     * @return Sale $completedSale
+     *
+     * @Contract\Ensure("$__result->get()->isComplete === 1 && $__result->get()->payment->get()->amount == $this->shoppingCart->getTotal()")
+     */
     function makePayment() {
         $completedSale = $this->saleCatalog->makePayment();
 

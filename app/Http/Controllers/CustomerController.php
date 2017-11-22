@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Classes\Mappers\ShoppingCartMapper;
+use App\Classes\Mappers\UserCatalogMapper;
+
 use Auth;
 use Redirect;
 
@@ -17,7 +19,7 @@ class CustomerController extends Controller {
 
         $this->middleware(function ($request, $next) {
             $this->shoppingCartMapper = new ShoppingCartMapper(auth()->user()->id);
-
+			$this->userCatalogMapper = new UserCatalogMapper(auth()->user()->id);
             return $next($request);
         });
 
@@ -53,5 +55,21 @@ class CustomerController extends Controller {
         $request->session()->flash('success_msg', $message);
         return Redirect::back();
     }
+
+	//Karine
+	public function doViewAccount(Request $request){
+        $user = $this->userCatalogMapper->getUserInfo(Auth::user()->id);
+
+      return view('pages.view-customer-info', ['user' => $user]);
+    }
+	
+	
+	public function doDeleteMyAccount(Request $request){
+		$user = $this->userCatalogMapper->deleteAccount(Auth::user()->id);
+
+		// Return the homepage & log out the user.
+		return Redirect::to('logout');
+	}
+
 
 }

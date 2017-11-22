@@ -52,7 +52,8 @@ class UserCatalogMapper {
 
     function login($email, $password) {
         if ($this->userCatalog->checkUser($email, $password)) {
-            return true;
+			$this->userTDG->loginUser($userID); 
+           return true;
         } else {
             return $this->userTDG->findUserTestPsw($email, $password);
         }
@@ -62,8 +63,19 @@ class UserCatalogMapper {
         return $this->userCatalog->getCustomerList();
     }
 
+	function getUserInfo($userID)
+	{
+		return $this->userCatalog->getUserInfo($userID);
+	}
+
     function deleteAccount($userID) {
+
         $this->userCatalog->deleteUser($userID);
+		$this->userTDG->deleteAccount($userID);
     }
+
+
+
+
 
 }

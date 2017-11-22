@@ -77,3 +77,13 @@ Route::get('remove-from-cart',array(
 Route::get('/users', array(
 		'uses' => 'AdminController@showAllCustomers'
 ));
+
+Route::get('/viewmyaccount',array(
+	'uses' => 'CustomerController@doViewAccount'
+));
+
+Route::get('/deletemyaccount',array(
+	'uses' => 'CustomerController@doDeleteMyAccount'
+));
+
+

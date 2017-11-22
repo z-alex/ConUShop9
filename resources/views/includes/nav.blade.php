@@ -21,6 +21,7 @@
 				<li><a href="users">View Users</a></li> 
                 <li><a href="/logout">Log Out</a></li>
                 @else
+				<li><a href="/viewmyaccount">My Account</a></li>
                 <li><a href="/shopping-cart">View Cart</a></li>
                 <li><a href="/logout">Log Out</a></li>
                 @endif

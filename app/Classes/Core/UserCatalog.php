@@ -54,6 +54,7 @@ class UserCatalog
         foreach ($this->userList as $user) {
             if ($user->get()->email === $email) {
                 if (Hash::check($user->get()->password, $password)) {
+				$this->loginUser($userID);
                     return true;
                 }
 
@@ -89,31 +90,48 @@ class UserCatalog
 		
 		$customers = array();
 		foreach($this->getUserlist() as $user){
-			if(!($user->admin)){
+			if(!$user->admin && !$user->isDeleted){
 				array_push($customers, $user);
 			}
 		}
 		return $customers;
-	
-		//return $this->getUserList();
+	}
 
-		/*$customers = array();
-        foreach ($this->userList as $user) {
-			if($user->admin ===1){
-            array_push($customers, $user->get());
-			}
-        }
-        return $customers;
-		*/
-		 
-		/*$customers = array();
 
-		foreach ($this->userList as $user){
-			if ($user->admin === 0) {
-				array_push($customers, $user->getUserList());
-			}
-		}
-		return $customers;
-		*/
+	function getUserInfo($userID) {
+		foreach($this->userList as $user) {
+			if ($user->get()->id == $userID){
+				return $user;
+			 }
+		 }
+		 // Return null to denote that the user was not found.
+		  return null;
+	}
+
+	function deleteUser($userID) {
+		$data = new \stdClass();
+		$data->isDeleted = 1;
+		$data->isLoggedIn = 0;
+
+		foreach($this->userList as $user) {
+			if ($user->get()->id == $userID){
+				$user->set($data);
+				break;
+			 }
+		 }
+	}
+
+	function loginUser($userID){
+		$data = new \stdClass();
+		$data->isLoggedIn = 1;
+		$data->isDeleted = 0;
+		
+		foreach($this->userList as $user) {
+			if ($user->get()->id == $userID){
+				$user->set($data);
+				break;
+			 }
+		 }
+
 	}
 }

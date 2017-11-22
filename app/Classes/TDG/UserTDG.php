@@ -120,4 +120,18 @@ class UserTDG {
         return $this->conn->getPDOConnection()->lastInsertId();
     }
 
+	public function deleteAccount($userID){
+		 $queryString = "UPDATE user SET isDeleted = 1, isLoggedIn=0 WHERE id =" . $userID ;
+
+
+        return $this->conn->directQuery($queryString);
+	}
+
+	public function loginUser($userID){
+		 $queryString = "UPDATE user SET isLoggedIn = 1, isDeleted = 0 WHERE id =" . $userID ;
+
+        return $this->conn->directQuery($queryString);
+	}
+
+
 }

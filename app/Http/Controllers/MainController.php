@@ -49,7 +49,7 @@ class MainController extends BaseController {
         } else {
             if ($this->userCatalogMapper->login($request->input('email'), $request->input('password')) && Auth::attempt($inputs)) {
                 $this->userCatalogMapper->makeLoginLog($request->user()->id);
-
+				
                 Session::flash('success_msg', "Successfully logged in.");
                 return Redirect::to('');
             } else {

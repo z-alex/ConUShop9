@@ -33,7 +33,7 @@ class MainController extends BaseController {
                 $this->saleMapper = new SaleMapper(auth()->user()->id);
                 Session::put('currentSaleExists', $this->saleMapper->currentSaleExists());
             }
-            
+
             return $next($request);
         });
     }
@@ -60,7 +60,7 @@ class MainController extends BaseController {
         } else {
             if ($this->userCatalogMapper->login($request->input('email'), $request->input('password')) && Auth::attempt($inputs)) {
                 $this->userCatalogMapper->makeLoginLog($request->user()->id);
-				
+
                 Session::flash('success_msg', "Successfully logged in.");
                 return Redirect::to('');
             } else {
@@ -121,6 +121,8 @@ class MainController extends BaseController {
 
         if ($request->input('shoppingCart')) {
             return view('pages.details', ['eS' => $eS, 'shoppingCart' => true]);
+        } else if ($request->input('myOrders')) {
+            return view('pages.details', ['eS' => $eS, 'myOrders' => true]);
         } else {
             $lastInputs = $request->session()->get('lastInputs');
             $eSpecifications = $request->session()->get('electronicSpecifications');

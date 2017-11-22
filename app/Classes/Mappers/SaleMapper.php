@@ -9,12 +9,13 @@ use App\Classes\Core\SaleCatalog;
 use App\Classes\Core\ShoppingCart;
 
 class SaleMapper {
-
-    private $saleCatalog;
-    private $shoppingCart;
+    //TDGs
     private $electronicItemTDG;
     private $saleTDG;
     private $paymentTDG;
+    
+    private $saleCatalog;
+    private $shoppingCart;
 
     function __construct($userId) {
         $this->electronicItemTDG = new ElectronicItemTDG();
@@ -71,6 +72,10 @@ class SaleMapper {
             $this->saleTDG->update($completedSale);
         }
         return $completedSale;
+    }
+    
+    function getMyOrders($userId){
+        return $this->saleCatalog->getMyOrders($userId);
     }
 
 }

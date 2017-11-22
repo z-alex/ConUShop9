@@ -14,15 +14,15 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-sm-2" for="dimensions">Dimensions(cm)</label>
+    <label class="control-label col-sm-2" for="dimensions">Dimensions(cm)(wxhxd)</label>
     <div class="col-sm-10">
-        <input type="text" class="form-control" id="dimensions" placeholder="Enter dimensions size (width x height x depth)" name="dimension" value="{{$eSToModify->dimension}}">
+        <input type="text" class="form-control" id="dimension" placeholder="Enter dimensions size (width x height x depth)" name="dimension" value="{{$eSToModify->dimension}}">
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-sm-2" for="weight">Weight</label>
+    <label class="control-label col-sm-2" for="weight">Weight(kg)</label>
     <div class="col-sm-10">
-        <input type="number" min=0 class="form-control" id="weight" placeholder="Enter weight" name="weight" value="{{$eSToModify->weight}}">
+        <input type="text" class="form-control" id="weight" placeholder="Enter weight" name="weight" value="{{$eSToModify->weight}}">
     </div>
 </div>
 <div class="form-group">
@@ -44,7 +44,7 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-sm-2" for="hdSize">Hard Drive</label>
+    <label class="control-label col-sm-2" for="hdSize">Hard Drive(GB)</label>
     <div class="col-sm-10">
         <input type="text" class="form-control" id="hdSize" placeholder="Enter hard drive size" name="hdSize" value="{{$eSToModify->hdSize}}">
     </div>
@@ -60,14 +60,14 @@
 <div class="form-group">
     <label class="control-label col-sm-2" for="os">Operating System</label>
     <div class="col-sm-10">
-        <input type="text" class="form-control" id="os" placeholder="Enter built-in operating system " name="os">
+        <input type="text" class="form-control" id="os" placeholder="Enter built-in operating system " name="os" value="{{$eSToModify->os}}">
     </div>
 </div>
 
 <div class="form-group">
     <label class="control-label col-sm-2" for="price">Price</label>
     <div class="col-sm-10">
-        <input type="number" min=0 class="form-control" id="price" placeholder="Enter price" name="price" value="{{$eSToModify->price}}">
+        <input type="text" class="form-control" id="price" placeholder="Enter price" name="price" value="{{$eSToModify->price}}">
     </div>
 </div>
 

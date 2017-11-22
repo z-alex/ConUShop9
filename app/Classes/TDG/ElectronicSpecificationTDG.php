@@ -88,9 +88,9 @@ class ElectronicSpecificationTDG {
         //$queryString = 'SELECT * FROM ElectronicSpecification JOIN ElectronicType ON ElectronicType.id = ElectronicSpecification.ElectronicType_id JOIN ElectronicItem ON ElectronicSpecification.id = ElectronicItem.ElectronicSpecification_id';
         $queryString = 'SELECT * FROM ElectronicSpecification';
         $eSDataList = $this->conn->directQuery($queryString);
-        //dd($eSDataList);
+        
         foreach ($eSDataList as &$eSData) {
-            //dd($eSData);
+            
             $queryString = 'SELECT *
             FROM ElectronicItem
             WHERE ';
@@ -105,11 +105,10 @@ class ElectronicSpecificationTDG {
             //We send to MySQLConnection the associative array, to bind values to keys
             //Please mind that stdClass and associative arrays are not the same data structure, althought being both based on the big family of hashtables
             $eIDataList = $this->conn->query($queryString, $parameters);
-            //dd($eIDataList);
+            
             $eSData->electronicItems = $eIDataList;
         }
         return $eSDataList;
-        //dd($eSDataList);
     }
 
     private function unsetUselessESProperties($object) {

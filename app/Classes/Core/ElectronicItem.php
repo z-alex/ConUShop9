@@ -9,6 +9,7 @@ class ElectronicItem {
     private $ElectronicSpecification_id;
     private $User_id;
     private $expiryForUser;
+    private $Sale_id;
     
     function __construct() {
         $argv = func_get_args();
@@ -41,6 +42,10 @@ class ElectronicItem {
         if (isset($data->expiryForUser)){
             $this->expiryForUser= $data->expiryForUser;
         }
+        
+        if (isset($data->Sale_id)){
+            $this->Sale_id = $data->Sale_id;
+        }
     }
 
     function get() {
@@ -51,6 +56,8 @@ class ElectronicItem {
         $returnData->ElectronicSpecification_id = $this->ElectronicSpecification_id;
         $returnData->User_id = $this->User_id;
         $returnData->expiryForUser= $this->expiryForUser;
+        $returnData->Sale_id = $this->Sale_id;
+        
         return $returnData;
     }
     

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Kevin
@@ -14,11 +15,9 @@ use App\Classes\Core\User;
 use Tests\TestCase;
 use Hash;
 
-class UserCatalogTest extends TestCase
-{
+class UserCatalogTest extends TestCase {
 
-    public function testAccessorsMethods()
-    {
+    public function testAccessorsMethods() {
         $user1 = new User();
         $user2 = new user();
         $user1Data = new \stdClass();
@@ -50,11 +49,9 @@ class UserCatalogTest extends TestCase
         $userCatalogList = $userCatalog->getUserList();
 
         $this->assertTrue(sizeof($userList) == sizeof($userCatalogList));
-
     }
 
-    public function testCheckUser()
-    {
+    public function testCheckUser() {
         $user1 = new User();
         $user2 = new user();
         $user1Data = new \stdClass();
@@ -88,11 +85,9 @@ class UserCatalogTest extends TestCase
         $pswParameter = 'bar123';
         $hashedPsw = Hash::make($pswParameter);
         $this->assertTrue($userCatalog->checkUser($emailParameter, $hashedPsw));
-
     }
 
-    public function testFindUser()
-    {
+    public function testFindUser() {
         $user1 = new User();
         $user2 = new user();
         $user1Data = new \stdClass();
@@ -127,8 +122,7 @@ class UserCatalogTest extends TestCase
         $this->assertTrue($userCatalog->findUser($emailParameter));
     }
 
-    public function testMakeCustomer()
-    {
+    public function testMakeCustomer() {
         $user1 = new User();
         $user2 = new user();
         $user1Data = new \stdClass();
@@ -158,7 +152,6 @@ class UserCatalogTest extends TestCase
         $userList = array($user1, $user2);
         $userCatalog->setUserList($userList);
         //default userList has 2 users
-
         //adding one more user using makeNewCustom
         $user3Data = new \stdClass();
 
@@ -178,4 +171,5 @@ class UserCatalogTest extends TestCase
         //dump($total);
         $this->assertTrue(count($newUserList) == 3);
     }
+
 }

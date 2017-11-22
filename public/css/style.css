@@ -107,7 +107,13 @@ th, td {
 .affix {
     position: fixed;
     top: 30%;
-    bottom: 0;
+    bottom:10%;
     right: 0;
     overflow-y: auto;
 }
+
+.grayBgWhiteText{
+    background-color:#404040;
+    color:white;
+}
+

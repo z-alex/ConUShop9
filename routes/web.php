@@ -64,18 +64,32 @@ Route::get('details', array(
     'uses' => 'MainController@showDetails'
 ));
 
-Route::get('add-to-cart',array(
-    'uses'=>'CustomerController@doAddToCart'
+Route::get('add-to-cart', array(
+    'uses' => 'CustomerController@doAddToCart'
 ));
+
 Route::get('shopping-cart', array(
     'uses' => 'CustomerController@doViewCart'
 ));
-Route::get('remove-from-cart',array(
+
+Route::get('remove-from-cart', array(
     'uses' => 'CustomerController@doRemove'
 ));
 
 Route::get('/users', array(
-		'uses' => 'AdminController@showAllCustomers'
+    'uses' => 'AdminController@showAllCustomers'
+));
+
+Route::get('/checkout', array(
+    'uses' => 'CustomerController@showCheckout'
+));
+
+Route::get('/checkout-cancel', array(
+    'uses' => 'CustomerController@cancelCheckout'
+));
+
+Route::get('/checkout-pay', array(
+    'uses' => 'CustomerController@doPayment'
 ));
 
 Route::get('/viewmyaccount',array(

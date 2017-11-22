@@ -4,14 +4,14 @@
 
 <form method="post" action="inventory">
     <div class="col-lg-9">
-        <h2 class="blueTitle text-center">Inventory</h2>
+        <center><h2 class="blueTitle text-center">Inventory</h2></center>
 
-        <button type="submit" id="addESButton" name="addESButton" class="btn btn-primary" value="true">Add Specification</button>
+        <button type="submit" id="addESButton" name="addESButton" class="btn btn-info" value="true">Add Specification</button>
         <br /><br />
 
         @if (! empty($electronicSpecifications))
         <table>
-            <tr bgcolor="#bcbcbc">
+            <tr class="grayBgWhiteText">
                 <th>Select</th>
                 <th>Select</th>
                 <th>ID</th>
@@ -33,7 +33,7 @@
                 <th>Product Image</th>
             </tr>
             @foreach ($electronicSpecifications as $eS)
-            <tr bgcolor="#ededed">
+            <tr bgcolor="#ccebff">
                 <td>
                     <button type="submit" id="modifyButton" name="modifyESButton" class="btn btn-xs btn-primary" value="{{$eS->id}}">Add/Modify</button>
                 </td>
@@ -172,7 +172,7 @@
             @if ($eS->electronicItems)
             @foreach ($eS->electronicItems as $eI)
 
-            <tr>
+            <tr bgcolor="#f2f2f2">
                 <td>
 
                 </td>
@@ -208,7 +208,7 @@
         <h3>Deleted Specifications</h3>
 
         <table>
-            <tr bgcolor="#bcbcbc">
+            <tr class="grayBgWhiteText">
                 <th>ID</th>
                 <th>Dimension</th>
                 <th>Weight</th>
@@ -228,7 +228,7 @@
                 <th>Product Image</th>
             </tr>
             @foreach ($deletedESList as $eS)
-            <tr bgcolor="#ededed">
+            <tr bgcolor="#ccebff">
                 <td>
                     @if ( isset($eS->id) )
                     {{$eS->id}}

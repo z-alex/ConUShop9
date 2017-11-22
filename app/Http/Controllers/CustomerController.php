@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Classes\Mappers\ShoppingCartMapper;
 use App\Classes\Mappers\UserCatalogMapper;
-
+use App\Classes\Mappers\SaleMapper;
 use Auth;
 use Redirect;
+use Session;
 
 class CustomerController extends Controller {
 
     private $shoppingCartMapper;
+    private $saleMapper;
 
     public function __construct() {
         $this->middleware('auth');
@@ -19,7 +21,10 @@ class CustomerController extends Controller {
 
         $this->middleware(function ($request, $next) {
             $this->shoppingCartMapper = new ShoppingCartMapper(auth()->user()->id);
-			$this->userCatalogMapper = new UserCatalogMapper(auth()->user()->id);
+			      $this->userCatalogMapper = new UserCatalogMapper(auth()->user()->id);
+            $this->saleMapper = new SaleMapper(auth()->user()->id);
+
+            Session::put('currentSaleExists', $this->saleMapper->currentSaleExists());
             return $next($request);
         });
 
@@ -32,9 +37,9 @@ class CustomerController extends Controller {
 
         if ($result === 'itemAddedToCart') {
             $request->session()->flash('success_msg', 'The item is added to the shopping cart.');
-        } else if($result === 'itemOutOfStock') {
+        } else if ($result === 'itemOutOfStock') {
             $request->session()->flash('error_msg', 'Out of stock');
-        } else if($result === 'shoppingCartFull'){
+        } else if ($result === 'shoppingCartFull') {
             $request->session()->flash('error_msg', 'Your shopping cart is full. Could not add the item.');
         }
 
@@ -43,20 +48,17 @@ class CustomerController extends Controller {
 
     public function doViewCart() {
 
-        $slis = $this->shoppingCartMapper->viewCart();
-        //dd($slis);
+        $shoppingCart = $this->shoppingCartMapper->viewCart();
 
-        return view('pages.shopping-cart', ['slis' => $slis]);
-
+        return view('pages.shopping-cart', ['shoppingCart' => $shoppingCart]);
     }
 
-    public function doRemove(Request $request){
+    public function doRemove(Request $request) {
         $message = $this->shoppingCartMapper->removeFromCart($request->input('eSId'), Auth::user()->id);
         $request->session()->flash('success_msg', $message);
         return Redirect::back();
     }
 
-	//Karine
 	public function doViewAccount(Request $request){
         $user = $this->userCatalogMapper->getUserInfo(Auth::user()->id);
 
@@ -70,6 +72,27 @@ class CustomerController extends Controller {
 		// Return the homepage & log out the user.
 		return Redirect::to('logout');
 	}
+  
+    public function showCheckout() {
+        $sale = $this->saleMapper->makeNewSale();
 
+        Session::put('currentSaleExists', $this->saleMapper->currentSaleExists());
+
+        return view('pages.checkout', ['sale' => $sale]);
+    }
+
+    public function cancelCheckout() {
+        $this->saleMapper->cancelCheckout();
+
+        return Redirect::to('/');
+    }
+    
+    public function doPayment() {
+        $completedSale = $this->saleMapper->makePayment();
+        
+        Session::forget('currentSaleExists');
+        
+        return view('pages.payment-result', ['sale' => $completedSale]);
+    }
 
 }

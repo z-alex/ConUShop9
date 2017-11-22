@@ -26,13 +26,13 @@ function loadForm() {
                 </div>
             </div>
               <div class="form-group">
-            <label class="control-label col-sm-2" for="dimension">Dimension <br/> </label>
+            <label class="control-label col-sm-2" for="dimension">Dimension(cm) (wxhxd) <br/> </label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="dimension" placeholder="Enter dimensions size (width x height x depth) ex: (32x12x5) " name="dimension">
             </div>
         </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="weight">Weight</label>
+                <label class="control-label col-sm-2" for="weight">Weight(kg)</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="weight" placeholder="Enter weight" name="weight">
                 </div>
@@ -56,7 +56,7 @@ function loadForm() {
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="hdSize">Hard Drive</label>
+                <label class="control-label col-sm-2" for="hdSize">Hard Drive(GB)</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="hdSize" placeholder="Enter hard drive size" name="hdSize">
                 </div>
@@ -105,14 +105,14 @@ function loadForm() {
         <input type="hidden" name="ElectronicType_name" value="Laptop">
                     
         <div class="form-group">
-            <label class="control-label col-sm-2" for="dimension">Dimension <br/> </label>
+            <label class="control-label col-sm-2" for="dimension">Dimension(cm) (wxhxd) <br/> </label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="dimension" placeholder="Enter dimensions size (width x height x depth) ex: (32x12x5) " name="dimension">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="displaySize">Display Size</label>
+            <label class="control-label col-sm-2" for="displaySize">Display Size(inch)</label>
             <div class="col-sm-10">
                 <input type="text"  class="form-control" id="displaySize" placeholder="Enter display size" name="displaySize">
             </div>
@@ -133,14 +133,14 @@ function loadForm() {
         </div>
 
         <div class="form-group">
-                <label class="control-label col-sm-2" for="hdSize">Hard Drive</label>
+                <label class="control-label col-sm-2" for="hdSize">Hard Drive(GB)</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="hdSize" placeholder="Enter hard drive size" name="hdSize">
                 </div>
             </div>
 
          <div class="form-group">
-                <label class="control-label col-sm-2" for="batteryInfo">Battery</label>
+                <label class="control-label col-sm-2" for="batteryInfo">Battery information</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="batteryInfo" placeholder="Enter battery information" name="batteryInfo">
                 </div>
@@ -155,7 +155,7 @@ function loadForm() {
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="weight">Weight</label>
+            <label class="control-label col-sm-2" for="weight">Weight(kg)</label>
             <div class="col-sm-10">
                 <input type="text"  class="form-control" id="weight" placeholder="Enter weight" name="weight">
             </div>
@@ -235,14 +235,14 @@ function loadForm() {
             </div>
             
         <div class="form-group">
-            <label class="control-label col-sm-2" for="displaySize">Display Size</label>
+            <label class="control-label col-sm-2" for="displaySize">Display Size(inch)</label>
             <div class="col-sm-10">
                 <input type="text"  class="form-control" id="displaySize" placeholder="Enter display size" name="displaySize">
             </div>
         </div>
            
             <div class="form-group">
-                <label class="control-label col-sm-2" for="weight">Weight</label>
+                <label class="control-label col-sm-2" for="weight">Weight(kg)</label>
                 <div class="col-sm-10">
                     <input type="text"  class="form-control" id="weight" placeholder="Enter weight" name="weight">
                 </div>
@@ -292,20 +292,20 @@ function loadForm() {
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="dimension">Dimensions(cm)</label>
+                <label class="control-label col-sm-2" for="dimension">Dimensions(cm) (wxhxd)</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="dimension" placeholder="Enter dimensions size (width x height x depth) " name="dimension">
+                    <input type="text" class="form-control" id="dimension" placeholder="Enter dimensions size (widthxheightxdepth) " name="dimension">
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="display">Display Size</label>
+                <label class="control-label col-sm-2" for="display">Display Size(inch)</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="displaySize" placeholder="Enter display size" name="displaySize">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2" for="weight">Weight</label>
+                <label class="control-label col-sm-2" for="weight">Weight(kg)</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="weight" placeholder="Enter weight" name="weight">
                 </div>
@@ -329,13 +329,13 @@ function loadForm() {
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="hdSize">Hard Drive</label>
+                <label class="control-label col-sm-2" for="hdSize">Hard Drive(GB)</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="hdSize" placeholder="Enter hard drive size" name="hdSize">
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="batteryInfo">Battery</label>
+                <label class="control-label col-sm-2" for="batteryInfo">Battery information</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="batteryInfo" placeholder="Enter battery information" name="batteryInfo">
                 </div>

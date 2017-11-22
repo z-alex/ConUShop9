@@ -23,30 +23,30 @@ $(document).ready(function () {
     lastName.required = true;
 
     var email = document.getElementById("email");
-    email.setAttribute("pattern", "[A-z,1-9]*@[A-z]*(.com|.ca)");
+    email.setAttribute("pattern", "[^[^%$#!^&*()+]+@[a-zA-Z]*(.com|.ca)$");
     email.oninvalid = function (event) {
         event.target.setCustomValidity("Email must be valid ie:JohnDoe@hotmail.com");
     };
     email.required = true;
 
     var password = document.getElementById("password");
-    password.setAttribute("pattern", "^.{6,16}$");
+    password.setAttribute("pattern", "^\\S{6,16}");
     password.oninvalid = function (event) {
-        event.target.setCustomValidity("Password must be of length between 6 to 16.");
+        event.target.setCustomValidity("Password must be of length between 6 to 16 and must not contain white spaces.");
     };
     password.required = true;
 
     var phone = document.getElementById("phone");
-    phone.setAttribute("pattern", "^(\\d){3}-(\\d){3}-(\\d){4}$");
+    phone.setAttribute("pattern", "^(\\d){3}-?(\\d){3}-?(\\d){4}$");
     phone.oninvalid = function (event) {
-        event.target.setCustomValidity("Phone number must be of format XXX-XXX-XXXX");
+        event.target.setCustomValidity("Phone number must contain 10 digits or be in the form XXX-XXX-XXXX");
     };
     phone.required = true;
 
     var physicalAddress = document.getElementById("physicalAddress");
     physicalAddress.setAttribute("pattern", "^[A-z,0-9,',\\-,.,\\s]*$");
     physicalAddress.oninvalid = function (event) {
-        event.target.setCustomValidity("Address must be of format ie: 111 Street H1Z 4C9");
+        event.target.setCustomValidity("Address must not contain symbols such as @#$%^*");
     };
     physicalAddress.required = true;
 

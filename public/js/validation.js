@@ -4,19 +4,19 @@ $(document).ready(function () {
 
         // Store validation inside an associative array. Each key is the DOM input ID. Each
         // key maps to an array containing a Pattern at the 0th index, and the error message at the 1st index.
-        validation["quantity"] = ["^[0-9]+$", "Please put in a quantity"];
-        validation["brandName"] = ["^([A-z]+\\s*[A-z0-9]*)$", "Brand must have a valid name."];
-        validation["dimension"] = ["^([1-9]+)\\s*x\\s*([1-9]+)\\s*x\\s*([1-9]+)$", "Dimension must be of the format width x height x depth"];
-        validation["weight"] = ["^(\\d+)(\\.(\\d{1,2}))?$", "Weight must not contain more than 2 decimals."];
-        validation["processorType"] = ["^(([A-z]+)(\\s*)([A-z1-9]*))$", "Processor must have a name."];
-        validation["ramSize"] = ["^[1-9][0-9]*$", "RAM size must be greater than 0."];
+        validation["quantity"] = ["^([1-5][0-9]|[0-9])$", "The quantity must be more than 0, less than 51"];
+        validation["brandName"] = ["^[_A-z0-9]*((-|\\s)*[_A-z0-9])*$", "Brand cannot contain symbols"];
+        validation["dimension"] = ["^\\s*\\d+\\.?\\d*\\s*x\\s*\\d+\\.?\\d*\\s*x\\s*\\d+\\.?\\d*\\s*$", "Dimension must be of the format widthxheightxdepth"];
+        validation["weight"] = ["^\\d+\\.?\\d*$", "Weight must be a positive number greater than 0"];
+        validation["processorType"] = ["^[_A-z0-9]*((-|\\s)*[_A-z0-9])*$", "Cannot contain symbols"];
+        validation["ramSize"] = ["^[1-9][0-9]*$", "RAM size must be a positive integer greater than 0"];
         validation["cpuCores"] = ["^[1-9][0-9]*$", "CPU cores must be greater than 0."];
-        validation["hdSize"] = ["^(\\d+)(\\.(\\d{1,2}))?$", "Hard drive size must be greater than 0."];
-        validation["batteryInfo"] = ["^([1-9]+)$", "Battery hours greater than 0."];
-        validation["modelNumber"] = ["^[A-Z0-9]{7,10}$", "Model Number must contain only upper-case letters, between 7 to 10 symbols."];
-        validation["price"] = ["^(\\d+)(\\.(\\d{1,2}))?$", "Price must have positive value."];
-        validation["displaySize"] = ["^(\\d+)(\\.(\\d{1,2}))?$", "Display Size must be positive value."];
-        validation["os"] = ["^([A-z]+\\s*[A-z0-9]*)$", "Operating System (OS) must have a valid name."];
+        validation["hdSize"] = ["^[1-9][0-9]*$", "Hard drive size must be an integer greater than 0."];
+        validation["batteryInfo"] = [".*\\S.*", "Battery hours greater than 0."];
+        validation["modelNumber"] = ["^[a-zA-Z,0-9]+$", "Model Number not contain any spaces or symbols"];
+        validation["price"] = ["^[1-9]\\d+\\.?\\d{0,2}$", "Price must have positive value with 2 decimals maximum"];
+        validation["displaySize"] = ["^\\d+\\.*\\d+$", "Display Size must be positive value."];
+        validation["os"] = ["^[_A-z0-9]*((-|\\s)*[_A-z0-9])*$", "Operating System (OS) cannot contain any symbols"];
 
 
         for (let key in validation) {

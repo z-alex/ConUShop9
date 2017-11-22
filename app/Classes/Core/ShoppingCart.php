@@ -69,8 +69,6 @@ class ShoppingCart {
         
         foreach($this->salesLineItems as $sli){
             foreach($sli->getElectronicItems() as $eITest){
-                var_dump($eITest->get()->id === $eI->get()->id);
-                var_dump($eITest->get()->id ."===". $eI->get()->id);
                 if($eITest->get()->id === $eI->get()->id){
                     $eISuccessfullyAdded = true;
                     return $eISuccessfullyAdded;
@@ -97,14 +95,9 @@ class ShoppingCart {
      * @Contract\Ensure("$this->size == $__old->size")   //post-condition
      * 
      */
-    public function getSLIs() {
+    public function getSalesLineItems() {
         $this->updateSLIs();
         return $this->salesLineItems;
-
-        /*
-          $this->removeOutdatedEI();
-          return $this->eIList;
-         */
     }
 
     public function setSLIs($sliDataArray) {
@@ -158,6 +151,17 @@ class ShoppingCart {
         }
         
         return $count;
+    }
+    
+    public function getTotal() {
+        $total = 0;
+        
+        foreach($this->salesLineItems as $sli){
+            $total = $total + $sli->getSubtotal();
+        }
+        
+        return $total;
+        
     }
 
 }

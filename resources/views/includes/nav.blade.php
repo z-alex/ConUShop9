@@ -18,11 +18,15 @@
                 <li><a href="/registration">Register</a></li>
                 @elseif( Auth::user()->admin === 1 )
                 <li><a href="/inventory">Inventory</a></li>
-				<li><a href="users">View Users</a></li> 
+                <li><a href="users">View Users</a></li> 
                 <li><a href="/logout">Log Out</a></li>
                 @else
-				<li><a href="/viewmyaccount">My Account</a></li>
+				        <li><a href="/viewmyaccount">My Account</a></li>
+                @if( Session::has('currentSaleExists') && Session::get('currentSaleExists') === true )
+                <li><a href="/checkout">Checkout</a></li>
+                @else
                 <li><a href="/shopping-cart">View Cart</a></li>
+                @endif
                 <li><a href="/logout">Log Out</a></li>
                 @endif
             </ul>

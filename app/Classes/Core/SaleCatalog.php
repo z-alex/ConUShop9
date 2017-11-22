@@ -7,10 +7,12 @@ use Auth;
 class SaleCatalog {
 
     private $sales;
+    private $returnTransactions;
     private $currentSale;
 
     function __construct() {
         $this->sales = array();
+        $this->returnTransactions = array();
     }
 
     function get() {
@@ -18,8 +20,35 @@ class SaleCatalog {
 
         $returnData->sales = $this->sales;
         $returnData->currentSale = $this->currentSale;
+        $returnData->returnTransactions = $this->returnTransactions;
 
         return $returnData;
+    }
+    
+    function insertReturnTransaction($rT){
+        array_push($this->returnTransactions, $rT);
+    }
+    
+    function getElectronicItemById($eIId){
+        foreach ($this->sales as $sale){
+            foreach ($sale->get()->salesLineItemList as $sli){
+                foreach ($sli->getElectronicItems() as $eI){
+                    if($eI->get()->id == $eIId){
+                        return $eI;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    function setReturnTransactions($returnTransactionsData){
+        foreach($returnTransactionsData as $rTData){
+            $rT = new ReturnTransaction();
+            $rT->set($rTData);
+            
+            array_push($this->returnTransactions, $rT);
+        }
     }
 
     function setCurrentSale($currentSaleData) {
@@ -178,6 +207,18 @@ class SaleCatalog {
         }
 
         return $myOrders;
+    }
+    
+    function getMyReturnTransactions($userId) {
+        $myReturnTransactions = array();
+        
+        foreach ($this->returnTransactions as $rT){
+            if($rT->get()->User_id == $userId){
+                array_push($myReturnTransactions, $rT);
+            }
+        }
+        
+        return $myReturnTransactions;
     }
 
 }

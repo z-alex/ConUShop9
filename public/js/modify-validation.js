@@ -14,8 +14,8 @@ $(document).ready(function () {
         validation["hdSize"] = ["^[1-9][0-9]*$", "Hard drive size must be an integer greater than 0."];
         validation["batteryInfo"] = [".*\\S.*", "Battery hours greater than 0."];
         validation["modelNumber"] = ["^[a-zA-Z,0-9]+$", "Model Number not contain any spaces or symbols"];
-        validation["price"] = ["^[1-9]\\d+\\.?\\d{0,2}$", "Price must have positive value with 2 decimals maximum"];
-        validation["displaySize"] = ["^\\d+\\.*\\d+$", "Display Size must be positive value."];
+        validation["price"] = ["^[1-9]\\d*\\.?\\d{0,2}$", "Price must have positive value with 2 decimals maximum"];
+        validation["displaySize"] = ["^\\d+\\.?\\d*$", "Display Size must be positive value."];
         validation["os"] = ["^[_A-z0-9]*((-|\\s)*[_A-z0-9])*$", "Operating System (OS) cannot contain any symbols"];
 
 

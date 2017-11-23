@@ -48,6 +48,7 @@
 1) Open the terminal.
 2) Go to the project repository folder.
 3) Type ```php artisan database:sync``` and press enter.
+4) Type ```php artisan databaseTest:sync``` and press enter. (To update the testing database)
 
 ## Dependencies Synchronization (do everytime the dependecy list changes)
 1) Open the terminal.

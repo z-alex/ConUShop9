@@ -83,10 +83,11 @@ class ShoppingCart {
      * Remove an item from the shopping cart
      *
      * @param ElectronicItem $eIToRemove
+     * @return ElectronicItem $eI
      *
      * @Contract\Verify("Auth::check() === true && Auth::user()->admin === 0 && $this->size >= 1")
      *
-     * @Contract\Ensure("$this->size == $__old->size-1 && $this->containsEI($eIToRemove) == false")
+     * @Contract\Ensure("$this->size == $__old->size-1 && $this->containsEI($__result) == false")
      *
      */
     public function removeFromCart($eIToRemove){
@@ -94,12 +95,11 @@ class ShoppingCart {
             foreach ($sli->getElectronicItems() as $eI) {
                 if ($eIToRemove->get()->id === $eI->get()->id) {
                     $sli->unsetEI($eI);
+                    $this->updateSLIs();
+                    return $eI;
                 }
             }
         }
-
-        $this->updateSLIs();
-        return $eIToRemove;
     }
 
     /**

@@ -44,7 +44,6 @@ class ElectronicCatalogTest extends TestCase {
         $electronicData->ramSize = '16';
         $electronicData->cpuCores = '4';
         $electronicData->batteryInfo = 'infinite';
-        //$electronicData->os = 'ubuntu';
         $electronicData->camera = true;
         $electronicData->touchScreen = true;
         $electronicData->displaySize = '1';
@@ -71,8 +70,8 @@ class ElectronicCatalogTest extends TestCase {
 
         //compare values added from electronicData with the actual
         //ElectronicSpecification object
-        
-        
+
+
         foreach ($catalogList as $electronicCatalogItem) {
             $electronicCatalogItemAttributes = get_object_vars($electronicCatalogItem);
 
@@ -81,12 +80,12 @@ class ElectronicCatalogTest extends TestCase {
             //Foreach ElectronicCatalog item
             foreach ($electronicCatalogItemAttributes as $key => $value) {
                 //If the attributes are set in both the object and the ElectronicCatalog item
-                if (isset($baseElectronicCatalogAttributesReference[$key]) && isset($electronicCatalogItemAttributes[$key]) && 
+                if (isset($baseElectronicCatalogAttributesReference[$key]) && isset($electronicCatalogItemAttributes[$key]) &&
                         !is_array($electronicCatalogItemAttributes[$key]) && !is_array($baseElectronicCatalogAttributesReference[$key])) {
-                    
+
                     if ($baseElectronicCatalogAttributesReference[$key] == $electronicCatalogItemAttributes[$key]) {
                         $valuesMatch = true;
-                    } else {                        
+                    } else {
                         $valuesMatch = false;
                         $this->assertTrue($valuesMatch);
                         break;
@@ -94,7 +93,7 @@ class ElectronicCatalogTest extends TestCase {
                 }
             }
         }
-        
+
         $this->assertTrue($valuesMatch);
     }
 
@@ -305,7 +304,8 @@ class ElectronicCatalogTest extends TestCase {
 
         $electronicDataJson = json_decode(json_encode($electronicData), true);
         $valuesMatch = false;
-        //var_dump($electronicDataJson);
+
+        
         //compare values added from electronicData with the actual
         //ElectronicSpecification object
         foreach ($catalogListJson as $key => $value) {
@@ -320,10 +320,12 @@ class ElectronicCatalogTest extends TestCase {
                         //don't execute the rest of the code
                         $this->assertTrue($valuesMatch);
                         break;
-                    }//else
-                }//if2
-            }//if is_array is false
-        }//foreach2
+                    }
+                }
+            }
+        }
+        
+        
         //foreach loop that checks if the ElectronicItems object attributes
         //match electronicData->electronicItems values added at the beginning of
         //the code
@@ -335,9 +337,9 @@ class ElectronicCatalogTest extends TestCase {
                     $valuesMatch = false;
                     $this->assertTrue($valuesMatch);
                     break;
-                }//else
-            }//foreach inner
-        }//foreach outer
+                }
+            }
+        }
         $this->assertTrue($valuesMatch);
     }
 

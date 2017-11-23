@@ -26,7 +26,6 @@ class UserCatalog {
     }
 
     function setUserList($userListData) {
-        //dd($userListData);
         foreach ($userListData as $userData) {
             $user = new User($userData);
             array_push($this->userList, $user);

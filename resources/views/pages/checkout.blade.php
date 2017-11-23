@@ -41,7 +41,7 @@
         @endif
         <b>Quantity:</b> {{ count($sli->getElectronicItems()) }}
         <br/>
-        Subtotal: ${{$sli->getSubtotal()}}
+        <u><b>Subtotal:</b> ${{$sli->getSubtotal()}}</u>
         <br/>
             
    </div>

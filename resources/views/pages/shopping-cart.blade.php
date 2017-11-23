@@ -47,11 +47,15 @@
     <br/>
     <?php $count = 1; ?>
     @foreach($sli->getElectronicItems() as $eI)
+    @if($count == 1)
+    <b><u>Time that the item(s) will expire from your shopping cart:</u></b>
+    <br/>
+    @endif
     <b>Item {{$count}} expiry: </b>{{$eI->get()->expiryForUser}}
     <br/>
     <?php $count++; ?>
     @endforeach
-    <b><u>Subtotal:</b> ${{$sli->getSubtotal()}}</u>
+    <u><b>Subtotal:</b> ${{$sli->getSubtotal()}}</u>
     <br/>
         
     <a href="/remove-from-cart?eSId={{$sli->getElectronicSpecification()->get()->id}}" class="btn btn-primary" role="button"> Remove </a>

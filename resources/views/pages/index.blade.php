@@ -7,6 +7,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Categories</div>
         <ul class="list-group">
+            <li class="list-group-item"><a href="/">All Electronics</a></li>
             <li class="list-group-item"><a href="/?eSType=Desktop">Desktop Computers</a></li>
             <li class="list-group-item"><a href="/?eSType=Laptop">Laptops</a></li>
             <li class="list-group-item"><a href="/?eSType=Monitor">Monitors</a></li>
@@ -72,7 +73,9 @@
                     @else
                     All Electronics
                     @endif
-                </h2></div>
+                </h2>
+                         - Please note that this is an university project. Nothing presented on this website is really on sale. -
+            </div>
 
             <div class="col-md-2">
                 <br/>

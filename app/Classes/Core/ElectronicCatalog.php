@@ -86,7 +86,7 @@ class ElectronicCatalog {
         $modelNumberExists = false;
 
         foreach ($this->eSList as $eS) {
-            if ($eS->getModelNumber() === $modelNumber) {
+            if ($eS->getModelNumber() == $modelNumber) {
                 $modelNumberExists = true;
             }
         }
@@ -96,7 +96,7 @@ class ElectronicCatalog {
 
     function getElectronicSpecificationById($id) {
         foreach ($this->eSList as $eS) {
-            if ($eS->getId() === $id) {
+            if ($eS->getId() == $id) {
                 return $eS;
             }
         }
@@ -107,7 +107,7 @@ class ElectronicCatalog {
     function getElectronicItemById($id) {
         foreach ($this->eSList as $eS) {
             foreach($eS->getElectronicItems() as $eI) {
-                if ($eI->get()->id === $id) {
+                if ($eI->get()->id == $id) {
                     return $eI;
                 }
             }

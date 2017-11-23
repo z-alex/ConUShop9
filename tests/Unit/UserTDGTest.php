@@ -17,7 +17,9 @@ use App\Classes\Mappers\UserMapper;
 
 class UserTDGTest extends TestCase {
 
-//Test the add method in userTDG to see if user got added into the database
+    /**
+     * Test the add method in userTDG to see if user got added into the database
+     */
     public function testAdd() {
         $userTDG = new UserTDG();
 
@@ -40,7 +42,9 @@ class UserTDGTest extends TestCase {
         ]);
     }
 
-    //Test the login method in userTDG to see if user has been logged in succesfully
+    /**
+     * Test the login method in userTDG to see if user has been logged in succesfully
+     */
     public function testLogin() {
 
         $userCatalogMapper = new UserMapper();
@@ -48,7 +52,9 @@ class UserTDGTest extends TestCase {
         $this->assertTrue($userCatalogMapper->login('admin1@conushop.com', 'admin'));
     }
 
-    //Test the find method in userTDG, to make sure that a particular user is saved in the database
+    /**
+     * Test the find method in userTDG, to make sure that a particular user is saved in the database
+     */
     public function testFind() {
         $userTDG = new UserTDG();
         $userData = new \stdClass();
@@ -71,7 +77,9 @@ class UserTDGTest extends TestCase {
         $this->assertTrue(count($userTDG->find($userData)) == 1);
     }
 
-    //Test the findAll method in userTDG, to make sure that the all users were saved in the database
+    /**
+     * Test the findAll method in userTDG, to make sure that the all users were saved in the database
+     */
     public function testFindAll() {
         $userTDG = new UserTDG();
 

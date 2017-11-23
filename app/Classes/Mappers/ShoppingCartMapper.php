@@ -1,14 +1,11 @@
 <?php
 
-
-
 namespace App\Classes\Mappers;
 
 use App\Classes\Core\ElectronicCatalog;
 use App\Classes\Core\ShoppingCart;
 use App\Classes\TDG\ElectronicSpecificationTDG;
 use App\Classes\TDG\ElectronicItemTDG;
-use App\Classes\IdentityMap;
 use PhpDeal\Annotation as Contract;
 
 class ShoppingCartMapper {
@@ -17,21 +14,19 @@ class ShoppingCartMapper {
     private $electronicSpecificationTDG;
     private $electronicItemTDG;
     private $shoppingCart;
-    private $identityMap;
+    public $testing; //Used the testing script to bypass the contract related to authentication
 
     function __construct($userId) {
         $this->electronicSpecificationTDG = new ElectronicSpecificationTDG;
         $this->electronicItemTDG = new ElectronicItemTDG();
         $this->electronicCatalog = new ElectronicCatalog($this->electronicSpecificationTDG->findAll());
         $this->shoppingCart = ShoppingCart::getInstance();
-        $this->identityMap = new IdentityMap();
 
-        //$this->shoppingCart->setEIList($this->electronicItemTDG->findAllEIFromUser($userId));
         $this->shoppingCart->setSLIs($this->electronicItemTDG->findAllShoppingCartSLIFromUser($userId));
     }
 
     /**
-     * @Contract\Verify("Auth::check() == true && Auth::user()->admin === 0 && count($this->shoppingCart->getSalesLineItems()) < 7")
+     * @Contract\Verify("($this->testing ||(Auth::check() == true && Auth::user()->admin == 0))&& count($this->shoppingCart->getSalesLineItems()) < 7")
      */
     function addToCart($eSId, $userId, $expiry) {
         if ($this->shoppingCart->getSize() < 7) {

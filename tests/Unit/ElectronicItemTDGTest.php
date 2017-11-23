@@ -7,6 +7,9 @@ use App\Classes\Core\ElectronicItem;
 
 class ElectronicItemTDGTest {
 
+    /**
+     * Test the insertion of an electronic item in the DDB
+     */
     public function testInsertEI() {
         $electronicItemTDG = new ElectronicItemTDG;
         $eS = new ElectronicSpecification();
@@ -46,6 +49,9 @@ class ElectronicItemTDGTest {
         ]);
     }
 
+    /**
+     * Test the deletion of an Electronic Item from the DDB
+     */
     public function testDeleteEI() {
         $electronicItemTDG = new ElectronicItemTDG;
 

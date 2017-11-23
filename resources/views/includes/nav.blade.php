@@ -12,7 +12,6 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">- Please note this is an university project. Nothing presented on this website is really on sale. - </a></li>
                 <li><a href="/">Electronic Catalog</a></li>
                 @if( !Auth::check() )
                 <li><a href="/login">Log In</a></li>

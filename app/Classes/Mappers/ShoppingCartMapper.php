@@ -14,7 +14,7 @@ class ShoppingCartMapper {
     private $electronicSpecificationTDG;
     private $electronicItemTDG;
     private $shoppingCart;
-    public $testing; //Using by the testing script to bypass the contract related to authentication
+    public $testing; //Used the testing script to bypass the contract related to authentication
 
     function __construct($userId) {
         $this->electronicSpecificationTDG = new ElectronicSpecificationTDG;

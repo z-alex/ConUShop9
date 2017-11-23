@@ -46,10 +46,9 @@ class UserTDGTest extends TestCase {
      * Test the login method in userTDG to see if user has been logged in succesfully
      */
     public function testLogin() {
-
         $userCatalogMapper = new UserMapper();
 
-        $this->assertTrue($userCatalogMapper->login('admin1@conushop.com', 'admin'));
+        $this->assertTrue($userCatalogMapper->login('admin1@conushop.com', 'admin123'));
     }
 
     /**

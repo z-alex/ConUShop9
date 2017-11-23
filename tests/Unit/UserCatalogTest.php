@@ -65,7 +65,9 @@ class UserCatalogTest extends TestCase {
         $user1Data->phone = '514-111-1111';
         $user1Data->admin = 0;
         $user1Data->physicalAddress = 'Chez bar';
-        $user1Data->password = 'foo123';
+        $user1Data->password = Hash::make('foo123');
+        $user1Data->isLoggedIn = 0;
+        $user1Data->isDeleted = 0;
 
         $user2Data->id = 2;
         $user2Data->firstName = 'foo2';
@@ -74,17 +76,28 @@ class UserCatalogTest extends TestCase {
         $user2Data->phone = '514-222-2222';
         $user2Data->admin = 0;
         $user2Data->physicalAddress = 'Chez foo';
-        $user2Data->password = 'bar123';
+        $user2Data->password = Hash::make('bar123');
+        $user2Data->isLoggedIn = 0;
+        $user2Data->isDeleted = 0;
 
         $user1->set($user1Data);
         $user2->set($user2Data);
+        
         $userList = array($user1, $user2);
+        
         $userCatalog->setUserList($userList);
 
         $emailParameter = 'bar@gmail.com';
         $pswParameter = 'bar123';
-        $hashedPsw = Hash::make($pswParameter);
-        $this->assertTrue($userCatalog->checkUser($emailParameter, $hashedPsw));
+        //$hashedPsw = Hash::make($pswParameter);
+        
+        $result = false;
+        
+        if($userCatalog->checkUser($emailParameter, $pswParameter) !== null){
+            $result = true;
+        }
+        
+        $this->assertTrue($result);
     }
 
     public function testFindUser() {

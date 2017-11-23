@@ -79,15 +79,15 @@ use App\Classes\Core\ReturnTransaction;
             <div class="panel-heading"> List of Items to Return </div>
             <div class="panel-body">
                 @if( !empty(Session::get('newList')) )
+                <?php $total = 0; ?>
                 @foreach(Session::get('newList') as $new)
                 @if($new instanceof ReturnTransaction)
-                <b>Return Transaction for </b>
+                <b><u>Return Transaction for: </u></b>
                 <br/>
 
 
 
-
-
+                
                 @foreach($orders as $order)
                 @foreach($order->get()->salesLineItemList as $sli)
                 @foreach($sli->getElectronicItems() as $eI)
@@ -108,20 +108,30 @@ use App\Classes\Core\ReturnTransaction;
                 Model {{$sli->getElectronicSpecification()->get()->modelNumber}}
                 <br/>
                 @endif
+                @if ( $sli->getElectronicSpecification()->get()->price )
+                <b>Refund Amount:</b> ${{$sli->getElectronicSpecification()->get()->price}}
+                <br/>
+                @endif
+                <?php $total += $sli->getElectronicSpecification()->get()->price; ?>
 
                 @endif
                 @endforeach
                 @endforeach
                 @endforeach
+                
 
-
+                
+                
 
                 <br/>
                 @endif
                 @endforeach
+                <b><u>Refund Total:</u></b> ${{$total}}
+                
+                <br/>
                 @endif
                 <br/>
-                <button type="submit" id="applyReturnsButton" name="applyReturnsButton" class="btn btn-info" value=true>Apply Returns</button>
+                <button type="submit" id="applyReturnsButton" name="applyReturnsButton" class="btn btn-info" value=true>Return</button>
                 <button type="submit" id="cancelReturnsButton" name="cancelReturnsButton" class="btn btn-primary" value=true>Cancel Returns</button>
             </div>
         </div>

@@ -45,14 +45,14 @@
     @endif
     <b>Quantity:</b> {{ count($sli->getElectronicItems()) }}
     <br/>
-    Subtotal: ${{$sli->getSubtotal()}}
-    <br/>
     <?php $count = 1; ?>
     @foreach($sli->getElectronicItems() as $eI)
     <b>Item {{$count}} expiry: </b>{{$eI->get()->expiryForUser}}
     <br/>
     <?php $count++; ?>
     @endforeach
+    <b><u>Subtotal:</b> ${{$sli->getSubtotal()}}</u>
+    <br/>
         
     <a href="/remove-from-cart?eSId={{$sli->getElectronicSpecification()->get()->id}}" class="btn btn-primary" role="button"> Remove </a>
     </div>

@@ -6,7 +6,7 @@
     <div class="col-lg-9">
         <h2 class="blueTitle text-center">Registered Customers</h2>
 
-        <h3> Customers </h3>
+        <h3> Accounts </h3>
         <table>
             <tr class="grayBgWhiteText">
                 <th>First Name</th>
@@ -63,8 +63,9 @@
         <br/>
         <br/>
 
-        <h3> Deleted Customers </h3>
-        <table>
+        <h3> Deleted Accounts </h3>
+            @if (!empty($deletedCustomers))
+            <table>
             <tr class="grayBgWhiteText">
                 <th>First Name</th>
                 <th>Last Name</th>
@@ -72,9 +73,6 @@
                 <th>Phone</th>
                 <th>PhysicalAddress</th>
             </tr>
-
-
-            @if (!empty($deletedCustomers))
             @foreach ($deletedCustomers as $user)
             <tr bgcolor="#ccebff">
                 <td>
@@ -105,9 +103,12 @@
 
             </tr>
             @endforeach
-            @endif
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        </table>
+            </table>
+            @else
+            <h5>There is no deleted account to show.</h5>
+            @endif
+            
     </div>
 
 </form>

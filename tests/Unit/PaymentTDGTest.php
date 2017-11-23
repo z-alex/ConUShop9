@@ -18,7 +18,7 @@ class PaymentTDGTest extends TestCase {
         $payment->set($paymentData);
         $paymentTDG->insert($payment);
 
-        $this->assertDatabaseHas('payment', [
+        $this->assertDatabaseHas('Payment', [
             'amount' => '1000',
         ]);
     }

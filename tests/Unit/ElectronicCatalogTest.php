@@ -10,7 +10,7 @@ use App\Classes\Core\ElectronicSpecification;
 
 class ElectronicCatalogTest extends TestCase {
 
-    public function testmodifyElectronicSpecification() {
+    public function testModifyElectronicSpecification() {
 
         $electronicSpecification = new ElectronicSpecification();
 
@@ -100,7 +100,7 @@ class ElectronicCatalogTest extends TestCase {
     /**
      * Test the insertion of an electronic item inside an electronic specification in the ElectronicCatalog
      */
-    public function testmakeElectronicItem() {
+    public function testMakeElectronicItem() {
         $item1Data = new \stdClass();
         $item1Data->id = 1;
         $item1Data->serialNumber = 123;
@@ -176,7 +176,7 @@ class ElectronicCatalogTest extends TestCase {
      * Test the insertion of an ElectronicSpecification in the ElectronicCatalog
      * @return type
      */
-    public function testmakeElectronicSpecification() {
+    public function testMakeElectronicSpecification() {
         $electronicSpecification = new ElectronicSpecification();
 
         $item1Data = new \stdClass();
@@ -259,7 +259,7 @@ class ElectronicCatalogTest extends TestCase {
     /**
      * Test the obtention of an ElectronicSpecification from the ElectronicCatalog
      */
-    public function testgetElectronicSpecificationById() {
+    public function testGetElectronicSpecificationById() {
         $electronicSpecification = new ElectronicSpecification();
 
         $item1Data = new \stdClass();
@@ -346,7 +346,7 @@ class ElectronicCatalogTest extends TestCase {
     /**
      * Test the finding of an ElectronicSpecification in the ElectronicCatalog
      */
-    public function testfindElectronicSpecification() {
+    public function testFindElectronicSpecification() {
         $electronicSpecification = new ElectronicSpecification();
         $electronicItem1 = new ElectronicItem();
         $electronicItem2 = new ElectronicItem();
@@ -393,7 +393,7 @@ class ElectronicCatalogTest extends TestCase {
         $this->assertTrue($modelFoundBool);
     }
 
-    public function testdeleteElectronicItem() {
+    public function testDeleteElectronicItem() {
         $electronicSpecification = new ElectronicSpecification();
         $electronicItem1 = new ElectronicItem();
         $electronicItem2 = new ElectronicItem();

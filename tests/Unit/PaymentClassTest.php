@@ -10,6 +10,7 @@ use App\Classes\Core\Payment;
 class PaymentClassTest extends TestCase {
 
 	function testSetGet(){
+		# Step 1: Set up needed variables for a situation to test.
 		$payment = new Payment();
 		$paymentData = new \stdClass();
 		$paymentData->id = '1';
@@ -18,7 +19,7 @@ class PaymentClassTest extends TestCase {
 		$payment->set($paymentData); 
 		$retrievedPaymentData = $payment->get();
 
-		$this->assertTrue($retrievedPaymentData->id == $paymentData->id);
-		$this->assertTrue($retrievedPaymentData->amount == $paymentData->amount);
+		$this->assertTrue($retrievedPaymentData->id == $paymentData->id, $retrievedPaymentData->amount == $paymentData->amount);
+		
 	}
 }

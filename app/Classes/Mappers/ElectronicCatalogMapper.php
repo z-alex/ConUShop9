@@ -225,7 +225,7 @@ class ElectronicCatalogMapper {
                     $price = explode("-", $value);
 
                     foreach ($eSArray as $eS) {
-                        if ($eS->price >= $price[0] && $eS->price < $price[1]) {
+                        if ($eS->price >= $price[0] && $eS->price <= $price[1]) {
                             array_push($filteredByPrice, $eS);
                         }
                     }

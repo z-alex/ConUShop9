@@ -102,7 +102,7 @@ class AdminController extends BaseController {
             }
 
             // direct access to the image with url stored in $url
-            $url = asset('/images/' . $name);
+            $url = '/images/' . $name;
         } else {
             $url = $request->session()->get('eSToModify')->image;
         }
@@ -150,7 +150,7 @@ class AdminController extends BaseController {
             })->save($destinationPath);
 
             // direct access to the image with url stored in $url
-            $url = asset('/images/' . $name);
+            $url = '/images/' . $name;
         } else {
             $url = null;
         }

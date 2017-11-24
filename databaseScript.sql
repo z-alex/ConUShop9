@@ -244,6 +244,11 @@ REPLACE INTO ElectronicItem SET id = '10', ElectronicSpecification_id = '4', ser
 REPLACE INTO ElectronicItem SET id = '11', ElectronicSpecification_id = '4', serialNumber = 'GXQSJG4SXV702';
 REPLACE INTO ElectronicItem SET id = '12', ElectronicSpecification_id = '4', serialNumber = 'GXQSJG4SXV703';
 
+REPLACE INTO ElectronicSpecification SET id = '5', dimension = '50 x 30 x 70', weight = '12', modelNumber = 'TX400', brandName = 'Dell', hdSize ='1024', price = '1500', processorType = 'Intel i5', ramSize = '16', cpuCores = '4', os = 'Windows', ElectronicType_id = '1', image = '/images/1511560070.jpg', isDeleted = '0', isLocked = '0';
+REPLACE INTO ElectronicItem SET id = '13', ElectronicSpecification_id = '5', serialNumber = 'U4RERF4ERT4R1';
+REPLACE INTO ElectronicItem SET id = '14', ElectronicSpecification_id = '5', serialNumber = 'U4RERF4ERT4R2';
+REPLACE INTO ElectronicItem SET id = '15', ElectronicSpecification_id = '5', serialNumber = 'U4RERF4ERT4R3';
+
 
 
 

@@ -111,26 +111,30 @@ class AdminController extends BaseController {
         $electronicSpecificationData->image = $url;
         $electronicSpecificationData->id = $request->session()->get('eSToModify')->id;
 
-        if ($this->electronicCatalogMapper->prepareModifyES($request->input('quantity'), $electronicSpecificationData)) {
-            Session::flash('success_msg', "Successfully added to changed list.");
+        $prepareModifyResult = $this->electronicCatalogMapper->prepareModifyES($request->input('quantity'), $electronicSpecificationData);
+        if ($prepareModifyResult === 'Another administrator is modifying this specification.') {
+            Session::flash('error_msg', 'Another administrator is modifying this specification.');
+            return Redirect::back();
+        } else if ($prepareModifyResult === 'Successfully added the specification to the changed list') {
+            Session::flash('success_msg', 'Successfully added the specification to the changed list');
             return Redirect::to('inventory');
-        } else {
-            Session::flash('error_msg', "The model number already exists.");
+        } else if($prepareModifyResult === 'The model number already exists.') {
+            Session::flash('error_msg', 'The model number already exists.');
             return Redirect::back();
         }
     }
 
     public function showInventory() {
         $electronicSpecifications = $this->electronicCatalogMapper->getAllElectronicSpecifications();
-        
+
         $deletedESList = array();
-        foreach($electronicSpecifications as $key => $value){
-            if($electronicSpecifications[$key]->isDeleted){
+        foreach ($electronicSpecifications as $key => $value) {
+            if ($electronicSpecifications[$key]->isDeleted) {
                 array_push($deletedESList, $electronicSpecifications[$key]);
                 unset($electronicSpecifications[$key]);
             }
         }
-        
+
         return view('pages.inventory', ['electronicSpecifications' => $electronicSpecifications, 'deletedESList' => $deletedESList]);
     }
 
@@ -170,9 +174,9 @@ class AdminController extends BaseController {
     public function showAllCustomers() {
         $allCustomers = $this->userCatalogMapper->getAllCustomers();
         $deletedCustomers = array();
-        
-        foreach($allCustomers as $key => $value){
-            if($allCustomers[$key]->get()->isDeleted){
+
+        foreach ($allCustomers as $key => $value) {
+            if ($allCustomers[$key]->get()->isDeleted) {
                 array_push($deletedCustomers, $allCustomers[$key]);
                 unset($allCustomers[$key]);
             }

@@ -18,7 +18,7 @@ $(document).ready(function () {
  * @returns {undefined}
  */
 function checkPreviouslySelected() {
-    var string = window.location.search;
+    var string = decodeURIComponent(window.location.search);
 
     var checkboxes = [];
     $('input[type="checkbox"]').each(function () {
@@ -41,7 +41,7 @@ function checkPreviouslySelected() {
 function checkboxQueryChange(checkboxElement) {
     var queryVariable = checkboxElement.attr("name") + checkboxElement.attr("id") + "=" + checkboxElement.val();
     checkboxElement.change(function () {
-        var string = window.location.search;
+        var string = decodeURIComponent(window.location.search);
         if (string.charAt(0) !== "?") {
             string = "?" + string;
         }

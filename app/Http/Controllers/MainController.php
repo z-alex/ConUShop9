@@ -20,12 +20,12 @@ use App\Classes\Mappers\SaleMapper;
 //reference: https://www.cloudways.com/blog/laravel-login-authentication/
 class MainController extends BaseController {
 
-    private $userCatalogMapper;
+    private $userMapper;
     private $electronicCatalogMapper;
     private $saleMapper;
 
     public function __construct() {
-        $this->userCatalogMapper = new UserMapper();
+        $this->userMapper = new UserMapper();
         $this->electronicCatalogMapper = new ElectronicCatalogMapper();
 
         $this->middleware(function ($request, $next) {
@@ -58,8 +58,9 @@ class MainController extends BaseController {
         if ($validator->fails()) {
             return Redirect::to('login')->withErrors($validator);
         } else {
-            if ($this->userCatalogMapper->login($request->input('email'), $request->input('password')) && Auth::attempt($inputs)) {
-                $this->userCatalogMapper->makeLoginLog($request->user()->id);
+            $result = $this->userMapper->login($request->input('email'), $request->input('password')) && Auth::attempt($inputs);
+            if ($result) {
+                $this->userMapper->makeLoginLog($request->user()->id);
                 
                 Session::forget('newList');
                 Session::forget('changedList');
@@ -68,7 +69,7 @@ class MainController extends BaseController {
                 Session::flash('success_msg', "Successfully logged in.");
                 return Redirect::to('');
             } else {
-                return view('pages.login', ['email' => $request->input('email'), 'error_msg' => 'Login Unsuccessful.']);
+                return view('pages.login', ['email' => $request->input('email'), 'error_msg' => 'Unsuccessful login. This account is already logged in or you have entered the wrong email/password.']);
             }
         }
     }
@@ -111,7 +112,7 @@ class MainController extends BaseController {
     public function doRegistration(Request $request) {
         $userData = (object) $request->input();
         $userData->admin = "0";
-        if ($this->userCatalogMapper->makeNewCustomer($userData)) {
+        if ($this->userMapper->makeNewCustomer($userData)) {
             Session::flash('success_msg', "Successfully registered.");
             return Redirect::to('/');
         } else {

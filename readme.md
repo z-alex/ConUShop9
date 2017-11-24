@@ -1,5 +1,13 @@
 ##### IMPORTANT: This is the new repository for our project. We switched to the Laravel Framework since with the NodeJS framework we had to do a lot of nested callbacks (see http://callbackhell.com/).
 
+## Repository history
+
+ - Remember, we had this repository in the beginning (iteration 1 + beginning of iteration 2): https://github.com/Helen2hang/SOEN343 (We were using NodeJS and migrated after)
+
+ - And after, we used this repository (itrations 2, 3 and 4): https://github.com/z-alex/ConUShop (The team was splitted after)
+
+ - And for the iterations 4 and 5, here we are!
+
 # ConUShop [![Build Status](https://travis-ci.com/z-alex/ConUShop9.svg?token=epYMsfdC5GNowz3V2jMd&branch=master)](https://travis-ci.com/z-alex/ConUShop9)
 
 ## Website Info

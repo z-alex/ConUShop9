@@ -238,10 +238,13 @@ REPLACE INTO ElectronicItem SET id = '7', ElectronicSpecification_id = '3', seri
 REPLACE INTO ElectronicItem SET id = '8', ElectronicSpecification_id = '3', serialNumber = 'MBIX3Q7UHWSG2';
 REPLACE INTO ElectronicItem SET id = '9', ElectronicSpecification_id = '3', serialNumber = 'MBIX3Q7UHWSG3';
 
-REPLACE INTO ElectronicSpecification SET id = '4', weight = '0.5', modelNumber = 'MLPY2CLA1', brandName = 'Apple iPad Pro', hdSize = '32', price = '700.89', processorType = 'A9X chip', ramSize = '4', cpuCores = '4', batteryInfo = '10 hours', os = 'iOS 9', camera = '1', ElectronicType_id = '2', displaySize = '9.7', image = 'http://laravel.dev/images/1511155838.jpg', isDeleted = '0';
+REPLACE INTO ElectronicSpecification SET id = '4', dimension = '13 x 10 x 1', weight = '0.5', modelNumber = 'MLPY2CLA1', brandName = 'Apple iPad Pro', hdSize = '32', price = '700.89', processorType = 'A9X chip', ramSize = '4', cpuCores = '4', batteryInfo = '10 hours', os = 'iOS 9', camera = '1', ElectronicType_id = '4', displaySize = '9.7', image = 'http://laravel.dev/images/1511155838.jpg', isDeleted = '0';
 REPLACE INTO ElectronicItem SET id = '10', ElectronicSpecification_id = '4', serialNumber = 'GXQSJG4SXV701';
 REPLACE INTO ElectronicItem SET id = '11', ElectronicSpecification_id = '4', serialNumber = 'GXQSJG4SXV702';
 REPLACE INTO ElectronicItem SET id = '12', ElectronicSpecification_id = '4', serialNumber = 'GXQSJG4SXV703';
+
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

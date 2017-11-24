@@ -66,10 +66,11 @@ class UnitOfWork {
     function registerDeleted($object) {
         $exist = false;
         foreach ($this->deletedList as $deleted) {
-            if ($object->get()->id == $deleted->get()->id) {
+            if ($object == $deleted) {
                 $exist = true;
             }
         }
+        
         if ($exist) {
             return false;
         } else {

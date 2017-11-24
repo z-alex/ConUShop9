@@ -20,7 +20,6 @@ class ElectronicCatalogMapper {
     private $electronicSpecificationTDG;
     private $unitOfWork;
     //private $identityMap;
-    private $lockFilePointer;
     private $identityMapAspect;
 
     function __construct() {
@@ -171,11 +170,7 @@ class ElectronicCatalogMapper {
     }
 
     function getAllElectronicSpecifications() {
-        $this->lockDataAccess();
-
         $electronicSpecifications = $this->electronicCatalog->getESList();
-
-        $this->unlockDataAccess();
 
         return $electronicSpecifications;
     }
@@ -198,20 +193,6 @@ class ElectronicCatalogMapper {
         }
 
         return $serialNumber;
-    }
-
-    private function lockDataAccess() {
-        $this->lockFilePointer = fopen(app_path('Locks/dataAccess'), 'c'); //set file pointer
-        flock($this->lockFilePointer, LOCK_EX); //lock file
-    }
-
-    private function checkLock() {
-        flock($this->lockFilePointer, LOCK_NB);
-    }
-
-    private function unlockDataAccess() {
-        flock($this->lockFilePointer, LOCK_UN); //unlock file
-        fclose($this->lockFilePointer); //close file
     }
 
     function getESFilteredAndSortedByCriteria($eSType, $criteriaArray, $sortBy) {

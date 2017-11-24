@@ -10,6 +10,28 @@ class ElectronicSpecificationTDG {
         $this->conn = new MySQLConnection();
     }
 
+    public function lock($eS) {
+        $queryString = 'SELECT * FROM ElectronicSpecification WHERE id = ' . $eS->get()->id . ' AND isLocked = 0';
+
+        $queryResult = $this->conn->directQuery($queryString);
+
+        if (count($queryResult) >= 1 && $queryResult[0] != null) {
+            $queryString = 'UPDATE ElectronicSpecification SET isLocked = 1 WHERE id = ' . $eS->get()->id;
+
+            $this->conn->directQuery($queryString);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function unlock($eS) {
+        $queryString = 'UPDATE ElectronicSpecification SET isLocked = 0 WHERE id = ' . $eS->get()->id;
+
+        $this->conn->directQuery($queryString);
+    }
+
     public function insert($eS) {
         $parameters = $this->unsetUselessESProperties($eS);
         unset($parameters->id);
@@ -26,7 +48,7 @@ class ElectronicSpecificationTDG {
         //We delete the last useless ' , '
         $queryString = substr($queryString, 0, -2);
         $this->conn->query($queryString, $parameters);
-        
+
         return $this->conn->getPDOConnection()->lastInsertId();
     }
 
@@ -55,15 +77,15 @@ class ElectronicSpecificationTDG {
 
         $parameters = new \stdClass();
         $parameters->ElectronicSpecification_id = $eS->get()->id;
-        
+
         $this->conn->query($queryString, $parameters);
-        
+
         $queryString = 'UPDATE ElectronicSpecification SET isDeleted = 1 WHERE ';
         $queryString .= 'id' . ' = :' . 'id';
 
         $parameters = new \stdClass();
         $parameters->id = $eS->get()->id;
-        
+
         $this->conn->query($queryString, $parameters);
     }
 
@@ -88,9 +110,9 @@ class ElectronicSpecificationTDG {
         //$queryString = 'SELECT * FROM ElectronicSpecification JOIN ElectronicType ON ElectronicType.id = ElectronicSpecification.ElectronicType_id JOIN ElectronicItem ON ElectronicSpecification.id = ElectronicItem.ElectronicSpecification_id';
         $queryString = 'SELECT * FROM ElectronicSpecification';
         $eSDataList = $this->conn->directQuery($queryString);
-        
+
         foreach ($eSDataList as &$eSData) {
-            
+
             $queryString = 'SELECT *
             FROM ElectronicItem
             WHERE ';
@@ -105,7 +127,7 @@ class ElectronicSpecificationTDG {
             //We send to MySQLConnection the associative array, to bind values to keys
             //Please mind that stdClass and associative arrays are not the same data structure, althought being both based on the big family of hashtables
             $eIDataList = $this->conn->query($queryString, $parameters);
-            
+
             $eSData->electronicItems = $eIDataList;
         }
         return $eSDataList;

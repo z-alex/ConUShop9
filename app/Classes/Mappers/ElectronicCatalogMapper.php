@@ -58,6 +58,10 @@ class ElectronicCatalogMapper {
 
         //The IdentityMapAspect updates the element to the identity map after the execution of this method. Please see the class IdentityMapAspect.
     }
+    
+    function unlockES($electronicSpecification){
+        $this->electronicSpecificationTDG->unlock($electronicSpecification);
+    }
 
     function deleteEI($electronicItem) {
         $this->electronicItemTDG->delete($electronicItem);
@@ -120,6 +124,9 @@ class ElectronicCatalogMapper {
             $eS = $this->electronicCatalog->getElectronicSpecificationById($eSData->id);
 
             $eS->set($eSData);
+            
+            $successfullyLocked = $this->electronicSpecificationTDG->lock($eS);
+            if($successfullyLocked){
 
             $this->unitOfWork->registerDirty($eS);
 
@@ -148,10 +155,13 @@ class ElectronicCatalogMapper {
                     $this->unitOfWork->registerNew($eI);
                 }
             }
+            }else{
+                return 'Another administrator is modifying this specification.';
+            }
 
-            return true;
+            return 'Successfully added the specification to the changed list';
         } else {
-            return false;
+            return 'The model number already exists.';
         }
     }
 

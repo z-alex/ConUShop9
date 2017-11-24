@@ -14,14 +14,13 @@ use Session;
 use PhpDeal\Annotation as Contract;
 
 class SaleMapper {
+
     //TDGs
     private $electronicItemTDG;
     private $saleTDG;
     private $paymentTDG;
     private $returnTransactionTDG;
-            
     private $unitOfWork;
-    
     private $saleCatalog;
     private $shoppingCart;
 
@@ -39,11 +38,11 @@ class SaleMapper {
         $this->shoppingCart = ShoppingCart::getInstance();
 
         $this->shoppingCart->setSLIs($this->electronicItemTDG->findAllShoppingCartSLIFromUser($userId));
-        
+
         $this->unitOfWork = new UnitOfWork(['saleMapper' => $this]);
     }
 
-     /**
+    /**
      * Make a new sale for checkout
      *
      * @Contract\Verify("Auth::check() === true && Auth::user()->admin === 0 && $this->shoppingCart->getSize() >= 1")
@@ -75,7 +74,7 @@ class SaleMapper {
 
         $this->saleTDG->delete($sale);
     }
-  
+
     /**
      * Last step for checkout
      *
@@ -86,7 +85,7 @@ class SaleMapper {
     function makePayment() {
         $completedSale = $this->saleCatalog->makePayment();
 
-        if($completedSale) {
+        if ($completedSale) {
             $completedSalePayment = $completedSale->get()->payment;
 
             $id = $this->paymentTDG->insert($completedSalePayment);
@@ -98,43 +97,51 @@ class SaleMapper {
         }
         return $completedSale;
     }
-    
+
     function getMyOrders($userId) {
         return $this->saleCatalog->getMyOrders($userId);
     }
-    
+
     function getMyReturnTransactions($userId) {
         return $this->saleCatalog->getMyReturnTransactions($userId);
     }
-    
+
     function prepareAddReturn($eIId, $userId) {
         $returnTransaction = new ReturnTransaction();
         $returnTransaction->set((object) ['ElectronicItem_id' => $eIId, 'User_id' => $userId]);
-        
+
         return $this->unitOfWork->registerNew($returnTransaction);
     }
-    
-    function saveRT($rT){
+
+    /**
+     * Last step for checkout
+     *
+     *
+     * //@Contract\Ensure("$eI->getUserId()==null && $eI->get()->Sale_id==null")
+     */
+    function saveRT($rT) {
         $rT->set((object) ['isComplete' => 1, 'timestamp' => date("Y-m-d H:i:s")]);
         $this->returnTransactionTDG->insert($rT);
         $this->saleCatalog->insertReturnTransaction($rT);
-        
+
         $eI = $this->saleCatalog->getElectronicItemById($rT->get()->ElectronicItem_id);
         //$eI->set((object) ['Sale_id' => null, 'User_id' => null]);
         $eI->setUserId(null);
         $eI->setSaleId(null);
-        
+
         $this->electronicItemTDG->update($eI);
+        
+        //return $eI; //for the contract
     }
-    
-    function applyReturns(){
+
+    function applyReturns() {
         $this->unitOfWork->commit();
     }
-    
-    function cancelReturns(){
+
+    function cancelReturns() {
         $this->unitOfWork->cancel();
     }
-    
+
     function setUOWLists($newList, $changedList, $deletedList) {
         $this->unitOfWork->setNewList($newList);
         $this->unitOfWork->setChangedList($changedList);

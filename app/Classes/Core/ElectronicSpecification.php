@@ -16,6 +16,7 @@ class ElectronicSpecification {
     private $ElectronicType_dimensionUnit;
     private $ElectronicType_displaySizeUnit;
     private $isDeleted;
+    private $isLocked;
     
     function __construct() {
          $argv = func_get_args();
@@ -31,10 +32,14 @@ class ElectronicSpecification {
      
      function __construct0() {
         $this->electronicItems = array();
+        $this->isDeleted = 0;
+        $this->isLocked = 0;
     }
 
     function __construct1($data) {
         $this->electronicItems = array();
+        $this->isDeleted = 0;
+        $this->isLocked = 0;
         $this->set($data);
     }
 
@@ -76,6 +81,10 @@ class ElectronicSpecification {
             $this->image = $data->image;
         }
         if (isset($data->isDeleted)) {
+            $this->isDeleted = $data->isDeleted;
+        }
+        
+        if(isset($data->isDeleted)) {
             $this->isDeleted = $data->isDeleted;
         }
 
@@ -125,6 +134,7 @@ class ElectronicSpecification {
         $returnData->ElectronicType_displaySizeUnit = $this->ElectronicType_displaySizeUnit;
         $returnData->image = $this->image;
         $returnData->isDeleted = $this->isDeleted;
+        $returnData->isLocked = $this->isLocked;
 
         $electronicItemsData = array();
         foreach ($this->electronicItems as $electronicItem) {

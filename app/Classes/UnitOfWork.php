@@ -95,6 +95,7 @@ class UnitOfWork {
         foreach ($this->changedList as $changed) {
             if ($changed instanceof ElectronicSpecification) {
                 $this->electronicCatalogMapper->updateES($changed);
+                $this->electronicCatalogMapper->unlockES($changed);
             }
             if ($changed instanceof ElectronicItem) {
                 $this->shoppingCartMapper->updateEI($changed);
@@ -121,6 +122,12 @@ class UnitOfWork {
     }
 
     function cancel() {
+        foreach ($this->changedList as $changed) {
+            if ($changed instanceof ElectronicSpecification) {
+                $this->electronicCatalogMapper->unlockES($changed);
+            }
+        }
+        
         $this->newList = array();
         $this->changedList = array();
         $this->deletedList = array();
